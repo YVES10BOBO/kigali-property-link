@@ -1,0 +1,2 @@
+export const supabaseMiddleware = null;
+
