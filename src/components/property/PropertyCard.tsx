@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Property, formatPropertyForDisplay } from "@/types/property";
 
 interface PropertyCardProps {
   id: string;
@@ -12,6 +13,12 @@ interface PropertyCardProps {
   area: number;
   image: string;
   badge: "rent" | "sale";
+}
+
+// Support both old format and new Property type
+export function PropertyCardFromDB({ property }: { property: Property }) {
+  const formatted = formatPropertyForDisplay(property);
+  return <PropertyCard {...formatted} />;
 }
 
 export default function PropertyCard({

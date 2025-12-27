@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { mockProperties } from "@/lib/mock-data/properties";
-import PropertyCard from "@/components/property/PropertyCard";
+import { Property } from "@/types/property";
+import { PropertyCardFromDB } from "@/components/property/PropertyCard";
 import PropertyFilters, { FilterState } from "@/components/property/PropertyFilters";
 
 export default function PropertiesPageClient() {
@@ -18,6 +18,56 @@ export default function PropertiesPageClient() {
     sortBy: "newest",
   });
 
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch properties from API
+  useEffect(() => {
+    const fetchProperties = async () => {
+      setLoading(true);
+      setError(null);
+      
+      try {
+        const params = new URLSearchParams();
+        if (filters.location) params.set("location", filters.location);
+        if (filters.purpose) params.set("purpose", filters.purpose);
+        if (filters.priceRange) params.set("priceRange", filters.priceRange);
+        if (filters.search) params.set("search", filters.search);
+        
+        const response = await fetch(`/api/properties?${params.toString()}`);
+        if (!response.ok) throw new Error("Failed to fetch properties");
+        
+        const data = await response.json();
+        
+        // Sort client-side
+        let sorted = [...data];
+        switch (filters.sortBy) {
+          case "price-low":
+            sorted.sort((a, b) => a.price - b.price);
+            break;
+          case "price-high":
+            sorted.sort((a, b) => b.price - a.price);
+            break;
+          case "area-large":
+            sorted.sort((a, b) => b.area - a.area);
+            break;
+          default:
+            // Keep server order (newest first)
+            break;
+        }
+        
+        setProperties(sorted);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProperties();
+  }, [filters]);
+
   // Update filters when URL params change
   useEffect(() => {
     setFilters({
@@ -30,76 +80,38 @@ export default function PropertiesPageClient() {
     });
   }, [searchParams]);
 
-  // Filter and sort properties
-  const filteredProperties = useMemo(() => {
-    let filtered = [...mockProperties];
-
-    // Search filter
-    if (filters.search) {
-      const searchLower = filters.search.toLowerCase();
-      filtered = filtered.filter(
-        (p) =>
-          p.title.toLowerCase().includes(searchLower) ||
-          p.location.toLowerCase().includes(searchLower)
-      );
-    }
-
-    // Purpose filter (rent/sale)
-    if (filters.purpose) {
-      filtered = filtered.filter((p) => p.priceType === filters.purpose);
-    }
-
-    // Location filter
-    if (filters.location) {
-      filtered = filtered.filter((p) => p.location.includes(filters.location));
-    }
-
-    // Price range filter
-    if (filters.priceRange) {
-      if (filters.priceRange === "1200+") {
-        filtered = filtered.filter((p) => p.price >= 1200);
-      } else {
-        const [min, max] = filters.priceRange.split("-");
-        if (min && max) {
-          filtered = filtered.filter((p) => p.price >= parseInt(min) && p.price <= parseInt(max));
-        }
-      }
-    }
-
-    // Sort
-    switch (filters.sortBy) {
-      case "price-low":
-        filtered.sort((a, b) => a.price - b.price);
-        break;
-      case "price-high":
-        filtered.sort((a, b) => b.price - a.price);
-        break;
-      case "area-large":
-        filtered.sort((a, b) => b.area - a.area);
-        break;
-      default:
-        // newest first (keep original order)
-        break;
-    }
-
-    return filtered;
-  }, [filters]);
-
   return (
     <>
       {/* Page Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-dark mb-2">All Properties</h1>
-        <p className="text-gray-600">
-          Discover {filteredProperties.length} {filteredProperties.length === 1 ? "property" : "properties"} in Kigali
-        </p>
+          <h1 className="text-4xl font-bold text-dark mb-2">All Properties</h1>
+          <p className="text-gray-600">
+            {loading ? "Loading..." : `Discover ${properties.length} ${properties.length === 1 ? "property" : "properties"} in Kigali`}
+          </p>
       </div>
 
       {/* Filters */}
       <PropertyFilters filters={filters} onFilterChange={setFilters} />
 
-      {/* Results Count */}
-      {filteredProperties.length === 0 ? (
+        {/* Loading State */}
+        {loading && (
+          <div className="text-center py-16">
+            <i className="fas fa-spinner fa-spin text-4xl text-primary mb-4"></i>
+            <p className="text-gray-600">Loading properties...</p>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <div className="text-center py-16">
+            <i className="fas fa-exclamation-circle text-4xl text-red-500 mb-4"></i>
+            <h2 className="text-2xl font-bold text-dark mb-2">Error Loading Properties</h2>
+            <p className="text-gray-600">{error}</p>
+          </div>
+        )}
+
+        {/* Results Count */}
+        {!loading && !error && properties.length === 0 ? (
         <div className="text-center py-16">
           <i className="fas fa-search text-6xl text-gray-300 mb-4"></i>
           <h2 className="text-2xl font-bold text-dark mb-2">No Properties Found</h2>
@@ -122,21 +134,21 @@ export default function PropertiesPageClient() {
             Clear All Filters
           </button>
         </div>
-      ) : (
-        <>
-          {/* Properties Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {filteredProperties.map((property) => (
-              <PropertyCard key={property.id} {...property} />
-            ))}
-          </div>
+        ) : !loading && !error ? (
+          <>
+            {/* Properties Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {properties.map((property) => (
+                <PropertyCardFromDB key={property.id} property={property} />
+              ))}
+            </div>
 
-          {/* Results Info */}
-          <div className="text-center text-gray-600">
-            Showing {filteredProperties.length} {filteredProperties.length === 1 ? "property" : "properties"}
-          </div>
-        </>
-      )}
+            {/* Results Info */}
+            <div className="text-center text-gray-600">
+              Showing {properties.length} {properties.length === 1 ? "property" : "properties"}
+            </div>
+          </>
+        ) : null}
     </>
   );
 }

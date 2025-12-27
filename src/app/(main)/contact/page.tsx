@@ -16,15 +16,37 @@ export default function ContactPage() {
 
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Connect to backend API
-    console.log("Form submitted:", formData);
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
-    }, 3000);
+    
+    try {
+      const response = await fetch('/api/inquiries', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          inquiry_type: formData.subject === 'property-inquiry' ? 'general' : 'general',
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit inquiry');
+      }
+
+      setSubmitted(true);
+      setTimeout(() => {
+        setSubmitted(false);
+        setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+      }, 3000);
+    } catch (error: any) {
+      alert('Error submitting form. Please try again.');
+      console.error('Error:', error);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {

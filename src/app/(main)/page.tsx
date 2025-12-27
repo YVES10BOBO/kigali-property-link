@@ -1,17 +1,38 @@
 "use client";
 
-import { useState } from "react";
+"use client";
+
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import PropertyCard from "@/components/property/PropertyCard";
+import { PropertyCardFromDB } from "@/components/property/PropertyCard";
 import WhatsAppButton from "@/components/shared/WhatsAppButton";
-import { mockProperties } from "@/lib/mock-data/properties";
+import { Property } from "@/types/property";
 import Link from "next/link";
 
 export default function HomePage() {
   const router = useRouter();
-  const featuredProperties = mockProperties.slice(0, 6);
+  const [featuredProperties, setFeaturedProperties] = useState<Property[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const response = await fetch("/api/properties?limit=6");
+        if (response.ok) {
+          const data = await response.json();
+          setFeaturedProperties(data.slice(0, 6));
+        }
+      } catch (error) {
+        console.error("Failed to fetch properties:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProperties();
+  }, []);
   
   const [searchForm, setSearchForm] = useState({
     propertyType: "",
@@ -158,9 +179,20 @@ export default function HomePage() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredProperties.map((property) => (
-              <PropertyCard key={property.id} {...property} />
-            ))}
+            {loading ? (
+              <div className="col-span-3 text-center py-8">
+                <i className="fas fa-spinner fa-spin text-3xl text-primary mb-4"></i>
+                <p className="text-gray-600">Loading properties...</p>
+              </div>
+            ) : featuredProperties.length > 0 ? (
+              featuredProperties.map((property) => (
+                <PropertyCardFromDB key={property.id} property={property} />
+              ))
+            ) : (
+              <div className="col-span-3 text-center py-8">
+                <p className="text-gray-600">No properties available at the moment.</p>
+              </div>
+            )}
           </div>
           
           <div className="text-center mt-12">

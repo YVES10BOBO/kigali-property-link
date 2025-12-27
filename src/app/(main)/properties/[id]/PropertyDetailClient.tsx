@@ -1,8 +1,9 @@
 "use client";
 
-import { mockProperties } from "@/lib/mock-data/properties";
+import { useState, useEffect } from "react";
+import { Property } from "@/types/property";
 import PropertyDetail from "@/components/property/PropertyDetail";
-import PropertyCard from "@/components/property/PropertyCard";
+import { PropertyCardFromDB } from "@/components/property/PropertyCard";
 import Link from "next/link";
 
 interface PropertyDetailClientProps {
@@ -10,9 +11,111 @@ interface PropertyDetailClientProps {
 }
 
 export default function PropertyDetailClient({ id }: PropertyDetailClientProps) {
-  const property = mockProperties.find((p) => p.id === id);
+  const [property, setProperty] = useState<Property | null>(null);
+  const [similarProperties, setSimilarProperties] = useState<Property[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    preferred_date: "",
+    message: "",
+  });
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formSubmitting, setFormSubmitting] = useState(false);
 
-  if (!property) {
+  useEffect(() => {
+    const fetchProperty = async () => {
+      setLoading(true);
+      setError(null);
+      
+      try {
+        const response = await fetch(`/api/properties/${id}`);
+        if (!response.ok) {
+          if (response.status === 404) {
+            setError("not_found");
+            return;
+          }
+          throw new Error("Failed to fetch property");
+        }
+        
+        const data = await response.json();
+        setProperty(data);
+        
+        // Fetch similar properties (same location or type)
+        const similarResponse = await fetch(
+          `/api/properties?location=${encodeURIComponent(data.location)}&purpose=${data.price_type}`
+        );
+        if (similarResponse.ok) {
+          const similarData = await similarResponse.json();
+          setSimilarProperties(
+            similarData.filter((p: Property) => p.id !== id).slice(0, 3)
+          );
+        }
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProperty();
+  }, [id]);
+
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setFormSubmitting(true);
+
+    try {
+      const response = await fetch('/api/inquiries', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          property_id: id,
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          inquiry_type: 'viewing',
+          preferred_date: formData.preferred_date || null,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit inquiry');
+      }
+
+      setFormSubmitted(true);
+      setFormData({ name: "", email: "", phone: "", preferred_date: "", message: "" });
+      
+      setTimeout(() => {
+        setFormSubmitted(false);
+      }, 5000);
+    } catch (error: any) {
+      alert('Error submitting form. Please try again.');
+      console.error('Error:', error);
+    } finally {
+      setFormSubmitting(false);
+    }
+  };
+
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  if (loading) {
+    return (
+      <div className="text-center py-16">
+        <i className="fas fa-spinner fa-spin text-4xl text-primary mb-4"></i>
+        <p className="text-gray-600">Loading property...</p>
+      </div>
+    );
+  }
+
+  if (error === "not_found" || !property) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -29,14 +132,15 @@ export default function PropertyDetailClient({ id }: PropertyDetailClientProps) 
     );
   }
 
-  // Get similar properties (same location or type, excluding current)
-  const similarProperties = mockProperties
-    .filter(
-      (p) =>
-        p.id !== id &&
-        (p.location === property.location || p.priceType === property.priceType)
-    )
-    .slice(0, 3);
+  if (error) {
+    return (
+      <div className="text-center py-16">
+        <i className="fas fa-exclamation-circle text-4xl text-red-500 mb-4"></i>
+        <h2 className="text-2xl font-bold text-dark mb-2">Error Loading Property</h2>
+        <p className="text-gray-600">{error}</p>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -63,58 +167,92 @@ export default function PropertyDetailClient({ id }: PropertyDetailClientProps) 
               Interested in this property? Fill out the form and we'll contact you to schedule a viewing.
             </p>
 
-            <form className="space-y-4">
-              <div>
-                <label className="block font-semibold mb-2 text-dark">Full Name</label>
-                <input
-                  type="text"
-                  placeholder="Enter your name"
-                  className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
-                  required
-                />
+            {formSubmitted ? (
+              <div className="bg-green-50 border-2 border-green-200 rounded-lg p-6 text-center">
+                <i className="fas fa-check-circle text-4xl text-green-600 mb-3"></i>
+                <h3 className="text-xl font-bold text-green-800 mb-2">Inquiry Submitted!</h3>
+                <p className="text-green-700">
+                  We've received your inquiry and will contact you soon to schedule a viewing.
+                </p>
               </div>
-              <div>
-                <label className="block font-semibold mb-2 text-dark">Phone Number</label>
-                <input
-                  type="tel"
-                  placeholder="0788 XXX XXX"
-                  className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block font-semibold mb-2 text-dark">Email</label>
-                <input
-                  type="email"
-                  placeholder="your@email.com"
-                  className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block font-semibold mb-2 text-dark">Preferred Date</label>
-                <input
-                  type="date"
-                  className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block font-semibold mb-2 text-dark">Message (Optional)</label>
-                <textarea
-                  placeholder="Any specific requirements..."
-                  rows={4}
-                  className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none resize-y"
-                ></textarea>
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-primary text-white py-4 rounded-lg font-semibold text-lg hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"
-              >
-                <i className="fas fa-calendar-check"></i>
-                Book Viewing
-              </button>
-            </form>
+            ) : (
+              <form className="space-y-4" onSubmit={handleFormSubmit}>
+                <div>
+                  <label className="block font-semibold mb-2 text-dark">Full Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleFormChange}
+                    placeholder="Enter your name"
+                    className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold mb-2 text-dark">Phone Number</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleFormChange}
+                    placeholder="0788 XXX XXX"
+                    className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold mb-2 text-dark">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleFormChange}
+                    placeholder="your@email.com"
+                    className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold mb-2 text-dark">Preferred Date</label>
+                  <input
+                    type="date"
+                    name="preferred_date"
+                    value={formData.preferred_date}
+                    onChange={handleFormChange}
+                    className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold mb-2 text-dark">Message (Optional)</label>
+                  <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleFormChange}
+                    placeholder="Any specific requirements..."
+                    rows={4}
+                    className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none resize-y"
+                  ></textarea>
+                </div>
+                <button
+                  type="submit"
+                  disabled={formSubmitting}
+                  className="w-full bg-primary text-white py-4 rounded-lg font-semibold text-lg hover:bg-primary-dark transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {formSubmitting ? (
+                    <>
+                      <i className="fas fa-spinner fa-spin"></i>
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <i className="fas fa-calendar-check"></i>
+                      Book Viewing
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
 
             {/* Quick Contact */}
             <div className="mt-6 pt-6 border-t border-gray-200">
@@ -147,8 +285,8 @@ export default function PropertyDetailClient({ id }: PropertyDetailClientProps) 
         <div>
           <h2 className="text-3xl font-bold text-dark mb-6">Similar Properties</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {similarProperties.map((property) => (
-              <PropertyCard key={property.id} {...property} />
+            {similarProperties.map((prop) => (
+              <PropertyCardFromDB key={prop.id} property={prop} />
             ))}
           </div>
         </div>

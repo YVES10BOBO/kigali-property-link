@@ -1,12 +1,15 @@
-import { Property } from "@/lib/mock-data/properties";
+import { Property } from "@/types/property";
 import ImageGallery from "@/components/shared/ImageGallery";
+import { PropertyCardFromDB } from "./PropertyCard";
 
 interface PropertyDetailProps {
   property: Property;
 }
 
 export default function PropertyDetail({ property }: PropertyDetailProps) {
-  const images = property.images || [property.image];
+  const images = property.images && property.images.length > 0 
+    ? property.images 
+    : ["/images/default-property.jpg"];
 
   return (
     <div className="space-y-8">
@@ -25,17 +28,17 @@ export default function PropertyDetail({ property }: PropertyDetailProps) {
           </div>
           <span
             className={`px-6 py-2 rounded-full text-lg font-semibold text-white ${
-              property.badge === "rent" ? "bg-primary" : "bg-secondary"
+              property.price_type === "rent" ? "bg-primary" : "bg-secondary"
             }`}
           >
-            {property.badge === "rent" ? "For Rent" : "For Sale"}
+            {property.price_type === "rent" ? "For Rent" : "For Sale"}
           </span>
         </div>
 
         {/* Price */}
         <div className="text-5xl font-bold text-primary mb-6">
           ${property.price.toLocaleString()}
-          {property.priceType === "rent" && (
+          {property.price_type === "rent" && (
             <span className="text-2xl font-normal text-gray-500">/month</span>
           )}
         </div>
