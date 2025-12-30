@@ -32,3 +32,4 @@ You should see: "Success. 6 rows inserted"
 
 **After inserting the data, your website will use real data from Supabase instead of mock data!** 🎉
 
+

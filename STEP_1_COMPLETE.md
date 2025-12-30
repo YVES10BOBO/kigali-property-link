@@ -97,3 +97,4 @@ Open `http://localhost:3000` in your browser to see:
 
 **Ready for Step 2?** Let me know when you've checked it out and we'll build the Property Detail page next!
 
+

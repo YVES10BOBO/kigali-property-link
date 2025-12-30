@@ -66,3 +66,4 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here
 2. Get your credentials
 3. Then tell me and I'll help you set up the database schema!
 
+

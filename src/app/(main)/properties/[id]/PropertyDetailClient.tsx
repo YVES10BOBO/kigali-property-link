@@ -5,12 +5,15 @@ import { Property } from "@/types/property";
 import PropertyDetail from "@/components/property/PropertyDetail";
 import { PropertyCardFromDB } from "@/components/property/PropertyCard";
 import Link from "next/link";
+import Modal from "@/components/ui/Modal";
+import { useRouter } from "next/navigation";
 
 interface PropertyDetailClientProps {
   id: string;
 }
 
 export default function PropertyDetailClient({ id }: PropertyDetailClientProps) {
+  const router = useRouter();
   const [property, setProperty] = useState<Property | null>(null);
   const [similarProperties, setSimilarProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
@@ -24,6 +27,7 @@ export default function PropertyDetailClient({ id }: PropertyDetailClientProps) 
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formSubmitting, setFormSubmitting] = useState(false);
+  const [showTrackModal, setShowTrackModal] = useState(false);
 
   useEffect(() => {
     const fetchProperty = async () => {
@@ -234,23 +238,33 @@ export default function PropertyDetailClient({ id }: PropertyDetailClientProps) 
                     className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none resize-y"
                   ></textarea>
                 </div>
-                <button
-                  type="submit"
-                  disabled={formSubmitting}
-                  className="w-full bg-primary text-white py-4 rounded-lg font-semibold text-lg hover:bg-primary-dark transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {formSubmitting ? (
-                    <>
-                      <i className="fas fa-spinner fa-spin"></i>
-                      Submitting...
-                    </>
-                  ) : (
-                    <>
-                      <i className="fas fa-calendar-check"></i>
-                      Book Viewing
-                    </>
-                  )}
-                </button>
+                <div className="flex flex-col gap-3">
+                  <button
+                    type="submit"
+                    disabled={formSubmitting}
+                    className="w-full bg-primary text-white py-4 rounded-lg font-semibold text-lg hover:bg-primary-dark transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {formSubmitting ? (
+                      <>
+                        <i className="fas fa-spinner fa-spin"></i>
+                        Submitting...
+                      </>
+                    ) : (
+                      <>
+                        <i className="fas fa-calendar-check"></i>
+                        Book Viewing
+                      </>
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowTrackModal(true)}
+                    className="w-full text-primary font-semibold text-sm flex items-center justify-center gap-2 underline-offset-4 hover:underline"
+                  >
+                    <i className="fas fa-location-arrow" />
+                    Track my inquiry
+                  </button>
+                </div>
               </form>
             )}
 
@@ -291,6 +305,45 @@ export default function PropertyDetailClient({ id }: PropertyDetailClientProps) 
           </div>
         </div>
       )}
+
+      {/* Track Inquiry / Login Modal */}
+      <Modal
+        isOpen={showTrackModal}
+        onClose={() => setShowTrackModal(false)}
+        title="Track your inquiry"
+      >
+        <p className="text-gray-600 text-sm mb-4">
+          Want to see the status of your viewing requests and messages? Log in to your client account.
+        </p>
+        <div className="space-y-3">
+          <button
+            type="button"
+            onClick={() => {
+              setShowTrackModal(false);
+              router.push("/login?redirect=/client");
+            }}
+            className="w-full bg-primary text-white py-2.5 rounded-lg font-semibold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"
+          >
+            <i className="fas fa-sign-in-alt" />
+            Log in to my account
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setShowTrackModal(false);
+              router.push("/register?redirect=/client");
+            }}
+            className="w-full border border-primary text-primary py-2.5 rounded-lg font-semibold hover:bg-primary/5 transition-colors flex items-center justify-center gap-2"
+          >
+            <i className="fas fa-user-plus" />
+            Create a new account
+          </button>
+        </div>
+        <p className="text-xs text-gray-400 mt-3">
+          After logging in, open <span className="font-semibold">My Inquiries</span> to track all viewing
+          requests made with your email.
+        </p>
+      </Modal>
     </>
   );
 }

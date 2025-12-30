@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS users (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   email TEXT UNIQUE NOT NULL,
   name TEXT NOT NULL,
-  role TEXT DEFAULT 'agent' CHECK (role IN ('admin', 'agent')),
+  role TEXT DEFAULT 'user' CHECK (role IN ('admin', 'agent', 'user')),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -81,6 +81,12 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
+-- Drop existing triggers if they exist (to make migration idempotent)
+DROP TRIGGER IF EXISTS update_properties_updated_at ON properties;
+DROP TRIGGER IF EXISTS update_inquiries_updated_at ON inquiries;
+DROP TRIGGER IF EXISTS update_users_updated_at ON users;
+DROP TRIGGER IF EXISTS update_commissions_updated_at ON commissions;
+
 -- Triggers to auto-update updated_at
 CREATE TRIGGER update_properties_updated_at BEFORE UPDATE ON properties
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -100,9 +106,30 @@ ALTER TABLE inquiries ENABLE ROW LEVEL SECURITY;
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE commissions ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policies if they exist (to make migration idempotent)
+DROP POLICY IF EXISTS "Properties are viewable by everyone" ON properties;
+DROP POLICY IF EXISTS "Authenticated users can manage properties" ON properties;
+DROP POLICY IF EXISTS "Anyone can create inquiries" ON inquiries;
+DROP POLICY IF EXISTS "Authenticated users can view inquiries" ON inquiries;
+DROP POLICY IF EXISTS "Authenticated users can update inquiries" ON inquiries;
+DROP POLICY IF EXISTS "Authenticated users can view commissions" ON commissions;
+DROP POLICY IF EXISTS "Authenticated users can create commissions" ON commissions;
+DROP POLICY IF EXISTS "Authenticated users can update commissions" ON commissions;
+DROP POLICY IF EXISTS "Authenticated users can delete commissions" ON commissions;
+DROP POLICY IF EXISTS "Users can view their own profile" ON users;
+DROP POLICY IF EXISTS "Users can create their own profile" ON users;
+DROP POLICY IF EXISTS "Users can update their own profile" ON users;
+DROP POLICY IF EXISTS "Admins can view all users" ON users;
+
 -- Allow public read access to properties
 CREATE POLICY "Properties are viewable by everyone" ON properties
   FOR SELECT USING (true);
+
+-- Allow authenticated users (dashboard) to insert/update/delete properties
+CREATE POLICY "Authenticated users can manage properties" ON properties
+  FOR ALL
+  USING (auth.role() = 'authenticated')
+  WITH CHECK (auth.role() = 'authenticated');
 
 -- Allow public to create inquiries
 CREATE POLICY "Anyone can create inquiries" ON inquiries
@@ -115,3 +142,42 @@ CREATE POLICY "Authenticated users can view inquiries" ON inquiries
 -- Allow authenticated users to update inquiries (for dashboard)
 CREATE POLICY "Authenticated users can update inquiries" ON inquiries
   FOR UPDATE USING (auth.role() = 'authenticated');
+
+-- Allow authenticated users to view all commissions (for dashboard)
+CREATE POLICY "Authenticated users can view commissions" ON commissions
+  FOR SELECT USING (auth.role() = 'authenticated');
+
+-- Allow authenticated users to create commissions (for dashboard)
+CREATE POLICY "Authenticated users can create commissions" ON commissions
+  FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+
+-- Allow authenticated users to update commissions (for dashboard)
+CREATE POLICY "Authenticated users can update commissions" ON commissions
+  FOR UPDATE USING (auth.role() = 'authenticated');
+
+-- Allow authenticated users to delete commissions (for dashboard)
+CREATE POLICY "Authenticated users can delete commissions" ON commissions
+  FOR DELETE USING (auth.role() = 'authenticated');
+
+-- Users table policies
+-- Users can view their own profile
+CREATE POLICY "Users can view their own profile" ON users
+  FOR SELECT USING (auth.jwt() ->> 'email' = email);
+
+-- Users can create their own profile
+CREATE POLICY "Users can create their own profile" ON users
+  FOR INSERT WITH CHECK (auth.jwt() ->> 'email' = email);
+
+-- Users can update their own profile
+CREATE POLICY "Users can update their own profile" ON users
+  FOR UPDATE USING (auth.jwt() ->> 'email' = email);
+
+-- Admins can view all users (for future admin features)
+CREATE POLICY "Admins can view all users" ON users
+  FOR SELECT USING (
+    EXISTS (
+      SELECT 1 FROM users
+      WHERE email = auth.jwt() ->> 'email'
+      AND role = 'admin'
+    )
+  );

@@ -4,8 +4,11 @@ import { useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/shared/WhatsAppButton";
+import Modal from "@/components/ui/Modal";
+import { useRouter } from "next/navigation";
 
 export default function ContactPage() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,6 +18,7 @@ export default function ContactPage() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [showTrackModal, setShowTrackModal] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -151,13 +155,23 @@ export default function ContactPage() {
                     ></textarea>
                   </div>
 
-                  <button
-                    type="submit"
-                    className="w-full bg-primary text-white py-4 rounded-lg font-semibold text-lg hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"
-                  >
-                    <i className="fas fa-paper-plane"></i>
-                    Send Message
-                  </button>
+                  <div className="flex flex-col md:flex-row md:items-center gap-4">
+                    <button
+                      type="submit"
+                      className="w-full md:flex-1 bg-primary text-white py-4 rounded-lg font-semibold text-lg hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"
+                    >
+                      <i className="fas fa-paper-plane"></i>
+                      Send Message
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowTrackModal(true)}
+                      className="w-full md:w-auto text-primary font-semibold flex items-center justify-center gap-2 underline-offset-4 hover:underline"
+                    >
+                      <i className="fas fa-location-arrow" />
+                      Track my inquiry
+                    </button>
+                  </div>
                 </form>
               )}
             </div>
@@ -285,6 +299,45 @@ export default function ContactPage() {
 
       <Footer />
       <WhatsAppButton />
+
+      {/* Track Inquiry / Login Modal */}
+      <Modal
+        isOpen={showTrackModal}
+        onClose={() => setShowTrackModal(false)}
+        title="Track your inquiry"
+      >
+        <p className="text-gray-600 text-sm mb-4">
+          To track your inquiries and see their status, please log in to your client account.
+        </p>
+        <div className="space-y-3">
+          <button
+            type="button"
+            onClick={() => {
+              setShowTrackModal(false);
+              router.push("/login?redirect=/client");
+            }}
+            className="w-full bg-primary text-white py-2.5 rounded-lg font-semibold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"
+          >
+            <i className="fas fa-sign-in-alt" />
+            Log in to my account
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setShowTrackModal(false);
+              router.push("/register?redirect=/client");
+            }}
+            className="w-full border border-primary text-primary py-2.5 rounded-lg font-semibold hover:bg-primary/5 transition-colors flex items-center justify-center gap-2"
+          >
+            <i className="fas fa-user-plus" />
+            Create a new account
+          </button>
+        </div>
+        <p className="text-xs text-gray-400 mt-3">
+          After logging in, go to <span className="font-semibold">My Inquiries</span> to see all messages you
+          sent using this email.
+        </p>
+      </Modal>
     </div>
   );
 }

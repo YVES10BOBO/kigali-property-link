@@ -1,10 +1,13 @@
 -- Seed data for Kigali Property Link
 -- Run this in Supabase SQL Editor after creating tables
+-- This script uses ON CONFLICT to prevent duplicates if run multiple times
 
--- Clear existing data (optional - remove if you want to keep existing data)
+-- Clear existing data (optional - uncomment if you want to start fresh)
 -- DELETE FROM properties;
 
 -- Insert sample properties
+-- Using ON CONFLICT DO NOTHING to prevent duplicates
+-- Note: This requires a unique constraint. If you get an error, use the cleanup script first.
 INSERT INTO properties (title, description, price, price_type, location, bedrooms, bathrooms, area, furnished, parking, security, generator, amenities, status, images) 
 VALUES
 (
@@ -130,4 +133,5 @@ VALUES
     'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800'
   ]
 )
+ON CONFLICT DO NOTHING
 RETURNING id, title, price, price_type;

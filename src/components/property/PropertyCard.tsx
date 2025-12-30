@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Property, formatPropertyForDisplay } from "@/types/property";
+import { useFavorites } from "@/hooks/useFavorites";
 
 interface PropertyCardProps {
   id: string;
@@ -33,6 +36,15 @@ export default function PropertyCard({
   image,
   badge,
 }: PropertyCardProps) {
+  const { isFavorited, toggleFavorite } = useFavorites();
+  const favorited = isFavorited(id);
+
+  const handleHeartClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleFavorite(id);
+  };
+
   return (
     <Link href={`/properties/${id}`}>
       <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
@@ -50,9 +62,17 @@ export default function PropertyCard({
           >
             {badge === "rent" ? "For Rent" : "For Sale"}
           </span>
-          <div className="absolute top-4 right-4 bg-white w-10 h-10 rounded-full flex items-center justify-center cursor-pointer hover:bg-red-50 transition-colors">
-            <i className="far fa-heart text-gray-600"></i>
-          </div>
+          <button
+            onClick={handleHeartClick}
+            className="absolute top-4 right-4 bg-white w-10 h-10 rounded-full flex items-center justify-center cursor-pointer hover:bg-red-50 transition-colors z-10"
+            aria-label={favorited ? "Remove from favorites" : "Add to favorites"}
+          >
+            <i
+              className={`${
+                favorited ? "fas fa-heart text-red-500" : "far fa-heart text-gray-600"
+              } transition-colors`}
+            ></i>
+          </button>
         </div>
         
         <div className="p-6">
