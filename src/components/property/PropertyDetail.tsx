@@ -1,12 +1,16 @@
+"use client";
+
 import { Property } from "@/types/property";
 import ImageGallery from "@/components/shared/ImageGallery";
-import { PropertyCardFromDB } from "./PropertyCard";
+import AutoTranslatedText from "@/components/property/AutoTranslatedText";
+import { useLanguage } from "@/lib/i18n/LanguageProvider";
 
 interface PropertyDetailProps {
   property: Property;
 }
 
 export default function PropertyDetail({ property }: PropertyDetailProps) {
+  const { t } = useLanguage();
   const images = property.images && property.images.length > 0 
     ? property.images 
     : ["/images/default-property.jpg"];
@@ -20,10 +24,12 @@ export default function PropertyDetail({ property }: PropertyDetailProps) {
       <div>
         <div className="flex items-start justify-between mb-4">
           <div>
-            <h1 className="text-4xl font-bold text-dark mb-2">{property.title}</h1>
+            <h1 className="text-4xl font-bold text-dark mb-2">
+              <AutoTranslatedText text={property.title} from="en" />
+            </h1>
             <p className="text-gray-600 flex items-center">
               <i className="fas fa-map-marker-alt text-secondary mr-2"></i>
-              {property.location}
+              <AutoTranslatedText text={property.location} from="en" />
             </p>
           </div>
           <span
@@ -66,8 +72,10 @@ export default function PropertyDetail({ property }: PropertyDetailProps) {
       {/* Description */}
       {property.description && (
         <div>
-          <h2 className="text-2xl font-bold text-dark mb-4">Description</h2>
-          <p className="text-gray-700 leading-relaxed">{property.description}</p>
+          <h2 className="text-2xl font-bold text-dark mb-4">{t.propertyDetail.description}</h2>
+          <p className="text-gray-700 leading-relaxed">
+            <AutoTranslatedText text={property.description} from="en" />
+          </p>
         </div>
       )}
 
@@ -78,7 +86,9 @@ export default function PropertyDetail({ property }: PropertyDetailProps) {
           {property.amenities?.map((amenity, index) => (
             <div key={index} className="flex items-center gap-3 p-3 bg-light rounded-lg">
               <i className="fas fa-check-circle text-primary"></i>
-              <span className="text-gray-700">{amenity}</span>
+              <span className="text-gray-700">
+                <AutoTranslatedText text={amenity} from="en" />
+              </span>
             </div>
           ))}
           {property.furnished && (

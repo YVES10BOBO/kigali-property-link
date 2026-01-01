@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
+import { useLanguage } from "@/lib/i18n/LanguageProvider";
 
 interface UserProfile {
   id?: string;
@@ -18,6 +19,7 @@ interface UserProfile {
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const { t } = useLanguage();
   const [user, setUser] = useState<User | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
@@ -76,12 +78,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   };
 
   const navItems = [
-    { href: "/dashboard", label: "Overview", icon: "fas fa-chart-line" },
-    { href: "/dashboard/inquiries", label: "Inquiries", icon: "fas fa-envelope", badge: true },
-    { href: "/dashboard/properties", label: "Properties", icon: "fas fa-home" },
-    { href: "/dashboard/commissions", label: "Commissions", icon: "fas fa-dollar-sign" },
-    { href: "/dashboard/analytics", label: "Analytics", icon: "fas fa-chart-bar" },
-    { href: "/dashboard/profile", label: "Profile", icon: "fas fa-user" },
+    { href: "/dashboard", label: t.dashboard.overview, icon: "fas fa-chart-line" },
+    { href: "/dashboard/inquiries", label: t.dashboard.inquiries, icon: "fas fa-envelope", badge: true },
+    { href: "/dashboard/properties", label: t.dashboard.properties, icon: "fas fa-home" },
+    { href: "/dashboard/commissions", label: t.dashboard.commissions, icon: "fas fa-dollar-sign" },
+    { href: "/dashboard/analytics", label: t.dashboard.analytics, icon: "fas fa-chart-bar" },
+    { href: "/dashboard/testimonials", label: t.dashboard.testimonials, icon: "fas fa-comments" },
+    { href: "/dashboard/blog", label: t.dashboard.blog, icon: "fas fa-blog" },
+    { href: "/dashboard/calendar", label: t.dashboard.calendar, icon: "fas fa-calendar" },
+    { href: "/dashboard/profile", label: t.dashboard.profile, icon: "fas fa-user" },
   ];
 
   // Derive display values (fallback to auth metadata when profile row missing)

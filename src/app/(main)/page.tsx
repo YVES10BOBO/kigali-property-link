@@ -1,18 +1,20 @@
 "use client";
 
-"use client";
-
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { PropertyCardFromDB } from "@/components/property/PropertyCard";
 import WhatsAppButton from "@/components/shared/WhatsAppButton";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import TestimonialsSection from "@/components/testimonials/TestimonialsSection";
 import { Property } from "@/types/property";
 import Link from "next/link";
+import { useLanguage } from "@/lib/i18n/LanguageProvider";
 
 export default function HomePage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [featuredProperties, setFeaturedProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -70,10 +72,10 @@ export default function HomePage() {
         
         <div className="relative z-10 max-w-4xl">
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
-            Find Your Dream Home in Kigali
+            {t.home.hero.title}
           </h1>
           <p className="text-xl text-gray-100 mb-8 max-w-2xl mx-auto">
-            Discover premium apartments at Greenland Plaza and other exclusive Homart properties across Kigali
+            {t.home.hero.subtitle}
           </p>
           
           {/* Search Box */}
@@ -140,7 +142,7 @@ export default function HomePage() {
               className="w-full bg-secondary text-white py-4 rounded-lg font-semibold text-lg hover:bg-secondary-dark transition-colors flex items-center justify-center gap-2"
             >
               <i className="fas fa-search"></i>
-              Search Properties
+              {t.home.hero.searchButton}
             </button>
           </form>
         </div>
@@ -174,15 +176,14 @@ export default function HomePage() {
       <section className="py-16 bg-light">
         <div className="container-custom">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-dark mb-2">Featured Properties</h2>
-            <p className="text-gray-600">Explore our handpicked premium properties in Kigali</p>
+            <h2 className="text-4xl font-bold text-dark mb-2">{t.home.featured.title}</h2>
+            <p className="text-gray-600">{t.home.featured.subtitle}</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {loading ? (
-              <div className="col-span-3 text-center py-8">
-                <i className="fas fa-spinner fa-spin text-3xl text-primary mb-4"></i>
-                <p className="text-gray-600">Loading properties...</p>
+              <div className="col-span-3">
+                <LoadingSpinner size="lg" text="Loading properties..." />
               </div>
             ) : featuredProperties.length > 0 ? (
               featuredProperties.map((property) => (
@@ -200,9 +201,16 @@ export default function HomePage() {
               href="/properties"
               className="inline-block bg-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors"
             >
-              View All Properties
+              {t.home.featured.viewAll}
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-16 bg-light">
+        <div className="container-custom">
+          <TestimonialsSection featured={true} limit={6} title="What Our Clients Say" />
         </div>
       </section>
 

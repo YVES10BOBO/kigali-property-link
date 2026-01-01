@@ -27,11 +27,19 @@ export default function InquiriesPage() {
   const [filter, setFilter] = useState<string>("all");
   const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null);
   const [showCommissionModal, setShowCommissionModal] = useState(false);
+  const [showCalendarModal, setShowCalendarModal] = useState(false);
   const [commissionFormData, setCommissionFormData] = useState({
     amount: "",
     status: "pending" as "pending" | "paid" | "cancelled",
     payment_date: "",
     notes: "",
+  });
+  const [calendarFormData, setCalendarFormData] = useState({
+    title: "",
+    description: "",
+    start_time: "",
+    end_time: "",
+    location: "",
   });
   const [successMessage, setSuccessMessage] = useState<string>("");
   
@@ -143,6 +151,69 @@ export default function InquiriesPage() {
       notes: `Commission for inquiry from ${inquiry.name}`,
     });
     setShowCommissionModal(true);
+  };
+
+  const handleScheduleViewing = (inquiry: Inquiry) => {
+    setSelectedInquiry(inquiry);
+    const defaultStart = new Date();
+    defaultStart.setHours(10, 0, 0, 0);
+    const defaultEnd = new Date(defaultStart);
+    defaultEnd.setHours(11, 0, 0, 0);
+    
+    setCalendarFormData({
+      title: `Property Viewing - ${inquiry.properties?.title || 'Property'}`,
+      description: `Viewing appointment for ${inquiry.name}`,
+      start_time: defaultStart.toISOString().slice(0, 16),
+      end_time: defaultEnd.toISOString().slice(0, 16),
+      location: inquiry.properties?.location || "",
+    });
+    setShowCalendarModal(true);
+  };
+
+  const handleSubmitCalendar = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!selectedInquiry) return;
+    
+    try {
+      const response = await fetch("/api/calendar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          inquiry_id: selectedInquiry.id,
+          property_id: selectedInquiry.property_id,
+          title: calendarFormData.title,
+          description: calendarFormData.description,
+          start_time: new Date(calendarFormData.start_time).toISOString(),
+          end_time: new Date(calendarFormData.end_time).toISOString(),
+          location: calendarFormData.location,
+          attendee_name: selectedInquiry.name,
+          attendee_email: selectedInquiry.email,
+          attendee_phone: selectedInquiry.phone,
+          status: "scheduled",
+        }),
+      });
+
+      if (response.ok) {
+        // Update inquiry status to viewing_scheduled
+        await fetch(`/api/inquiries/${selectedInquiry.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: "viewing_scheduled" }),
+        });
+        
+        setSuccessMessage("Viewing appointment scheduled successfully!");
+        setShowCalendarModal(false);
+        setSelectedInquiry(null);
+        fetchInquiries();
+        setTimeout(() => setSuccessMessage(""), 3000);
+      } else {
+        const error = await response.json();
+        alert(error.error || "Failed to schedule viewing");
+      }
+    } catch (error) {
+      alert("Failed to schedule viewing. Please try again.");
+    }
   };
 
   const handleSubmitCommission = async (e: React.FormEvent) => {
@@ -715,15 +786,26 @@ export default function InquiriesPage() {
                     WhatsApp
                   </a>
                   
-                  {inquiry.status === "closed" && (
-                    <button
-                      onClick={() => handleCreateCommission(inquiry)}
-                      className="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors text-center mt-2"
-                    >
-                      <i className="fas fa-dollar-sign mr-1"></i>
-                      Create Commission
-                    </button>
-                  )}
+                  <div className="flex flex-col gap-2 mt-2">
+                    {inquiry.status !== "closed" && inquiry.status !== "lost" && (
+                      <button
+                        onClick={() => handleScheduleViewing(inquiry)}
+                        className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors text-center"
+                      >
+                        <i className="fas fa-calendar mr-1"></i>
+                        Schedule Viewing
+                      </button>
+                    )}
+                    {inquiry.status === "closed" && (
+                      <button
+                        onClick={() => handleCreateCommission(inquiry)}
+                        className="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors text-center"
+                      >
+                        <i className="fas fa-dollar-sign mr-1"></i>
+                        Create Commission
+                      </button>
+                    )}
+                  </div>
                   </div>
                 </div>
               </div>
@@ -825,6 +907,103 @@ export default function InquiriesPage() {
                   className="px-6 py-2 bg-primary text-white rounded-lg font-semibold hover:bg-primary-dark transition-colors"
                 >
                   Create Commission
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Schedule Viewing Modal */}
+      {showCalendarModal && selectedInquiry && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-xl max-w-md w-full">
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-dark">Schedule Viewing</h2>
+              <p className="text-gray-600 text-sm mt-1">
+                For inquiry from {selectedInquiry.name}
+              </p>
+            </div>
+            <form onSubmit={handleSubmitCalendar} className="p-6">
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    Title <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={calendarFormData.title}
+                    onChange={(e) => setCalendarFormData({ ...calendarFormData, title: e.target.value })}
+                    className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    Description
+                  </label>
+                  <textarea
+                    value={calendarFormData.description}
+                    onChange={(e) => setCalendarFormData({ ...calendarFormData, description: e.target.value })}
+                    rows={3}
+                    className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-gray-700 font-medium mb-2">
+                      Start Time <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="datetime-local"
+                      required
+                      value={calendarFormData.start_time}
+                      onChange={(e) => setCalendarFormData({ ...calendarFormData, start_time: e.target.value })}
+                      className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 font-medium mb-2">
+                      End Time <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="datetime-local"
+                      required
+                      value={calendarFormData.end_time}
+                      onChange={(e) => setCalendarFormData({ ...calendarFormData, end_time: e.target.value })}
+                      className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    Location
+                  </label>
+                  <input
+                    type="text"
+                    value={calendarFormData.location}
+                    onChange={(e) => setCalendarFormData({ ...calendarFormData, location: e.target.value })}
+                    className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                    placeholder={selectedInquiry.properties?.location || "Property address"}
+                  />
+                </div>
+              </div>
+              <div className="flex gap-4 mt-6">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowCalendarModal(false);
+                    setSelectedInquiry(null);
+                  }}
+                  className="flex-1 px-6 py-2 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 px-6 py-2 bg-primary text-white rounded-lg font-semibold hover:bg-primary-dark transition-colors"
+                >
+                  Schedule Viewing
                 </button>
               </div>
             </form>

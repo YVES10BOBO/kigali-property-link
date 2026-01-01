@@ -4,10 +4,14 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
+import ThemeToggle from "@/components/ThemeToggle";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useLanguage } from "@/lib/i18n/LanguageProvider";
 
 export default function Navbar() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const supabase = createClient();
@@ -42,37 +46,39 @@ export default function Navbar() {
         <ul className="hidden md:flex gap-8 list-none">
           <li>
             <Link href="/" className="text-dark font-medium hover:text-primary transition-colors">
-              Home
+              {t.nav.home}
             </Link>
           </li>
           <li>
             <Link href="/properties" className="text-dark font-medium hover:text-primary transition-colors">
-              Properties
+              {t.nav.properties}
             </Link>
           </li>
           <li>
             <Link href="/services" className="text-dark font-medium hover:text-primary transition-colors">
-              Services
+              {t.nav.services}
             </Link>
           </li>
           <li>
             <Link href="/blog" className="text-dark font-medium hover:text-primary transition-colors">
-              Blog
+              {t.nav.blog}
             </Link>
           </li>
           <li>
             <Link href="/about" className="text-dark font-medium hover:text-primary transition-colors">
-              About
+              {t.nav.about}
             </Link>
           </li>
           <li>
             <Link href="/contact" className="text-dark font-medium hover:text-primary transition-colors">
-              Contact
+              {t.nav.contact}
             </Link>
           </li>
         </ul>
         
         <div className="flex items-center gap-4">
+          <LanguageSwitcher />
+          <ThemeToggle />
           {!loading && (
             <>
               {user ? (
@@ -81,7 +87,7 @@ export default function Navbar() {
                   className="text-dark font-medium hover:text-primary transition-colors flex items-center gap-2"
                 >
                   <i className="fas fa-user-circle"></i>
-                  <span className="hidden sm:inline">My Account</span>
+                  <span className="hidden sm:inline">{t.nav.myAccount}</span>
                 </Link>
               ) : (
                 <Link
@@ -89,7 +95,7 @@ export default function Navbar() {
                   className="text-dark font-medium hover:text-primary transition-colors flex items-center gap-2"
                 >
                   <i className="fas fa-sign-in-alt"></i>
-                  <span className="hidden sm:inline">Login</span>
+                  <span className="hidden sm:inline">{t.nav.login}</span>
                 </Link>
               )}
             </>
@@ -98,7 +104,7 @@ export default function Navbar() {
             href="/contact"
             className="bg-primary text-white px-6 py-2 rounded-lg font-semibold hover:bg-primary-dark transition-colors"
           >
-            Get In Touch
+            {t.nav.getInTouch}
           </Link>
         </div>
       </div>

@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { Property } from "@/types/property";
 import PropertyDetail from "@/components/property/PropertyDetail";
 import { PropertyCardFromDB } from "@/components/property/PropertyCard";
+import PropertyMap from "@/components/map/PropertyMap";
+import TestimonialsSection from "@/components/testimonials/TestimonialsSection";
 import Link from "next/link";
 import Modal from "@/components/ui/Modal";
 import { useRouter } from "next/navigation";
@@ -294,9 +296,39 @@ export default function PropertyDetailClient({ id }: PropertyDetailClientProps) 
         </div>
       </div>
 
+      {/* Property Location Map */}
+      {property && property.latitude && property.longitude && (
+        <div className="mt-12 pt-12 border-t border-gray-200">
+          <h2 className="text-3xl font-bold text-dark mb-6">Property Location</h2>
+          <PropertyMap
+            properties={[property]}
+            center={{
+              lat: Number(property.latitude),
+              lng: Number(property.longitude),
+            }}
+            zoom={15}
+            height="400px"
+            selectedPropertyId={property.id}
+          />
+          <p className="text-gray-600 mt-4 text-center">
+            <i className="fas fa-map-marker-alt text-primary mr-2"></i>
+            {property.location}
+          </p>
+        </div>
+      )}
+
+      {/* Testimonials Section */}
+      <div className="mt-12 pt-12 border-t border-gray-200">
+        <TestimonialsSection 
+          propertyId={id} 
+          title="Property Reviews" 
+          showAddForm={true}
+        />
+      </div>
+
       {/* Similar Properties */}
       {similarProperties.length > 0 && (
-        <div>
+        <div className="mt-12">
           <h2 className="text-3xl font-bold text-dark mb-6">Similar Properties</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {similarProperties.map((prop) => (

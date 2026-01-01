@@ -1,6 +1,16 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/shared/WhatsAppButton";
+
+export const metadata: Metadata = {
+  title: "Our Services - Kigali Properties Link",
+  description: "Comprehensive real estate services in Kigali, Rwanda. Property sales, rentals, property management, and expert consultation services.",
+  openGraph: {
+    title: "Our Services - Kigali Properties Link",
+    description: "Comprehensive real estate services in Kigali, Rwanda.",
+  },
+};
 
 export default function ServicesPage() {
   return (

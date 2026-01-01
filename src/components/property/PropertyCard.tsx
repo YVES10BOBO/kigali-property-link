@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Property, formatPropertyForDisplay } from "@/types/property";
 import { useFavorites } from "@/hooks/useFavorites";
+import AutoTranslatedText from "@/components/property/AutoTranslatedText";
 
 interface PropertyCardProps {
   id: string;
@@ -80,10 +81,12 @@ export default function PropertyCard({
             ${price.toLocaleString()}
             {priceType === "rent" && <span className="text-base font-normal text-gray-500">/month</span>}
           </div>
-          <h3 className="text-xl font-semibold text-dark mb-2">{title}</h3>
+          <h3 className="text-xl font-semibold text-dark mb-2">
+            <AutoTranslatedText text={title} from="en" />
+          </h3>
           <p className="text-gray-500 text-sm mb-4 flex items-center">
             <i className="fas fa-map-marker-alt text-secondary mr-2"></i>
-            {location}
+            <AutoTranslatedText text={location} from="en" />
           </p>
           <div className="flex gap-6 pt-4 border-t border-gray-200">
             <div className="flex items-center gap-2 text-gray-500 text-sm">

@@ -16,6 +16,8 @@ export interface Property {
   amenities?: string[];
   status: "available" | "reserved" | "sold" | "rented";
   images?: string[];
+  latitude?: number | string;
+  longitude?: number | string;
   created_at?: string;
   updated_at?: string;
 }

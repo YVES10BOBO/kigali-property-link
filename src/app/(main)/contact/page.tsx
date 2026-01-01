@@ -7,6 +7,8 @@ import WhatsAppButton from "@/components/shared/WhatsAppButton";
 import Modal from "@/components/ui/Modal";
 import { useRouter } from "next/navigation";
 
+// Note: Metadata for client components should be in a separate metadata export
+// For now, we'll handle this in the layout or use a wrapper
 export default function ContactPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({

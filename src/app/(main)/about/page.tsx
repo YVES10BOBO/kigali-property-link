@@ -1,7 +1,17 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/shared/WhatsAppButton";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "About Us - Kigali Properties Link",
+  description: "Learn about Kigali Properties Link, your trusted real estate partner in Kigali, Rwanda. We help you find your dream home with professional service and expert guidance.",
+  openGraph: {
+    title: "About Us - Kigali Properties Link",
+    description: "Learn about Kigali Properties Link, your trusted real estate partner in Kigali, Rwanda.",
+  },
+};
 
 export default function AboutPage() {
   return (
@@ -118,6 +128,210 @@ export default function AboutPage() {
               <p className="text-gray-700">
                 We act as your trusted agent, connecting you with property owners and helping you negotiate the best deals.
               </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Meet Our Team */}
+        <section className="mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-dark mb-4">Meet Our Expert Team</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Our dedicated professionals are here to help you find your perfect property in Kigali
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Team Member 1 */}
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+              <div className="relative h-64 overflow-hidden">
+                <img 
+                  src="/images/team/image1.jpg" 
+                  alt="Team Member"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+              </div>
+              <div className="p-6 text-center">
+                <h3 className="text-2xl font-bold text-dark mb-2">Team Member</h3>
+                <p className="text-primary font-semibold mb-4">Founder & CEO</p>
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  With over 15 years of experience in real estate, I'm passionate about helping clients find their dream homes in Kigali.
+                </p>
+                <div className="flex justify-center gap-4 pt-4 border-t border-gray-200">
+                  <a href="tel:+250788123456" className="text-primary hover:text-primary-dark transition-colors" title="Call">
+                    <i className="fas fa-phone text-xl"></i>
+                  </a>
+                  <a href="mailto:info@kigalipropertieslink.com" className="text-primary hover:text-primary-dark transition-colors" title="Email">
+                    <i className="fas fa-envelope text-xl"></i>
+                  </a>
+                  <a href="https://wa.me/250788123456" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-dark transition-colors" title="WhatsApp">
+                    <i className="fab fa-whatsapp text-xl"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Team Member 2 - Ntwari */}
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+              <div className="relative h-64 overflow-hidden">
+                <img 
+                  src="/images/team/Ntwari.png" 
+                  alt="Ntwari"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+              </div>
+              <div className="p-6 text-center">
+                <h3 className="text-2xl font-bold text-dark mb-2">Ntwari</h3>
+                <p className="text-secondary font-semibold mb-4">Senior Property Consultant</p>
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  Specializing in luxury properties and investment opportunities. I help clients make informed decisions.
+                </p>
+                <div className="flex justify-center gap-4 pt-4 border-t border-gray-200">
+                  <a href="tel:+250788123456" className="text-secondary hover:text-secondary-dark transition-colors" title="Call">
+                    <i className="fas fa-phone text-xl"></i>
+                  </a>
+                  <a href="mailto:consultant@kigalipropertieslink.com" className="text-secondary hover:text-secondary-dark transition-colors" title="Email">
+                    <i className="fas fa-envelope text-xl"></i>
+                  </a>
+                  <a href="https://wa.me/250788123456" target="_blank" rel="noopener noreferrer" className="text-secondary hover:text-secondary-dark transition-colors" title="WhatsApp">
+                    <i className="fab fa-whatsapp text-xl"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Team Member 3 - Assumpta */}
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+              <div className="relative h-64 overflow-hidden">
+                <img 
+                  src="/images/team/ASSUMPTA.jpg" 
+                  alt="Assumpta"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+              </div>
+              <div className="p-6 text-center">
+                <h3 className="text-2xl font-bold text-dark mb-2">Assumpta</h3>
+                <p className="text-primary font-semibold mb-4">Property Manager</p>
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  Ensuring smooth property viewings and managing client relationships. Your satisfaction is my priority.
+                </p>
+                <div className="flex justify-center gap-4 pt-4 border-t border-gray-200">
+                  <a href="tel:+250788123456" className="text-primary hover:text-primary-dark transition-colors" title="Call">
+                    <i className="fas fa-phone text-xl"></i>
+                  </a>
+                  <a href="mailto:manager@kigalipropertieslink.com" className="text-primary hover:text-primary-dark transition-colors" title="Email">
+                    <i className="fas fa-envelope text-xl"></i>
+                  </a>
+                  <a href="https://wa.me/250788123456" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-dark transition-colors" title="WhatsApp">
+                    <i className="fab fa-whatsapp text-xl"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Our Agents */}
+        <section className="mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-dark mb-4">Our Agents</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Meet our experienced real estate agents ready to assist you with all your property needs
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Agent 1 */}
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+              <div className="relative h-64 overflow-hidden">
+                <img 
+                  src="/images/team/image1.jpg" 
+                  alt="Real Estate Agent"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+              </div>
+              <div className="p-6 text-center">
+                <h3 className="text-2xl font-bold text-dark mb-2">Agent Name</h3>
+                <p className="text-primary font-semibold mb-4">Real Estate Agent</p>
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  Dedicated to finding you the perfect property. Expert in residential and commercial real estate.
+                </p>
+                <div className="flex justify-center gap-4 pt-4 border-t border-gray-200">
+                  <a href="tel:+250788123456" className="text-primary hover:text-primary-dark transition-colors" title="Call">
+                    <i className="fas fa-phone text-xl"></i>
+                  </a>
+                  <a href="mailto:agent@kigalipropertieslink.com" className="text-primary hover:text-primary-dark transition-colors" title="Email">
+                    <i className="fas fa-envelope text-xl"></i>
+                  </a>
+                  <a href="https://wa.me/250788123456" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-dark transition-colors" title="WhatsApp">
+                    <i className="fab fa-whatsapp text-xl"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Agent 2 - Ntwari */}
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+              <div className="relative h-64 overflow-hidden">
+                <img 
+                  src="/images/team/Ntwari.png" 
+                  alt="Ntwari - Real Estate Agent"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+              </div>
+              <div className="p-6 text-center">
+                <h3 className="text-2xl font-bold text-dark mb-2">Ntwari</h3>
+                <p className="text-secondary font-semibold mb-4">Real Estate Agent</p>
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  Experienced in property sales and rentals. Committed to providing exceptional service to all clients.
+                </p>
+                <div className="flex justify-center gap-4 pt-4 border-t border-gray-200">
+                  <a href="tel:+250788123456" className="text-secondary hover:text-secondary-dark transition-colors" title="Call">
+                    <i className="fas fa-phone text-xl"></i>
+                  </a>
+                  <a href="mailto:ntwari@kigalipropertieslink.com" className="text-secondary hover:text-secondary-dark transition-colors" title="Email">
+                    <i className="fas fa-envelope text-xl"></i>
+                  </a>
+                  <a href="https://wa.me/250788123456" target="_blank" rel="noopener noreferrer" className="text-secondary hover:text-secondary-dark transition-colors" title="WhatsApp">
+                    <i className="fab fa-whatsapp text-xl"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Agent 3 - Assumpta */}
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+              <div className="relative h-64 overflow-hidden">
+                <img 
+                  src="/images/team/ASSUMPTA.jpg" 
+                  alt="Assumpta - Real Estate Agent"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+              </div>
+              <div className="p-6 text-center">
+                <h3 className="text-2xl font-bold text-dark mb-2">Assumpta</h3>
+                <p className="text-primary font-semibold mb-4">Real Estate Agent</p>
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  Your trusted partner in property transactions. Specializing in helping clients find their ideal homes.
+                </p>
+                <div className="flex justify-center gap-4 pt-4 border-t border-gray-200">
+                  <a href="tel:+250788123456" className="text-primary hover:text-primary-dark transition-colors" title="Call">
+                    <i className="fas fa-phone text-xl"></i>
+                  </a>
+                  <a href="mailto:assumpta@kigalipropertieslink.com" className="text-primary hover:text-primary-dark transition-colors" title="Email">
+                    <i className="fas fa-envelope text-xl"></i>
+                  </a>
+                  <a href="https://wa.me/250788123456" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-dark transition-colors" title="WhatsApp">
+                    <i className="fab fa-whatsapp text-xl"></i>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </section>
