@@ -28,6 +28,8 @@ export async function GET(request: Request) {
     // For public pages, only show available properties
     // For admin dashboard, show all properties
     if (!isAdmin) {
+      // Only show 'available' status to public
+      // Hide: pending_approval, sold, rented, unverified, rejected, needs_revision
       query = query.eq('status', 'available');
     }
     
@@ -35,6 +37,10 @@ export async function GET(request: Request) {
     if (isAdmin) {
       if (status && status !== 'all') {
         query = query.eq('status', status);
+      }
+      // Allow filtering by pending_approval for approvals page
+      if (status === 'pending_approval') {
+        query = query.eq('status', 'pending_approval');
       }
       if (priceType && priceType !== 'all') {
         query = query.eq('price_type', priceType);
@@ -99,9 +105,9 @@ export async function GET(request: Request) {
     }
     
     return NextResponse.json(data);
-  } catch (error: any) {
+  } catch (error) {
     return NextResponse.json(
-      { error: error.message },
+      { error: error instanceof Error ? error.message : 'An error occurred' },
       { status: 500 }
     );
   }
@@ -112,9 +118,15 @@ export async function POST(request: Request) {
     const supabase = await createClient();
     const body = await request.json();
     
+    // Ensure status is set (default to pending_approval for new properties)
+    const propertyData = {
+      ...body,
+      status: body.status || 'pending_approval',
+    };
+    
     const { data, error } = await supabase
       .from('properties')
-      .insert([body])
+      .insert([propertyData])
       .select()
       .single();
     
@@ -125,10 +137,34 @@ export async function POST(request: Request) {
       );
     }
     
+    // Send email notification to admin about new property pending approval
+    if (data.status === 'pending_approval' && data.owner_id) {
+      try {
+        // Get owner information
+        const { data: owner } = await supabase
+          .from('users')
+          .select('name')
+          .eq('id', data.owner_id)
+          .single();
+
+        const { sendPropertyPendingNotification } = await import('@/lib/utils/property-email');
+        
+        await sendPropertyPendingNotification({
+          propertyTitle: data.title,
+          propertyLocation: data.location,
+          ownerName: owner?.name || 'Property Owner',
+          propertyId: data.id,
+        });
+      } catch (emailError) {
+        console.error('Failed to send pending notification email:', emailError);
+        // Don't fail the request if email fails
+      }
+    }
+    
     return NextResponse.json(data, { status: 201 });
-  } catch (error: any) {
+  } catch (error) {
     return NextResponse.json(
-      { error: error.message },
+      { error: error instanceof Error ? error.message : 'An error occurred' },
       { status: 500 }
     );
   }

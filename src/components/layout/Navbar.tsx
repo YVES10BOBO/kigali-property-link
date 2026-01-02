@@ -101,6 +101,13 @@ export default function Navbar() {
             </>
           )}
           <Link
+            href="/owner/dashboard"
+            className="bg-secondary text-white px-4 py-2 rounded-lg font-semibold hover:bg-secondary-dark transition-colors text-sm"
+          >
+            <i className="fas fa-plus mr-2"></i>
+            List Property
+          </Link>
+          <Link
             href="/contact"
             className="bg-primary text-white px-6 py-2 rounded-lg font-semibold hover:bg-primary-dark transition-colors"
           >

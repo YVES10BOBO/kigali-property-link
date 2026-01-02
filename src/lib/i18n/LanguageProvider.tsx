@@ -11,8 +11,11 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+// Default value for SSR
+const defaultLanguage: Language = "en";
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>("en");
+  const [language, setLanguageState] = useState<Language>(defaultLanguage);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -34,6 +37,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     if (!mounted) return;
     // Save to localStorage
     localStorage.setItem("language", language);
+    // Update HTML lang attribute
+    document.documentElement.setAttribute("lang", language);
   }, [language, mounted]);
 
   const setLanguage = (lang: Language) => {
@@ -46,10 +51,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     t: translations[language],
   };
 
-  if (!mounted) {
-    return <>{children}</>;
-  }
-
+  // Always provide context, even during SSR
   return (
     <LanguageContext.Provider value={value}>
       {children}

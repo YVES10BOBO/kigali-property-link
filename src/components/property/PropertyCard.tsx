@@ -63,17 +63,19 @@ export default function PropertyCard({
           >
             {badge === "rent" ? "For Rent" : "For Sale"}
           </span>
-          <button
-            onClick={handleHeartClick}
-            className="absolute top-4 right-4 bg-white w-10 h-10 rounded-full flex items-center justify-center cursor-pointer hover:bg-red-50 transition-colors z-10"
-            aria-label={favorited ? "Remove from favorites" : "Add to favorites"}
-          >
-            <i
-              className={`${
-                favorited ? "fas fa-heart text-red-500" : "far fa-heart text-gray-600"
-              } transition-colors`}
-            ></i>
-          </button>
+          <div className="absolute top-4 right-4 flex gap-2 z-10">
+            <button
+              onClick={handleHeartClick}
+              className="bg-white w-10 h-10 rounded-full flex items-center justify-center cursor-pointer hover:bg-red-50 transition-colors"
+              aria-label={favorited ? "Remove from favorites" : "Add to favorites"}
+            >
+              <i
+                className={`${
+                  favorited ? "fas fa-heart text-red-500" : "far fa-heart text-gray-600"
+                } transition-colors`}
+              ></i>
+            </button>
+          </div>
         </div>
         
         <div className="p-6">

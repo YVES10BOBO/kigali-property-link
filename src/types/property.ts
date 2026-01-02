@@ -1,4 +1,14 @@
 // Database property type (from Supabase)
+export type PropertyStatus = 
+  | "pending_approval"
+  | "available"
+  | "reserved"
+  | "sold"
+  | "rented"
+  | "unverified"
+  | "rejected"
+  | "needs_revision";
+
 export interface Property {
   id: string;
   title: string;
@@ -14,10 +24,18 @@ export interface Property {
   security: boolean;
   generator: boolean;
   amenities?: string[];
-  status: "available" | "reserved" | "sold" | "rented";
+  status: PropertyStatus;
   images?: string[];
   latitude?: number | string;
   longitude?: number | string;
+  // Verification system fields
+  owner_id?: string;
+  last_confirmed_at?: string;
+  confirmation_due_date?: string;
+  admin_notes?: string;
+  rejection_reason?: string;
+  approved_by?: string;
+  approved_at?: string;
   created_at?: string;
   updated_at?: string;
 }

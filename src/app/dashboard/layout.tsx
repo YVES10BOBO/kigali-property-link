@@ -81,6 +81,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     { href: "/dashboard", label: t.dashboard.overview, icon: "fas fa-chart-line" },
     { href: "/dashboard/inquiries", label: t.dashboard.inquiries, icon: "fas fa-envelope", badge: true },
     { href: "/dashboard/properties", label: t.dashboard.properties, icon: "fas fa-home" },
+    { href: "/dashboard/properties/approvals", label: "Property Approvals", icon: "fas fa-check-circle", badge: true },
+    { href: "/dashboard/properties/import", label: "Bulk Import", icon: "fas fa-upload" },
     { href: "/dashboard/commissions", label: t.dashboard.commissions, icon: "fas fa-dollar-sign" },
     { href: "/dashboard/analytics", label: t.dashboard.analytics, icon: "fas fa-chart-bar" },
     { href: "/dashboard/testimonials", label: t.dashboard.testimonials, icon: "fas fa-comments" },

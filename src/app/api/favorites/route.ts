@@ -1,110 +1,146 @@
-import { createClient } from "@/lib/supabase/server";
-import { NextRequest, NextResponse } from "next/server";
+import { createClient } from '@/lib/supabase/server';
+import { NextResponse } from 'next/server';
 
-// GET: Fetch user's favorites
-export async function GET(request: NextRequest) {
+// Get all favorites for current user
+export async function GET() {
   try {
     const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ favorites: [] }, { status: 200 });
+    
+    // Get current user
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if (userError || !user) {
+      return NextResponse.json(
+        { favorites: [] },
+        { status: 200 }
+      );
     }
 
-    const { data: favorites, error } = await supabase
-      .from("favorites")
-      .select("property_id")
-      .eq("user_id", user.id);
+    // Get favorite property IDs
+    const { data, error } = await supabase
+      .from('property_favorites')
+      .select('property_id')
+      .eq('user_id', user.id);
 
     if (error) {
-      console.error("Error fetching favorites:", error);
-      return NextResponse.json({ error: "Failed to fetch favorites" }, { status: 500 });
+      return NextResponse.json(
+        { error: error.message },
+        { status: 500 }
+      );
     }
 
-    const propertyIds = favorites?.map((f) => f.property_id) || [];
-    return NextResponse.json({ favorites: propertyIds }, { status: 200 });
+    const favorites = data?.map(f => f.property_id) || [];
+    return NextResponse.json({ favorites });
   } catch (error) {
-    console.error("Error in GET /api/favorites:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'An error occurred' },
+      { status: 500 }
+    );
   }
 }
 
-// POST: Add a favorite
-export async function POST(request: NextRequest) {
+// Add property to favorites
+export async function POST(request: Request) {
   try {
     const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const body = await request.json();
+    const { property_id } = body;
 
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // Get current user
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if (userError || !user) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
     }
-
-    const { property_id } = await request.json();
 
     if (!property_id) {
-      return NextResponse.json({ error: "property_id is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: 'property_id is required' },
+        { status: 400 }
+      );
     }
 
+    // Check if already favorited
+    const { data: existing } = await supabase
+      .from('property_favorites')
+      .select('id')
+      .eq('property_id', property_id)
+      .eq('user_id', user.id)
+      .single();
+
+    if (existing) {
+      return NextResponse.json({ success: true, message: 'Already in favorites' });
+    }
+
+    // Add to favorites
     const { data, error } = await supabase
-      .from("favorites")
-      .insert({ user_id: user.id, property_id })
+      .from('property_favorites')
+      .insert({
+        property_id,
+        user_id: user.id,
+      })
       .select()
       .single();
 
     if (error) {
-      // If it's a duplicate, that's okay - just return success
-      if (error.code === "23505") {
-        return NextResponse.json({ success: true, favorite: { property_id } }, { status: 200 });
-      }
-      console.error("Error adding favorite:", error);
-      return NextResponse.json({ error: "Failed to add favorite" }, { status: 500 });
+      return NextResponse.json(
+        { error: error.message },
+        { status: 500 }
+      );
     }
 
-    return NextResponse.json({ success: true, favorite: data }, { status: 200 });
+    return NextResponse.json({ success: true, favorite: data });
   } catch (error) {
-    console.error("Error in POST /api/favorites:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'An error occurred' },
+      { status: 500 }
+    );
   }
 }
 
-// DELETE: Remove a favorite
-export async function DELETE(request: NextRequest) {
+// Remove property from favorites
+export async function DELETE(request: Request) {
   try {
     const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
     const { searchParams } = new URL(request.url);
-    const property_id = searchParams.get("property_id");
+    const property_id = searchParams.get('property_id');
+
+    // Get current user
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if (userError || !user) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
 
     if (!property_id) {
-      return NextResponse.json({ error: "property_id is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: 'property_id is required' },
+        { status: 400 }
+      );
     }
 
+    // Remove from favorites
     const { error } = await supabase
-      .from("favorites")
+      .from('property_favorites')
       .delete()
-      .eq("user_id", user.id)
-      .eq("property_id", property_id);
+      .eq('property_id', property_id)
+      .eq('user_id', user.id);
 
     if (error) {
-      console.error("Error removing favorite:", error);
-      return NextResponse.json({ error: "Failed to remove favorite" }, { status: 500 });
+      return NextResponse.json(
+        { error: error.message },
+        { status: 500 }
+      );
     }
 
-    return NextResponse.json({ success: true }, { status: 200 });
+    return NextResponse.json({ success: true, message: 'Removed from favorites' });
   } catch (error) {
-    console.error("Error in DELETE /api/favorites:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'An error occurred' },
+      { status: 500 }
+    );
   }
 }
-

@@ -49,6 +49,16 @@ export default function PropertyDetailClient({ id }: PropertyDetailClientProps) 
         const data = await response.json();
         setProperty(data);
         
+        // Track property view
+        try {
+          await fetch(`/api/properties/${id}/view`, {
+            method: 'POST',
+          });
+        } catch (viewError) {
+          // Don't fail if view tracking fails
+          console.error('Failed to track view:', viewError);
+        }
+        
         // Fetch similar properties (same location or type)
         const similarResponse = await fetch(
           `/api/properties?location=${encodeURIComponent(data.location)}&purpose=${data.price_type}`
@@ -59,8 +69,8 @@ export default function PropertyDetailClient({ id }: PropertyDetailClientProps) 
             similarData.filter((p: Property) => p.id !== id).slice(0, 3)
           );
         }
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
         setLoading(false);
       }
