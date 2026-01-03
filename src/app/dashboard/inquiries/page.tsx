@@ -787,7 +787,8 @@ export default function InquiriesPage() {
                   </a>
                   
                   <div className="flex flex-col gap-2 mt-2">
-                    {inquiry.status !== "closed" && inquiry.status !== "lost" && (
+                    {/* Calendar/Viewing scheduling disabled for MVP - can re-enable later */}
+                    {/* {inquiry.status !== "closed" && inquiry.status !== "lost" && (
                       <button
                         onClick={() => handleScheduleViewing(inquiry)}
                         className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors text-center"
@@ -795,7 +796,7 @@ export default function InquiriesPage() {
                         <i className="fas fa-calendar mr-1"></i>
                         Schedule Viewing
                       </button>
-                    )}
+                    )} */}
                     {inquiry.status === "closed" && (
                       <button
                         onClick={() => handleCreateCommission(inquiry)}
@@ -914,8 +915,8 @@ export default function InquiriesPage() {
         </div>
       )}
 
-      {/* Schedule Viewing Modal */}
-      {showCalendarModal && selectedInquiry && (
+      {/* Schedule Viewing Modal - Disabled for MVP */}
+      {/* {showCalendarModal && selectedInquiry && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl shadow-xl max-w-md w-full">
             <div className="p-6 border-b border-gray-200">
@@ -1009,7 +1010,7 @@ export default function InquiriesPage() {
             </form>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

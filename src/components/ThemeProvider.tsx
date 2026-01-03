@@ -20,33 +20,24 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     setMounted(true);
-    // Get theme from localStorage or default to light
-    const savedTheme = localStorage.getItem("theme") as Theme;
-    if (savedTheme) {
-      setTheme(savedTheme);
-    } else {
-      // Check system preference
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      setTheme(prefersDark ? "dark" : "light");
-    }
+    // Force light mode for MVP - dark mode disabled
+    setTheme("light");
   }, []);
 
   useEffect(() => {
     if (!mounted) return;
     
-    // Apply theme to document
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+    // Force light mode - always remove dark class
+    document.documentElement.classList.remove("dark");
     
-    // Save to localStorage
-    localStorage.setItem("theme", theme);
+    // Save to localStorage (for future re-enable)
+    localStorage.setItem("theme", "light");
   }, [theme, mounted]);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+    // Dark mode disabled for MVP - do nothing
+    // Can re-enable later by uncommenting:
+    // setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
 
   // Always provide context, even during SSR

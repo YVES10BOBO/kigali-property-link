@@ -688,3 +688,4 @@ This is an automated notification from Kigali Property Link
     return { success: false, message: error.message || 'Failed to send email' };
   }
 }
+

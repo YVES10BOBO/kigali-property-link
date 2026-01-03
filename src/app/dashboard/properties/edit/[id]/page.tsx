@@ -46,6 +46,9 @@ export default function EditPropertyPage() {
           setProperty(data);
           
           // Pre-fill form
+          // Ensure status is one of the editable statuses; fall back to 'available' otherwise
+          const editableStatuses = ["available", "reserved", "sold", "rented"] as const;
+
           setFormData({
             title: data.title || "",
             description: data.description || "",
@@ -60,7 +63,7 @@ export default function EditPropertyPage() {
             security: data.security,
             generator: data.generator,
             amenities: data.amenities || [],
-            status: data.status,
+            status: (editableStatuses.includes(data.status as any) ? data.status as any : "available"),
             images: data.images || [],
           });
         } else {

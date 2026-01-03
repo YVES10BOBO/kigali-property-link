@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import Image from "next/image";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -65,6 +66,24 @@ export default function LoginPage() {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    setError(null);
+    setLoading(true);
+
+    try {
+      const supabase = createClient();
+      const { error: oauthError } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+      if (oauthError) {
+        setError(oauthError.message || 'Google sign-in failed');
+        setLoading(false);
+      }
+      // Supabase will redirect to the configured callback
+    } catch (err: any) {
+      setError(err.message || 'An error occurred. Please try again.');
+      setLoading(false);
+    }
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -84,8 +103,24 @@ export default function LoginPage() {
         </div>
 
         {/* Login Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <h1 className="text-2xl font-bold text-dark mb-6">Sign In</h1>
+        <div className="bg-white rounded-2xl shadow-2xl p-8">
+          <h1 className="text-2xl font-bold text-dark mb-4">Sign In</h1>
+
+          <div className="flex flex-col gap-3 mb-4">
+            <button
+              onClick={handleGoogleSignIn}
+              type="button"
+              className="w-full inline-flex items-center justify-center gap-3 px-4 py-2 border border-gray-200 rounded-lg hover:shadow-sm transition">
+              <Image src="/images/icons/google.svg" alt="Google" width={20} height={20} />
+              <span className="text-sm font-medium">Continue with Google</span>
+            </button>
+
+            <div className="flex items-center gap-3 text-xs text-gray-400">
+              <span className="flex-1 h-px bg-gray-200"></span>
+              <span>Or</span>
+              <span className="flex-1 h-px bg-gray-200"></span>
+            </div>
+          </div>
 
           {error && (
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-6">

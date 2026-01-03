@@ -70,23 +70,39 @@ export default function HomePage() {
       }}>
         <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-primary-dark/80 to-dark/80"></div>
         
-        <div className="relative z-10 max-w-4xl">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
+        <div className="relative z-10 max-w-4xl animate-fadeIn">
+          {/* Trust Badges */}
+          <div className="flex flex-wrap justify-center gap-3 mb-6 animate-slideDown">
+            <span className="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium border border-white/30">
+              <i className="fas fa-check-circle mr-2"></i>Verified Listings
+            </span>
+            <span className="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium border border-white/30">
+              <i className="fas fa-gift mr-2"></i>Free Listing
+            </span>
+            <span className="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium border border-white/30">
+              <i className="fas fa-headset mr-2"></i>24/7 Support
+            </span>
+          </div>
+          
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-4 animate-fadeIn delay-100">
             {t.home.hero.title}
           </h1>
-          <p className="text-xl text-gray-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl md:text-2xl text-gray-100 mb-8 max-w-2xl mx-auto animate-fadeIn delay-200">
             {t.home.hero.subtitle}
           </p>
           
           {/* Search Box */}
-          <form onSubmit={handleSearch} className="bg-white p-6 md:p-8 rounded-2xl shadow-2xl max-w-4xl mx-auto">
+          <form onSubmit={handleSearch} className="bg-white p-6 md:p-8 rounded-2xl shadow-2xl max-w-4xl mx-auto animate-slideUp delay-300">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
               <div>
-                <label className="block font-semibold mb-2 text-sm text-dark">Property Type</label>
+                <label className="font-semibold mb-2 text-sm text-dark flex items-center gap-2">
+                  <i className="fas fa-home text-primary"></i>
+                  Property Type
+                </label>
                 <select
                   value={searchForm.propertyType}
                   onChange={(e) => setSearchForm({ ...searchForm, propertyType: e.target.value })}
-                  className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                  className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none transition-colors hover:border-primary/50"
                 >
                   <option value="">All Types</option>
                   <option value="apartment">Apartment</option>
@@ -96,11 +112,14 @@ export default function HomePage() {
                 </select>
               </div>
               <div>
-                <label className="block font-semibold mb-2 text-sm text-dark">Location</label>
+                <label className="font-semibold mb-2 text-sm text-dark flex items-center gap-2">
+                  <i className="fas fa-map-marker-alt text-primary"></i>
+                  Location
+                </label>
                 <select
                   value={searchForm.location}
                   onChange={(e) => setSearchForm({ ...searchForm, location: e.target.value })}
-                  className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                  className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none transition-colors hover:border-primary/50"
                 >
                   <option value="">All Locations</option>
                   <option value="Kimihurura">Kimihurura</option>
@@ -111,11 +130,14 @@ export default function HomePage() {
                 </select>
               </div>
               <div>
-                <label className="block font-semibold mb-2 text-sm text-dark">Purpose</label>
+                <label className="font-semibold mb-2 text-sm text-dark flex items-center gap-2">
+                  <i className="fas fa-tag text-primary"></i>
+                  Purpose
+                </label>
                 <select
                   value={searchForm.purpose}
                   onChange={(e) => setSearchForm({ ...searchForm, purpose: e.target.value })}
-                  className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                  className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none transition-colors hover:border-primary/50"
                 >
                   <option value="">Rent or Buy</option>
                   <option value="rent">For Rent</option>
@@ -123,11 +145,14 @@ export default function HomePage() {
                 </select>
               </div>
               <div>
-                <label className="block font-semibold mb-2 text-sm text-dark">Price Range</label>
+                <label className="font-semibold mb-2 text-sm text-dark flex items-center gap-2">
+                  <i className="fas fa-dollar-sign text-primary"></i>
+                  Price Range
+                </label>
                 <select
                   value={searchForm.priceRange}
                   onChange={(e) => setSearchForm({ ...searchForm, priceRange: e.target.value })}
-                  className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                  className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none transition-colors hover:border-primary/50"
                 >
                   <option value="">Any Price</option>
                   <option value="300-500">$300 - $500</option>
@@ -139,17 +164,25 @@ export default function HomePage() {
             </div>
             <button
               type="submit"
-              className="w-full bg-secondary text-white py-4 rounded-lg font-semibold text-lg hover:bg-secondary-dark transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-secondary text-white py-4 rounded-lg font-semibold text-lg hover:bg-secondary-dark transition-all hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
             >
               <i className="fas fa-search"></i>
               {t.home.hero.searchButton}
             </button>
           </form>
+          
+          {/* Scroll Indicator */}
+          <div className="mt-12 animate-bounce">
+            <a href="#featured-properties" className="text-white/80 hover:text-white transition-colors flex flex-col items-center gap-2">
+              <span className="text-sm font-medium">Scroll to explore</span>
+              <i className="fas fa-chevron-down text-2xl"></i>
+            </a>
+          </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="bg-white py-12">
+      <section id="featured-properties" className="bg-white py-12">
         <div className="container-custom">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
@@ -249,7 +282,7 @@ export default function HomePage() {
         <div className="container-custom max-w-3xl">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-dark mb-2">Book a Viewing</h2>
-            <p className="text-gray-600">Interested in a property? Fill the form and we'll contact you</p>
+            <p className="text-gray-600">Interested in a property? Fill the form and we&apos;ll contact you</p>
           </div>
           
           <div className="bg-white p-8 md:p-12 rounded-2xl shadow-xl">
@@ -286,8 +319,9 @@ export default function HomePage() {
                   <label className="block font-semibold mb-2 text-dark">Property Interest</label>
                   <select className="w-full p-4 border-2 border-gray-200 rounded-lg focus:border-primary outline-none">
                     <option>Select Property</option>
-                    <option>Greenland Plaza 2BR</option>
-                    <option>Greenland Plaza 3BR</option>
+                    <option>Hoteli kiyovu 1BR</option>
+                    <option>mille colline apartment 2BR</option>
+                    <option>greet apartment 3BR</option>
                     <option>Phoenix Plaza 1BR</option>
                     <option>Other</option>
                   </select>

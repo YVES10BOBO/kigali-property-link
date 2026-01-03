@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Property } from "@/types/property";
 
 export default function ManagePropertiesPage() {
-  const searchParams = useSearchParams();
+  // Replace `useSearchParams` (which can cause CSR bailout during prerender)
+  // with a simple client-side read of `window.location.search` inside useEffect.
   const [properties, setProperties] = useState<Property[]>([]);
   const [allProperties, setAllProperties] = useState<Property[]>([]); // Store all for counts
   const [loading, setLoading] = useState(true);
@@ -31,13 +31,17 @@ export default function ManagePropertiesPage() {
   const [bulkStatus, setBulkStatus] = useState<string>("");
 
   useEffect(() => {
-    const success = searchParams.get("success");
-    if (success) {
-      setSuccessMessage(success);
-      // Clear message after 5 seconds
-      setTimeout(() => setSuccessMessage(null), 5000);
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const success = params.get("success");
+      if (success) {
+        setSuccessMessage(success);
+        setTimeout(() => setSuccessMessage(null), 5000);
+      }
+    } catch (e) {
+      // ignore on servers or if no window
     }
-  }, [searchParams]);
+  }, []);
 
   useEffect(() => {
     fetchProperties();
