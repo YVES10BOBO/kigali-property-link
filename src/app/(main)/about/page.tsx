@@ -176,7 +176,7 @@ export default function AboutPage() {
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
               <div className="relative h-64 overflow-hidden">
                 <img 
-                  src="/images/team/Ntwari.png" 
+                  src="/images/team/Ntwardi.png" 
                   alt="Ntwari"
                   className="w-full h-full object-cover"
                 />
