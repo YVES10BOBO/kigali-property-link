@@ -206,7 +206,7 @@ export default function AboutPage() {
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
               <div className="relative h-64 overflow-hidden">
                 <img 
-                  src="/images/team/ASSUMdPTA.jpg" 
+                  src="/images/team/ASSUdMdPTA.jpg" 
                   alt="Assumpta"
                   className="w-full h-full object-cover"
                 />
@@ -248,7 +248,7 @@ export default function AboutPage() {
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
               <div className="relative h-64 overflow-hidden">
                 <img 
-                  src="/images/team/image1.jpg" 
+                  src="/images/team/image.jpg" 
                   alt="Real Estate Agent"
                   className="w-full h-full object-cover"
                 />
@@ -308,7 +308,7 @@ export default function AboutPage() {
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
               <div className="relative h-64 overflow-hidden">
                 <img 
-                  src="/images/team/ASSUMPTA.jpg" 
+                  src="/images/team/ASSUMdddPTA.jpg" 
                   alt="Assumpta - Real Estate Agent"
                   className="w-full h-full object-cover"
                 />
