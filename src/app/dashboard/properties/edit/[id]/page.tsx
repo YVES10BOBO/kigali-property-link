@@ -62,7 +62,9 @@ export default function EditPropertyPage() {
             security: data.security,
             generator: data.generator,
             amenities: data.amenities || [],
-            status: data.status,
+            status: (['available','reserved','sold','rented'] as const).includes(data.status as any)
+              ? (data.status as 'available' | 'reserved' | 'sold' | 'rented')
+              : 'available',
             images: data.images || [],
           });
         } else {
