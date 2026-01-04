@@ -21,6 +21,7 @@ export default function EditPropertyPage() {
     description: "",
     price: "",
     price_type: "rent" as "rent" | "sale",
+    property_type: "" as string,
     location: "",
     bedrooms: "",
     bathrooms: "",
@@ -46,14 +47,12 @@ export default function EditPropertyPage() {
           setProperty(data);
           
           // Pre-fill form
-          // Ensure status is one of the editable statuses; fall back to 'available' otherwise
-          const editableStatuses = ["available", "reserved", "sold", "rented"] as const;
-
           setFormData({
             title: data.title || "",
             description: data.description || "",
             price: data.price.toString(),
             price_type: data.price_type,
+            property_type: data.property_type || "",
             location: data.location || "",
             bedrooms: data.bedrooms.toString(),
             bathrooms: data.bathrooms.toString(),
@@ -63,7 +62,7 @@ export default function EditPropertyPage() {
             security: data.security,
             generator: data.generator,
             amenities: data.amenities || [],
-            status: (editableStatuses.includes(data.status as any) ? data.status as any : "available"),
+            status: data.status,
             images: data.images || [],
           });
         } else {
@@ -131,6 +130,7 @@ export default function EditPropertyPage() {
         description: formData.description || null,
         price: parseFloat(formData.price),
         price_type: formData.price_type,
+        property_type: formData.property_type || null,
         location: formData.location,
         bedrooms: parseInt(formData.bedrooms) || 0,
         bathrooms: parseInt(formData.bathrooms) || 0,
@@ -278,6 +278,29 @@ export default function EditPropertyPage() {
                 >
                   <option value="rent">For Rent</option>
                   <option value="sale">For Sale</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block font-semibold mb-2 text-dark">
+                  Property Type <span className="text-red-500">*</span>
+                </label>
+                <select
+                  name="property_type"
+                  value={formData.property_type}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                >
+                  <option value="">Select Type</option>
+                  <option value="apartment">Apartment</option>
+                  <option value="house">House</option>
+                  <option value="villa">Villa</option>
+                  <option value="studio">Studio</option>
+                  <option value="penthouse">Penthouse</option>
+                  <option value="townhouse">Townhouse</option>
+                  <option value="duplex">Duplex</option>
+                  <option value="bungalow">Bungalow</option>
                 </select>
               </div>
 

@@ -73,6 +73,10 @@ export async function GET(request: Request) {
       query = query.eq('price_type', purpose);
     }
     
+    if (propertyType && !isAdmin) {
+      query = query.eq('property_type', propertyType);
+    }
+    
     if (search) {
       query = query.or(`title.ilike.%${search}%,location.ilike.%${search}%`);
     }

@@ -41,9 +41,13 @@ export default function PropertyFilters({ onFilterChange, filters }: PropertyFil
           >
             <option value="">All Types</option>
             <option value="apartment">Apartment</option>
+            <option value="house">House</option>
+            <option value="villa">Villa</option>
             <option value="studio">Studio</option>
             <option value="penthouse">Penthouse</option>
-            <option value="villa">Villa</option>
+            <option value="townhouse">Townhouse</option>
+            <option value="duplex">Duplex</option>
+            <option value="bungalow">Bungalow</option>
           </select>
         </div>
         <div>

@@ -16,6 +16,7 @@ export default function AddPropertyPage() {
     description: "",
     price: "",
     price_type: "rent" as "rent" | "sale",
+    property_type: "" as string,
     location: "",
     bedrooms: "",
     bathrooms: "",
@@ -88,6 +89,7 @@ export default function AddPropertyPage() {
         description: formData.description || null,
         price: parseFloat(formData.price),
         price_type: formData.price_type,
+        property_type: formData.property_type || null,
         location: formData.location,
         bedrooms: parseInt(formData.bedrooms) || 0,
         bathrooms: parseInt(formData.bathrooms) || 0,
@@ -235,6 +237,29 @@ export default function AddPropertyPage() {
                 >
                   <option value="rent">For Rent</option>
                   <option value="sale">For Sale</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Property Type <span className="text-red-500">*</span>
+                </label>
+                <select
+                  name="property_type"
+                  value={formData.property_type}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                >
+                  <option value="">Select Type</option>
+                  <option value="apartment">Apartment</option>
+                  <option value="house">House</option>
+                  <option value="villa">Villa</option>
+                  <option value="studio">Studio</option>
+                  <option value="penthouse">Penthouse</option>
+                  <option value="townhouse">Townhouse</option>
+                  <option value="duplex">Duplex</option>
+                  <option value="bungalow">Bungalow</option>
                 </select>
               </div>
             </div>

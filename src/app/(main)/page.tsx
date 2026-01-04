@@ -106,9 +106,13 @@ export default function HomePage() {
                 >
                   <option value="">All Types</option>
                   <option value="apartment">Apartment</option>
+                  <option value="house">House</option>
+                  <option value="villa">Villa</option>
                   <option value="studio">Studio</option>
                   <option value="penthouse">Penthouse</option>
-                  <option value="villa">Villa</option>
+                  <option value="townhouse">Townhouse</option>
+                  <option value="duplex">Duplex</option>
+                  <option value="bungalow">Bungalow</option>
                 </select>
               </div>
               <div>
@@ -319,9 +323,8 @@ export default function HomePage() {
                   <label className="block font-semibold mb-2 text-dark">Property Interest</label>
                   <select className="w-full p-4 border-2 border-gray-200 rounded-lg focus:border-primary outline-none">
                     <option>Select Property</option>
-                    <option>Hoteli kiyovu 1BR</option>
-                    <option>mille colline apartment 2BR</option>
-                    <option>greet apartment 3BR</option>
+                    <option>Greenland Plaza 2BR</option>
+                    <option>Greenland Plaza 3BR</option>
                     <option>Phoenix Plaza 1BR</option>
                     <option>Other</option>
                   </select>

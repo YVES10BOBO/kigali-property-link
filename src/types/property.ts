@@ -9,12 +9,23 @@ export type PropertyStatus =
   | "rejected"
   | "needs_revision";
 
+export type PropertyType = 
+  | 'apartment'
+  | 'house'
+  | 'villa'
+  | 'studio'
+  | 'penthouse'
+  | 'townhouse'
+  | 'duplex'
+  | 'bungalow';
+
 export interface Property {
   id: string;
   title: string;
   description?: string;
   price: number;
   price_type: "rent" | "sale";
+  property_type?: PropertyType | null;
   location: string;
   bedrooms: number;
   bathrooms: number;

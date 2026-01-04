@@ -40,6 +40,7 @@ export default function PropertiesPageClient() {
         if (filters.purpose) params.set("purpose", filters.purpose);
         if (filters.priceRange) params.set("priceRange", filters.priceRange);
         if (filters.search) params.set("search", filters.search);
+        if (filters.propertyType) params.set("property_type", filters.propertyType);
         
         const response = await fetch(`/api/properties?${params.toString()}`);
         if (!response.ok) throw new Error("Failed to fetch properties");
