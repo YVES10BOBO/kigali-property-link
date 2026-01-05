@@ -98,7 +98,7 @@ export default function PropertiesPageClient() {
       </div>
 
       {/* Filters */}
-      <PropertyFilters filters={filters} onFilterChange={setFilters} />
+      <PropertyFilters filters={filters} onFilterChangeAction={setFilters} />
 
       {/* View Mode Toggle */}
       {!loading && !error && properties.length > 0 && (

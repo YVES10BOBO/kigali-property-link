@@ -104,15 +104,32 @@ export default function HomePage() {
                   onChange={(e) => setSearchForm({ ...searchForm, propertyType: e.target.value })}
                   className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none transition-colors hover:border-primary/50"
                 >
-                  <option value="">All Types</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="house">House</option>
-                  <option value="villa">Villa</option>
-                  <option value="studio">Studio</option>
-                  <option value="penthouse">Penthouse</option>
-                  <option value="townhouse">Townhouse</option>
-                  <option value="duplex">Duplex</option>
-                  <option value="bungalow">Bungalow</option>
+                  <option value="">All Property Types</option>
+
+                  <optgroup label="Residential">
+                    <option value="apartment">Apartment</option>
+                    <option value="studio">Studio</option>
+                    <option value="condo">Condo</option>
+                    <option value="house">House</option>
+                    <option value="villa">Villa</option>
+                    <option value="penthouse">Penthouse</option>
+                  </optgroup>
+
+                  <optgroup label="Commercial">
+                    <option value="office">Office</option>
+                    <option value="shop">Shop</option>
+                    <option value="showroom">Showroom</option>
+                    <option value="warehouse">Warehouse</option>
+                    <option value="hotel">Hotel</option>
+                    <option value="guest_house">Guest House</option>
+                    <option value="commercial_building">Commercial Building</option>
+                  </optgroup>
+
+                  <optgroup label="Land">
+                    <option value="land">Land / Plot</option>
+                    <option value="farm">Farm</option>
+                    <option value="industrial_land">Industrial Land</option>
+                  </optgroup>
                 </select>
               </div>
               <div>

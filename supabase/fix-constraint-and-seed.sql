@@ -1,14 +1,12 @@
--- Add property_type column to properties table
--- Industry-standard property types for real estate websites
+-- Fix Property Type Constraint and Seed Properties
+-- Run this if you're getting constraint errors
+-- This script will recreate the constraint and then insert properties
 
-ALTER TABLE properties 
-ADD COLUMN IF NOT EXISTS property_type TEXT;
-
--- Add constraint for valid property types
+-- STEP 1: Drop the existing constraint if it exists
 ALTER TABLE properties 
 DROP CONSTRAINT IF EXISTS check_property_type;
 
--- Clean up existing invalid values so the new constraint can be applied safely
+-- STEP 2: Clean up any invalid property_type values
 UPDATE properties
 SET property_type = NULL
 WHERE property_type IS NOT NULL
@@ -34,6 +32,7 @@ AND property_type NOT IN (
   'industrial_land'
 );
 
+-- STEP 3: Recreate the constraint with exact values
 ALTER TABLE properties 
 ADD CONSTRAINT check_property_type 
 CHECK (property_type IS NULL OR property_type IN (
@@ -58,8 +57,11 @@ CHECK (property_type IS NULL OR property_type IN (
   'industrial_land'
 ));
 
--- Create index for better query performance
-CREATE INDEX IF NOT EXISTS idx_properties_property_type ON properties(property_type);
+-- STEP 4: Verify constraint was created
+SELECT 
+  constraint_name, 
+  check_clause 
+FROM information_schema.check_constraints 
+WHERE constraint_name = 'check_property_type';
 
--- Add comment for documentation
-COMMENT ON COLUMN properties.property_type IS 'Type of property (residential, commercial, or land), e.g. apartment, house, office, hotel, land, etc.';
+-- STEP 5: Now insert the properties (copy from seed-20-properties.sql starting from INSERT statement)

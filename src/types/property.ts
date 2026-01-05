@@ -9,15 +9,27 @@ export type PropertyStatus =
   | "rejected"
   | "needs_revision";
 
+// Matches Supabase check constraint in 015_add_property_type.sql
 export type PropertyType = 
+  // Residential
   | 'apartment'
+  | 'studio'
+  | 'condo'
   | 'house'
   | 'villa'
-  | 'studio'
   | 'penthouse'
-  | 'townhouse'
-  | 'duplex'
-  | 'bungalow';
+  // Commercial
+  | 'office'
+  | 'shop'
+  | 'showroom'
+  | 'warehouse'
+  | 'hotel'
+  | 'guest_house'
+  | 'commercial_building'
+  // Land & special
+  | 'land'
+  | 'farm'
+  | 'industrial_land';
 
 export interface Property {
   id: string;

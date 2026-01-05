@@ -103,14 +103,15 @@ export default function AddPropertyPage() {
       });
 
       if (response.ok) {
-        const newProperty = await response.json();
+        // We don't need the body here, just navigate back
         router.push(`/dashboard/properties?success=Property added successfully`);
       } else {
         const errorData = await response.json();
         setError(errorData.error || "Failed to add property");
       }
-    } catch (err: any) {
-      setError(err.message || "An error occurred");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "An error occurred";
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -219,14 +220,28 @@ export default function AddPropertyPage() {
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
                 >
                   <option value="">Select Type</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="house">House</option>
-                  <option value="villa">Villa</option>
-                  <option value="studio">Studio</option>
-                  <option value="penthouse">Penthouse</option>
-                  <option value="townhouse">Townhouse</option>
-                  <option value="duplex">Duplex</option>
-                  <option value="bungalow">Bungalow</option>
+                  <optgroup label="Residential">
+                    <option value="apartment">Apartment</option>
+                    <option value="studio">Studio</option>
+                    <option value="condo">Condo</option>
+                    <option value="house">House</option>
+                    <option value="villa">Villa</option>
+                    <option value="penthouse">Penthouse</option>
+                  </optgroup>
+                  <optgroup label="Commercial">
+                    <option value="office">Office</option>
+                    <option value="shop">Shop</option>
+                    <option value="showroom">Showroom</option>
+                    <option value="warehouse">Warehouse</option>
+                    <option value="hotel">Hotel</option>
+                    <option value="guest_house">Guest House</option>
+                    <option value="commercial_building">Commercial Building</option>
+                  </optgroup>
+                  <optgroup label="Land">
+                    <option value="land">Land / Plot</option>
+                    <option value="farm">Farm</option>
+                    <option value="industrial_land">Industrial Land</option>
+                  </optgroup>
                 </select>
               </div>
 

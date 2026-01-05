@@ -40,26 +40,14 @@ export async function POST(
     }
 
     // Update property views_count (trigger should handle this, but ensure it's updated)
-    try {
-      await supabase.rpc('update_property_views_count_manual', { p_property_id: id });
-    } catch (rpcError) {
-      // If function doesn't exist or RPC fails, fall back to fetching and incrementing
-      try {
-        const { data: propData, error: propErr } = await supabase
-          .from('properties')
-          .select('views_count')
-          .eq('id', id)
-          .single();
-
-        if (!propErr && propData) {
-          const newCount = (propData.views_count ?? 0) + 1;
-          await supabase.from('properties').update({ views_count: newCount }).eq('id', id);
-        }
-      } catch (fallbackErr) {
-        // swallow fallback errors — view tracking shouldn't block the response
-        console.error('Failed to increment views_count fallback:', fallbackErr);
-      }
-    }
+    await supabase.rpc('update_property_views_count_manual', { p_property_id: id }).catch(() => {
+      // If function doesn't exist, manually update
+      supabase
+        .from('properties')
+        .update({ views_count: supabase.raw('views_count + 1') })
+        .eq('id', id)
+        .catch(() => {});
+    });
 
     return NextResponse.json({ success: true, view: data });
   } catch (error) {

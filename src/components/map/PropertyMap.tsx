@@ -21,8 +21,8 @@ export default function PropertyMap({
   selectedPropertyId,
 }: PropertyMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
-  const [map, setMap] = useState<any | null>(null);
-  const [markers, setMarkers] = useState<any[]>([]);
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Load Google Maps script
@@ -73,7 +73,7 @@ export default function PropertyMap({
 
     // Clear existing markers
     markers.forEach((marker) => marker.setMap(null));
-    const newMarkers: any[] = [];
+    const newMarkers: google.maps.Marker[] = [];
 
     properties.forEach((property) => {
       if (!property.latitude || !property.longitude) return;

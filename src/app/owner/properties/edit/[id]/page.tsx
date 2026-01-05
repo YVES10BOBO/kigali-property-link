@@ -398,14 +398,28 @@ export default function EditPropertyPage() {
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 >
                   <option value="">Select Type</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="house">House</option>
-                  <option value="villa">Villa</option>
-                  <option value="studio">Studio</option>
-                  <option value="penthouse">Penthouse</option>
-                  <option value="townhouse">Townhouse</option>
-                  <option value="duplex">Duplex</option>
-                  <option value="bungalow">Bungalow</option>
+                  <optgroup label="Residential">
+                    <option value="apartment">Apartment</option>
+                    <option value="studio">Studio</option>
+                    <option value="condo">Condo</option>
+                    <option value="house">House</option>
+                    <option value="villa">Villa</option>
+                    <option value="penthouse">Penthouse</option>
+                  </optgroup>
+                  <optgroup label="Commercial">
+                    <option value="office">Office</option>
+                    <option value="shop">Shop</option>
+                    <option value="showroom">Showroom</option>
+                    <option value="warehouse">Warehouse</option>
+                    <option value="hotel">Hotel</option>
+                    <option value="guest_house">Guest House</option>
+                    <option value="commercial_building">Commercial Building</option>
+                  </optgroup>
+                  <optgroup label="Land">
+                    <option value="land">Land / Plot</option>
+                    <option value="farm">Farm</option>
+                    <option value="industrial_land">Industrial Land</option>
+                  </optgroup>
                 </select>
               </div>
             </div>
