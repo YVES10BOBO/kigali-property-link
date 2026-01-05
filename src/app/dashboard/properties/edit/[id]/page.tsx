@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
-import { Property, PropertyStatus } from "@/types/property";
+import { Property } from "@/types/property";
 import ImageUpload from "@/components/forms/ImageUpload";
 
 export default function EditPropertyPage() {
@@ -31,7 +31,7 @@ export default function EditPropertyPage() {
     security: false,
     generator: false,
     amenities: [] as string[],
-    status: "available" as PropertyStatus,
+    status: "available" as "available" | "reserved" | "sold" | "rented",
     images: [] as string[],
   });
 
@@ -62,15 +62,16 @@ export default function EditPropertyPage() {
             security: data.security,
             generator: data.generator,
             amenities: data.amenities || [],
-            status: data.status,
+            status: (['available','reserved','sold','rented'] as const).includes(data.status as any)
+              ? (data.status as 'available' | 'reserved' | 'sold' | 'rented')
+              : 'available',
             images: data.images || [],
           });
         } else {
           setError("Property not found");
         }
-      } catch (err) {
-        const message = err instanceof Error ? err.message : "Failed to load property";
-        setError(message);
+      } catch (err: any) {
+        setError(err.message || "Failed to load property");
       } finally {
         setLoading(false);
       }
@@ -159,9 +160,8 @@ export default function EditPropertyPage() {
         const errorData = await response.json();
         setError(errorData.error || "Failed to update property");
       }
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "An error occurred";
-      setError(message);
+    } catch (err: any) {
+      setError(err.message || "An error occurred");
     } finally {
       setSaving(false);
     }
@@ -295,28 +295,14 @@ export default function EditPropertyPage() {
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
                 >
                   <option value="">Select Type</option>
-                  <optgroup label="Residential">
-                    <option value="apartment">Apartment</option>
-                    <option value="studio">Studio</option>
-                    <option value="condo">Condo</option>
-                    <option value="house">House</option>
-                    <option value="villa">Villa</option>
-                    <option value="penthouse">Penthouse</option>
-                  </optgroup>
-                  <optgroup label="Commercial">
-                    <option value="office">Office</option>
-                    <option value="shop">Shop</option>
-                    <option value="showroom">Showroom</option>
-                    <option value="warehouse">Warehouse</option>
-                    <option value="hotel">Hotel</option>
-                    <option value="guest_house">Guest House</option>
-                    <option value="commercial_building">Commercial Building</option>
-                  </optgroup>
-                  <optgroup label="Land">
-                    <option value="land">Land / Plot</option>
-                    <option value="farm">Farm</option>
-                    <option value="industrial_land">Industrial Land</option>
-                  </optgroup>
+                  <option value="apartment">Apartment</option>
+                  <option value="house">House</option>
+                  <option value="villa">Villa</option>
+                  <option value="studio">Studio</option>
+                  <option value="penthouse">Penthouse</option>
+                  <option value="townhouse">Townhouse</option>
+                  <option value="duplex">Duplex</option>
+                  <option value="bungalow">Bungalow</option>
                 </select>
               </div>
 
