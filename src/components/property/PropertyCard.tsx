@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { createClient } from "@/lib/supabase/client";
 import { Property, formatPropertyForDisplay } from "@/types/property";
 import { useFavorites } from "@/hooks/useFavorites";
 import AutoTranslatedText from "@/components/property/AutoTranslatedText";
@@ -37,12 +40,34 @@ export default function PropertyCard({
   image,
   badge,
 }: PropertyCardProps) {
-  const { isFavorited, toggleFavorite } = useFavorites();
+  const router = useRouter();
+  const { isFavorited, toggleFavorite, isAuthenticated } = useFavorites();
+  const [checkingAuth, setCheckingAuth] = useState(true);
+  const [user, setUser] = useState<any>(null);
   const favorited = isFavorited(id);
 
-  const handleHeartClick = (e: React.MouseEvent) => {
+  useEffect(() => {
+    const checkAuth = async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+      setCheckingAuth(false);
+    };
+    checkAuth();
+  }, []);
+
+  const handleHeartClick = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    // Check if user is authenticated
+    if (!user) {
+      // Redirect to login with return URL
+      router.push(`/login?redirect=${encodeURIComponent(window.location.pathname)}`);
+      return;
+    }
+    
+    // User is authenticated, proceed with favorite
     toggleFavorite(id);
   };
 

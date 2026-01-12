@@ -38,7 +38,9 @@ export interface Property {
   price: number;
   price_type: "rent" | "sale";
   property_type?: PropertyType | null;
-  location: string;
+  location: string; // Public area (e.g., "Kimihurura, Kigali") - always visible
+  address?: string | null; // Specific street address (e.g., "KG 123 St") - optional, can be hidden
+  show_address?: boolean; // Whether to show address to public (default: false)
   bedrooms: number;
   bathrooms: number;
   area: number;

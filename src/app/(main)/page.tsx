@@ -8,6 +8,7 @@ import { PropertyCardFromDB } from "@/components/property/PropertyCard";
 import WhatsAppButton from "@/components/shared/WhatsAppButton";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import TestimonialsSection from "@/components/testimonials/TestimonialsSection";
+import StatsDisplay from "@/components/stats/StatsDisplay";
 import { Property } from "@/types/property";
 import Link from "next/link";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
@@ -205,24 +206,7 @@ export default function HomePage() {
       {/* Stats Section */}
       <section id="featured-properties" className="bg-white py-12">
         <div className="container-custom">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <h3 className="text-4xl font-bold text-primary mb-2">150+</h3>
-              <p className="text-gray-600 font-medium">Properties Listed</p>
-            </div>
-            <div>
-              <h3 className="text-4xl font-bold text-primary mb-2">500+</h3>
-              <p className="text-gray-600 font-medium">Happy Clients</p>
-            </div>
-            <div>
-              <h3 className="text-4xl font-bold text-primary mb-2">15+</h3>
-              <p className="text-gray-600 font-medium">Years Experience</p>
-            </div>
-            <div>
-              <h3 className="text-4xl font-bold text-primary mb-2">24/7</h3>
-              <p className="text-gray-600 font-medium">Support Available</p>
-            </div>
-          </div>
+          <StatsDisplay variant="home" showSupport={true} />
         </div>
       </section>
 

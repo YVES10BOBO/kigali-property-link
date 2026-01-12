@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/shared/WhatsAppButton";
 import Modal from "@/components/ui/Modal";
 import { useRouter } from "next/navigation";
+import { showSuccess, showError } from "@/lib/utils/toast";
 
 // Note: Metadata for client components should be in a separate metadata export
 // For now, we'll handle this in the layout or use a wrapper
@@ -19,7 +20,6 @@ export default function ContactPage() {
     message: "",
   });
 
-  const [submitted, setSubmitted] = useState(false);
   const [showTrackModal, setShowTrackModal] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -44,13 +44,10 @@ export default function ContactPage() {
         throw new Error('Failed to submit inquiry');
       }
 
-      setSubmitted(true);
-      setTimeout(() => {
-        setSubmitted(false);
-        setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
-      }, 3000);
+      showSuccess('Thank you! Your message has been sent successfully. We will get back to you soon.');
+      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
     } catch (error: any) {
-      alert('Error submitting form. Please try again.');
+      showError('Failed to submit your message. Please try again.');
       console.error('Error:', error);
     }
   };
@@ -78,14 +75,7 @@ export default function ContactPage() {
             <div className="bg-white p-8 rounded-2xl shadow-lg">
               <h2 className="text-3xl font-bold text-dark mb-6">Send us a Message</h2>
               
-              {submitted ? (
-                <div className="bg-green-50 border-2 border-green-200 text-green-800 p-6 rounded-lg text-center">
-                  <i className="fas fa-check-circle text-4xl mb-4"></i>
-                  <p className="text-lg font-semibold">Thank you! Your message has been sent.</p>
-                  <p className="text-sm mt-2">We'll get back to you as soon as possible.</p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block font-semibold mb-2 text-dark">Full Name *</label>
@@ -175,7 +165,6 @@ export default function ContactPage() {
                     </button>
                   </div>
                 </form>
-              )}
             </div>
           </div>
 

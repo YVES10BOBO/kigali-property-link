@@ -9,6 +9,7 @@ import TestimonialsSection from "@/components/testimonials/TestimonialsSection";
 import Link from "next/link";
 import Modal from "@/components/ui/Modal";
 import { useRouter } from "next/navigation";
+import { showSuccess, showError } from "@/lib/utils/toast";
 
 interface PropertyDetailClientProps {
   id: string;
@@ -27,7 +28,6 @@ export default function PropertyDetailClient({ id }: PropertyDetailClientProps) 
     preferred_date: "",
     message: "",
   });
-  const [formSubmitted, setFormSubmitted] = useState(false);
   const [formSubmitting, setFormSubmitting] = useState(false);
   const [showTrackModal, setShowTrackModal] = useState(false);
 
@@ -104,14 +104,10 @@ export default function PropertyDetailClient({ id }: PropertyDetailClientProps) 
         throw new Error('Failed to submit inquiry');
       }
 
-      setFormSubmitted(true);
+      showSuccess('Inquiry submitted successfully! We will contact you soon.');
       setFormData({ name: "", email: "", phone: "", preferred_date: "", message: "" });
-      
-      setTimeout(() => {
-        setFormSubmitted(false);
-      }, 5000);
     } catch (error: any) {
-      alert('Error submitting form. Please try again.');
+      showError('Failed to submit inquiry. Please try again.');
       console.error('Error:', error);
     } finally {
       setFormSubmitting(false);
@@ -183,16 +179,7 @@ export default function PropertyDetailClient({ id }: PropertyDetailClientProps) 
               Interested in this property? Fill out the form and we'll contact you to schedule a viewing.
             </p>
 
-            {formSubmitted ? (
-              <div className="bg-green-50 border-2 border-green-200 rounded-lg p-6 text-center">
-                <i className="fas fa-check-circle text-4xl text-green-600 mb-3"></i>
-                <h3 className="text-xl font-bold text-green-800 mb-2">Inquiry Submitted!</h3>
-                <p className="text-green-700">
-                  We've received your inquiry and will contact you soon to schedule a viewing.
-                </p>
-              </div>
-            ) : (
-              <form className="space-y-4" onSubmit={handleFormSubmit}>
+            <form className="space-y-4" onSubmit={handleFormSubmit}>
                 <div>
                   <label className="block font-semibold mb-2 text-dark">Full Name</label>
                   <input
@@ -278,7 +265,6 @@ export default function PropertyDetailClient({ id }: PropertyDetailClientProps) 
                   </button>
                 </div>
               </form>
-            )}
 
             {/* Quick Contact */}
             <div className="mt-6 pt-6 border-t border-gray-200">
@@ -322,7 +308,9 @@ export default function PropertyDetailClient({ id }: PropertyDetailClientProps) 
           />
           <p className="text-gray-600 mt-4 text-center">
             <i className="fas fa-map-marker-alt text-primary mr-2"></i>
-            {property.location}
+            {property.show_address && property.address 
+              ? `${property.address}, ${property.location}`
+              : property.location}
           </p>
         </div>
       )}

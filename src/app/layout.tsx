@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { LanguageProvider } from "@/lib/i18n/LanguageProvider";
+import ToastProvider from "@/components/providers/ToastProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -80,6 +81,7 @@ export default function RootLayout({
         <LanguageProvider>
           <ThemeProvider>
             <ErrorBoundary>
+              <ToastProvider />
               {children}
             </ErrorBoundary>
           </ThemeProvider>

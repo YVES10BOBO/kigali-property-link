@@ -162,9 +162,7 @@ export function getPropertyTypeIcon(value: PropertyType | string | null | undefi
   if (!value) return 'fa-home';
   const type = PROPERTY_TYPES.find(t => t.value === value);
   return type?.icon || 'fa-home';
-}
-
-/**
+}/**
  * Check if a property type is valid
  */
 export function isValidPropertyType(value: string | null | undefined): value is PropertyType {

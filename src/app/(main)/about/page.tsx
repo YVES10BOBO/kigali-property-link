@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/shared/WhatsAppButton";
+import StatsDisplay from "@/components/stats/StatsDisplay";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -39,22 +40,7 @@ export default function AboutPage() {
                 Our mission is to make property finding easy, transparent, and stress-free. We act as your trusted agent, helping you discover the perfect apartment, villa, or commercial space that meets your needs and budget.
               </p>
             </div>
-            <div className="bg-gradient-to-br from-primary to-primary-dark p-8 rounded-2xl text-white">
-              <div className="space-y-6">
-                <div>
-                  <div className="text-5xl font-bold mb-2">150+</div>
-                  <div className="text-xl">Properties Listed</div>
-                </div>
-                <div>
-                  <div className="text-5xl font-bold mb-2">500+</div>
-                  <div className="text-xl">Happy Clients</div>
-                </div>
-                <div>
-                  <div className="text-5xl font-bold mb-2">15+</div>
-                  <div className="text-xl">Years of Experience</div>
-                </div>
-              </div>
-            </div>
+            <StatsDisplay variant="about" showSupport={false} />
           </div>
         </section>
 
@@ -141,20 +127,27 @@ export default function AboutPage() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Team Member 1 */}
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-              <div className="relative h-64 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <div className="relative h-80 overflow-hidden bg-gray-100">
                 <img 
                   src="/images/team/image1.jpg" 
                   alt="Team Member"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
+                {/* Name and Title Overlay with Paper Background - Left Aligned */}
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <div className="bg-white/75 backdrop-blur-sm rounded-lg px-4 py-2.5 shadow-lg border border-white/30 max-w-[85%]">
+                    <h3 className="text-lg font-bold text-dark mb-0.5">RUTEMBEZA Yves</h3>
+                    <p className="text-primary font-semibold text-sm">Founder & CEO</p>
+                  </div>
+                </div>
               </div>
+              {/* Description Below Image */}
               <div className="p-6 text-center">
-                <h3 className="text-2xl font-bold text-dark mb-2">Team Member</h3>
-                <p className="text-primary font-semibold mb-4">Founder & CEO</p>
                 <p className="text-gray-600 mb-4 leading-relaxed">
                   With over 15 years of experience in real estate, I'm passionate about helping clients find their dream homes in Kigali.
                 </p>
@@ -173,18 +166,25 @@ export default function AboutPage() {
             </div>
 
             {/* Team Member 2 - Ntwari */}
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-              <div className="relative h-64 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <div className="relative h-80 overflow-hidden bg-gray-100">
                 <img 
                   src="/images/team/Ntwari.png" 
                   alt="Ntwari"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
+                {/* Name and Title Overlay with Paper Background - Left Aligned */}
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <div className="bg-white/75 backdrop-blur-sm rounded-lg px-4 py-2.5 shadow-lg border border-white/30 max-w-[85%]">
+                    <h3 className="text-lg font-bold text-dark mb-0.5">Ntwari</h3>
+                    <p className="text-secondary font-semibold text-sm">Senior Property Consultant</p>
+                  </div>
+                </div>
               </div>
+              {/* Description Below Image */}
               <div className="p-6 text-center">
-                <h3 className="text-2xl font-bold text-dark mb-2">Ntwari</h3>
-                <p className="text-secondary font-semibold mb-4">Senior Property Consultant</p>
                 <p className="text-gray-600 mb-4 leading-relaxed">
                   Specializing in luxury properties and investment opportunities. I help clients make informed decisions.
                 </p>
@@ -203,18 +203,25 @@ export default function AboutPage() {
             </div>
 
             {/* Team Member 3 - Assumpta */}
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-              <div className="relative h-64 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <div className="relative h-80 overflow-hidden bg-gray-100">
                 <img 
                   src="/images/team/ASSUMPTA.jpg" 
                   alt="Assumpta"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
+                {/* Name and Title Overlay with Paper Background - Left Aligned */}
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <div className="bg-white/75 backdrop-blur-sm rounded-lg px-4 py-2.5 shadow-lg border border-white/30 max-w-[85%]">
+                    <h3 className="text-lg font-bold text-dark mb-0.5">Assumpta</h3>
+                    <p className="text-primary font-semibold text-sm">Property Manager</p>
+                  </div>
+                </div>
               </div>
+              {/* Description Below Image */}
               <div className="p-6 text-center">
-                <h3 className="text-2xl font-bold text-dark mb-2">Assumpta</h3>
-                <p className="text-primary font-semibold mb-4">Property Manager</p>
                 <p className="text-gray-600 mb-4 leading-relaxed">
                   Ensuring smooth property viewings and managing client relationships. Your satisfaction is my priority.
                 </p>
@@ -223,6 +230,43 @@ export default function AboutPage() {
                     <i className="fas fa-phone text-xl"></i>
                   </a>
                   <a href="mailto:manager@kigalipropertieslink.com" className="text-primary hover:text-primary-dark transition-colors" title="Email">
+                    <i className="fas fa-envelope text-xl"></i>
+                  </a>
+                  <a href="https://wa.me/250788123456" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-dark transition-colors" title="WhatsApp">
+                    <i className="fab fa-whatsapp text-xl"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Team Member 4 - Add New Member */}
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <div className="relative h-80 overflow-hidden bg-gray-100">
+                <img 
+                  src="/images/team/image1.jpg" 
+                  alt="Team Member"
+                  className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
+                />
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
+                {/* Name and Title Overlay with Paper Background - Left Aligned */}
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <div className="bg-white/75 backdrop-blur-sm rounded-lg px-4 py-2.5 shadow-lg border border-white/30 max-w-[85%]">
+                    <h3 className="text-lg font-bold text-dark mb-0.5">Tuyisenge emmanuel</h3>
+                    <p className="text-primary font-semibold text-sm">Real Estate Agent</p>
+                  </div>
+                </div>
+              </div>
+              {/* Description Below Image */}
+              <div className="p-6 text-center">
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  Dedicated to helping clients find their perfect property. Expert in residential and commercial real estate.
+                </p>
+                <div className="flex justify-center gap-4 pt-4 border-t border-gray-200">
+                  <a href="tel:+250788123456" className="text-primary hover:text-primary-dark transition-colors" title="Call">
+                    <i className="fas fa-phone text-xl"></i>
+                  </a>
+                  <a href="mailto:info@kigalipropertieslink.com" className="text-primary hover:text-primary-dark transition-colors" title="Email">
                     <i className="fas fa-envelope text-xl"></i>
                   </a>
                   <a href="https://wa.me/250788123456" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-dark transition-colors" title="WhatsApp">
@@ -243,20 +287,27 @@ export default function AboutPage() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Agent 1 */}
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-              <div className="relative h-64 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <div className="relative h-80 overflow-hidden bg-gray-100">
                 <img 
                   src="/images/team/image1.jpg" 
                   alt="Real Estate Agent"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
+                {/* Name and Title Overlay with Paper Background - Left Aligned */}
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <div className="bg-white/75 backdrop-blur-sm rounded-lg px-4 py-2.5 shadow-lg border border-white/30 max-w-[85%]">
+                    <h3 className="text-lg font-bold text-dark mb-0.5">Agent Name</h3>
+                    <p className="text-primary font-semibold text-sm">Real Estate Agent</p>
+                  </div>
+                </div>
               </div>
+              {/* Description Below Image */}
               <div className="p-6 text-center">
-                <h3 className="text-2xl font-bold text-dark mb-2">Agent Name</h3>
-                <p className="text-primary font-semibold mb-4">Real Estate Agent</p>
                 <p className="text-gray-600 mb-4 leading-relaxed">
                   Dedicated to finding you the perfect property. Expert in residential and commercial real estate.
                 </p>
@@ -275,18 +326,25 @@ export default function AboutPage() {
             </div>
 
             {/* Agent 2 - Ntwari */}
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-              <div className="relative h-64 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <div className="relative h-80 overflow-hidden bg-gray-100">
                 <img 
                   src="/images/team/Ntwari.png" 
                   alt="Ntwari - Real Estate Agent"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
+                {/* Name and Title Overlay with Paper Background - Left Aligned */}
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <div className="bg-white/75 backdrop-blur-sm rounded-lg px-4 py-2.5 shadow-lg border border-white/30 max-w-[85%]">
+                    <h3 className="text-lg font-bold text-dark mb-0.5">Ntwari</h3>
+                    <p className="text-secondary font-semibold text-sm">Real Estate Agent</p>
+                  </div>
+                </div>
               </div>
+              {/* Description Below Image */}
               <div className="p-6 text-center">
-                <h3 className="text-2xl font-bold text-dark mb-2">Ntwari</h3>
-                <p className="text-secondary font-semibold mb-4">Real Estate Agent</p>
                 <p className="text-gray-600 mb-4 leading-relaxed">
                   Experienced in property sales and rentals. Committed to providing exceptional service to all clients.
                 </p>
@@ -305,18 +363,25 @@ export default function AboutPage() {
             </div>
 
             {/* Agent 3 - Assumpta */}
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-              <div className="relative h-64 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <div className="relative h-80 overflow-hidden bg-gray-100">
                 <img 
                   src="/images/team/ASSUMPTA.jpg" 
                   alt="Assumpta - Real Estate Agent"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
+                {/* Name and Title Overlay with Paper Background - Left Aligned */}
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <div className="bg-white/75 backdrop-blur-sm rounded-lg px-4 py-2.5 shadow-lg border border-white/30 max-w-[85%]">
+                    <h3 className="text-2xl font-bold text-dark mb-1">Assumpta</h3>
+                    <p className="text-primary font-semibold text-lg">Real Estate Agent</p>
+                  </div>
+                </div>
               </div>
+              {/* Description Below Image */}
               <div className="p-6 text-center">
-                <h3 className="text-2xl font-bold text-dark mb-2">Assumpta</h3>
-                <p className="text-primary font-semibold mb-4">Real Estate Agent</p>
                 <p className="text-gray-600 mb-4 leading-relaxed">
                   Your trusted partner in property transactions. Specializing in helping clients find their ideal homes.
                 </p>
@@ -325,6 +390,43 @@ export default function AboutPage() {
                     <i className="fas fa-phone text-xl"></i>
                   </a>
                   <a href="mailto:assumpta@kigalipropertieslink.com" className="text-primary hover:text-primary-dark transition-colors" title="Email">
+                    <i className="fas fa-envelope text-xl"></i>
+                  </a>
+                  <a href="https://wa.me/250788123456" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-dark transition-colors" title="WhatsApp">
+                    <i className="fab fa-whatsapp text-xl"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Agent 4 - Add New Agent */}
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <div className="relative h-80 overflow-hidden bg-gray-100">
+                <img 
+                  src="/images/team/image1.jpg" 
+                  alt="Real Estate Agent"
+                  className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
+                />
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
+                {/* Name and Title Overlay with Paper Background - Left Aligned */}
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <div className="bg-white/75 backdrop-blur-sm rounded-lg px-4 py-2.5 shadow-lg border border-white/30 max-w-[85%]">
+                    <h3 className="text-lg font-bold text-dark mb-0.5">Agent Name</h3>
+                    <p className="text-primary font-semibold text-sm">Real Estate Agent</p>
+                  </div>
+                </div>
+              </div>
+              {/* Description Below Image */}
+              <div className="p-6 text-center">
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  Committed to providing exceptional service and helping clients achieve their real estate goals.
+                </p>
+                <div className="flex justify-center gap-4 pt-4 border-t border-gray-200">
+                  <a href="tel:+250788123456" className="text-primary hover:text-primary-dark transition-colors" title="Call">
+                    <i className="fas fa-phone text-xl"></i>
+                  </a>
+                  <a href="mailto:agent@kigalipropertieslink.com" className="text-primary hover:text-primary-dark transition-colors" title="Email">
                     <i className="fas fa-envelope text-xl"></i>
                   </a>
                   <a href="https://wa.me/250788123456" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-dark transition-colors" title="WhatsApp">

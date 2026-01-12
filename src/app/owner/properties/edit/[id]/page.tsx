@@ -23,6 +23,10 @@ export default function EditPropertyPage() {
     price_type: "rent" as "rent" | "sale",
     property_type: "" as string,
     location: "",
+    address: "",
+    show_address: false,
+    latitude: "",
+    longitude: "",
     bedrooms: "",
     bathrooms: "",
     area: "",
@@ -76,6 +80,10 @@ export default function EditPropertyPage() {
         price_type: propertyData.price_type || "rent",
         property_type: propertyData.property_type || "",
         location: propertyData.location || "",
+        address: propertyData.address || "",
+        show_address: propertyData.show_address || false,
+        latitude: propertyData.latitude?.toString() || "",
+        longitude: propertyData.longitude?.toString() || "",
         bedrooms: propertyData.bedrooms?.toString() || "",
         bathrooms: propertyData.bathrooms?.toString() || "",
         area: propertyData.area?.toString() || "",
@@ -144,6 +152,10 @@ export default function EditPropertyPage() {
         price_type: formData.price_type,
         property_type: formData.property_type || null,
         location: formData.location,
+        address: formData.address || null,
+        show_address: formData.show_address || false,
+        latitude: formData.latitude ? parseFloat(formData.latitude) : null,
+        longitude: formData.longitude ? parseFloat(formData.longitude) : null,
         bedrooms: parseInt(formData.bedrooms) || 0,
         bathrooms: parseInt(formData.bathrooms) || 0,
         area: parseFloat(formData.area) || 0,
@@ -322,7 +334,7 @@ export default function EditPropertyPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Location <span className="text-red-500">*</span>
+                  Location / Area <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -331,7 +343,82 @@ export default function EditPropertyPage() {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  placeholder="e.g., Kimihurura, Kigali"
                 />
+                <p className="mt-1 text-xs text-gray-500">
+                  <i className="fas fa-info-circle mr-1"></i>
+                  General area/neighborhood (this will be visible to everyone)
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Specific Address (Optional)
+                </label>
+                <input
+                  type="text"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  placeholder="e.g., KG 123 St, Kimihurura"
+                />
+                <div className="mt-2 flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    name="show_address"
+                    checked={formData.show_address}
+                    onChange={(e) => setFormData({ ...formData, show_address: e.target.checked })}
+                    className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                  />
+                  <label className="text-xs text-gray-600">
+                    Show this address to public (if unchecked, only location will be visible)
+                  </label>
+                </div>
+                <p className="mt-1 text-xs text-gray-500">
+                  <i className="fas fa-info-circle mr-1"></i>
+                  Specific street address - optional, can be kept private for security
+                </p>
+              </div>
+
+              {/* Coordinates - Optional for Owner */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Latitude (Optional)
+                  </label>
+                  <input
+                    type="number"
+                    name="latitude"
+                    value={formData.latitude}
+                    onChange={handleInputChange}
+                    step="any"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    placeholder="e.g., -1.9441"
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    <i className="fas fa-info-circle mr-1"></i>
+                    Optional: Admin will verify and finalize coordinates
+                  </p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Longitude (Optional)
+                  </label>
+                  <input
+                    type="number"
+                    name="longitude"
+                    value={formData.longitude}
+                    onChange={handleInputChange}
+                    step="any"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    placeholder="e.g., 30.0619"
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    <i className="fas fa-info-circle mr-1"></i>
+                    Get coordinates from Google Maps (right-click → coordinates)
+                  </p>
+                </div>
               </div>
             </div>
 
