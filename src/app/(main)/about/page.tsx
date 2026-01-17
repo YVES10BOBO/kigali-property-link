@@ -165,12 +165,12 @@ export default function AboutPage() {
               </div>
             </div>
 
-            {/* Team Member 2 - Ntwari */}
+            {/* Team Member 2 - john */}
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <div className="relative h-80 overflow-hidden bg-gray-100">
                 <img 
-                  src="/images/team/Ntwari.png" 
-                  alt="Ntwari"
+                  src="/images/team/jhon.jpg" 
+                  alt="jhoni"
                   className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
                 />
                 {/* Gradient Overlay */}
@@ -202,12 +202,12 @@ export default function AboutPage() {
               </div>
             </div>
 
-            {/* Team Member 3 - Assumpta */}
+            {/* Team Member 3 - ingabire */}
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <div className="relative h-80 overflow-hidden bg-gray-100">
                 <img 
-                  src="/images/team/ASSUMPTA.jpg" 
-                  alt="Assumpta"
+                  src="/images/team/ingabire.jpg" 
+                  alt="ingabire"
                   className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
                 />
                 {/* Gradient Overlay */}
@@ -243,7 +243,7 @@ export default function AboutPage() {
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <div className="relative h-80 overflow-hidden bg-gray-100">
                 <img 
-                  src="/images/team/image1.jpg" 
+                  src="/images/team/gentil.jpg" 
                   alt="Team Member"
                   className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
                 />
@@ -252,16 +252,16 @@ export default function AboutPage() {
                 {/* Name and Title Overlay with Paper Background - Left Aligned */}
                 <div className="absolute bottom-0 left-0 right-0 p-4">
                   <div className="bg-white/75 backdrop-blur-sm rounded-lg px-4 py-2.5 shadow-lg border border-white/30 max-w-[85%]">
-                    <h3 className="text-lg font-bold text-dark mb-0.5">Tuyisenge emmanuel</h3>
-                    <p className="text-primary font-semibold text-sm">Real Estate Agent</p>
+                    <h3 className="text-lg font-bold text-dark mb-0.5">Gentil Esperance</h3>
+                    <p className="text-primary font-semibold text-sm">Customer Support & Office Administrator
+                    </p>
                   </div>
                 </div>
               </div>
               {/* Description Below Image */}
               <div className="p-6 text-center">
                 <p className="text-gray-600 mb-4 leading-relaxed">
-                  Dedicated to helping clients find their perfect property. Expert in residential and commercial real estate.
-                </p>
+                Managing client inquiries, scheduling property viewings, and supporting administrative tasks to ensure smooth and professional customer service.                </p>
                 <div className="flex justify-center gap-4 pt-4 border-t border-gray-200">
                   <a href="tel:+250788123456" className="text-primary hover:text-primary-dark transition-colors" title="Call">
                     <i className="fas fa-phone text-xl"></i>
@@ -292,7 +292,7 @@ export default function AboutPage() {
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <div className="relative h-80 overflow-hidden bg-gray-100">
                 <img 
-                  src="/images/team/image1.jpg" 
+                  src="/images/team/agents/vanessa.jpg" 
                   alt="Real Estate Agent"
                   className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
                 />
@@ -315,7 +315,7 @@ export default function AboutPage() {
                   <a href="tel:+250788123456" className="text-primary hover:text-primary-dark transition-colors" title="Call">
                     <i className="fas fa-phone text-xl"></i>
                   </a>
-                  <a href="mailto:agent@kigalipropertieslink.com" className="text-primary hover:text-primary-dark transition-colors" title="Email">
+                  <a href="mailto:vanessa@kigalipropertieslink.com" className="text-primary hover:text-primary-dark transition-colors" title="Email">
                     <i className="fas fa-envelope text-xl"></i>
                   </a>
                   <a href="https://wa.me/250788123456" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-dark transition-colors" title="WhatsApp">
@@ -325,11 +325,11 @@ export default function AboutPage() {
               </div>
             </div>
 
-            {/* Agent 2 - Ntwari */}
+            {/* Agent 2 - Aisha */}
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <div className="relative h-80 overflow-hidden bg-gray-100">
                 <img 
-                  src="/images/team/Ntwari.png" 
+                  src="/images/team/agents/aisha.jpg" 
                   alt="Ntwari - Real Estate Agent"
                   className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
                 />
@@ -352,7 +352,7 @@ export default function AboutPage() {
                   <a href="tel:+250788123456" className="text-secondary hover:text-secondary-dark transition-colors" title="Call">
                     <i className="fas fa-phone text-xl"></i>
                   </a>
-                  <a href="mailto:ntwari@kigalipropertieslink.com" className="text-secondary hover:text-secondary-dark transition-colors" title="Email">
+                  <a href="mailto:aisha@kigalipropertieslink.com" className="text-secondary hover:text-secondary-dark transition-colors" title="Email">
                     <i className="fas fa-envelope text-xl"></i>
                   </a>
                   <a href="https://wa.me/250788123456" target="_blank" rel="noopener noreferrer" className="text-secondary hover:text-secondary-dark transition-colors" title="WhatsApp">
@@ -362,12 +362,12 @@ export default function AboutPage() {
               </div>
             </div>
 
-            {/* Agent 3 - Assumpta */}
+            {/* Agent 3 - lambert */}
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <div className="relative h-80 overflow-hidden bg-gray-100">
                 <img 
-                  src="/images/team/ASSUMPTA.jpg" 
-                  alt="Assumpta - Real Estate Agent"
+                  src="/images/team/agents/lambert.jpg" 
+                  alt="niyonzima - Real Estate Agent"
                   className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
                 />
                 {/* Gradient Overlay */}
@@ -375,7 +375,7 @@ export default function AboutPage() {
                 {/* Name and Title Overlay with Paper Background - Left Aligned */}
                 <div className="absolute bottom-0 left-0 right-0 p-4">
                   <div className="bg-white/75 backdrop-blur-sm rounded-lg px-4 py-2.5 shadow-lg border border-white/30 max-w-[85%]">
-                    <h3 className="text-2xl font-bold text-dark mb-1">Assumpta</h3>
+                    <h3 className="text-2xl font-bold text-dark mb-1">niyonzima Lambert</h3>
                     <p className="text-primary font-semibold text-lg">Real Estate Agent</p>
                   </div>
                 </div>
@@ -389,7 +389,7 @@ export default function AboutPage() {
                   <a href="tel:+250788123456" className="text-primary hover:text-primary-dark transition-colors" title="Call">
                     <i className="fas fa-phone text-xl"></i>
                   </a>
-                  <a href="mailto:assumpta@kigalipropertieslink.com" className="text-primary hover:text-primary-dark transition-colors" title="Email">
+                  <a href="mailto:lambert@kigalipropertieslink.com" className="text-primary hover:text-primary-dark transition-colors" title="Email">
                     <i className="fas fa-envelope text-xl"></i>
                   </a>
                   <a href="https://wa.me/250788123456" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-dark transition-colors" title="WhatsApp">
@@ -399,11 +399,11 @@ export default function AboutPage() {
               </div>
             </div>
 
-            {/* Agent 4 - Add New Agent */}
+            {/* Agent 4 - alexandre */}
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <div className="relative h-80 overflow-hidden bg-gray-100">
                 <img 
-                  src="/images/team/image1.jpg" 
+                  src="/images/team/agents/alexandre.jpg" 
                   alt="Real Estate Agent"
                   className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
                 />
@@ -426,7 +426,7 @@ export default function AboutPage() {
                   <a href="tel:+250788123456" className="text-primary hover:text-primary-dark transition-colors" title="Call">
                     <i className="fas fa-phone text-xl"></i>
                   </a>
-                  <a href="mailto:agent@kigalipropertieslink.com" className="text-primary hover:text-primary-dark transition-colors" title="Email">
+                  <a href="mailto:alexandre@kigalipropertieslink.com" className="text-primary hover:text-primary-dark transition-colors" title="Email">
                     <i className="fas fa-envelope text-xl"></i>
                   </a>
                   <a href="https://wa.me/250788123456" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-dark transition-colors" title="WhatsApp">
