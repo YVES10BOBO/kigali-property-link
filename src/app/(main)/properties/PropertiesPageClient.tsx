@@ -1,13 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Property } from "@/types/property";
 import { PropertyCardFromDB } from "@/components/property/PropertyCard";
 import PropertyFilters, { FilterState } from "@/components/property/PropertyFilters";
 import PropertyMap from "@/components/map/PropertyMap";
-import { useRouter } from "next/navigation";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
+import {
+  FaList,
+  FaMap,
+  FaSpinner,
+  FaExclamationCircle,
+  FaSearch,
+} from "react-icons/fa";
 
 export default function PropertiesPageClient() {
   const { t } = useLanguage();
@@ -45,10 +51,10 @@ export default function PropertiesPageClient() {
         const response = await fetch(`/api/properties?${params.toString()}`);
         if (!response.ok) throw new Error("Failed to fetch properties");
         
-        const data = await response.json();
+        const data: Property[] = await response.json();
         
         // Sort client-side
-        let sorted = [...data];
+        const sorted = [...data];
         switch (filters.sortBy) {
           case "price-low":
             sorted.sort((a, b) => a.price - b.price);
@@ -65,8 +71,10 @@ export default function PropertiesPageClient() {
         }
         
         setProperties(sorted);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Failed to load properties";
+        setError(message);
       } finally {
         setLoading(false);
       }
@@ -109,24 +117,24 @@ export default function PropertiesPageClient() {
           <div className="flex gap-2 bg-white rounded-lg p-1 shadow-md">
             <button
               onClick={() => setViewMode("list")}
-              className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+              className={`px-4 py-2 rounded-lg font-semibold transition-colors flex items-center ${
                 viewMode === "list"
                   ? "bg-primary text-white"
                   : "text-gray-600 hover:bg-gray-100"
               }`}
             >
-              <i className="fas fa-list mr-2"></i>
+              <FaList className="mr-2" />
               List
             </button>
             <button
               onClick={() => setViewMode("map")}
-              className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+              className={`px-4 py-2 rounded-lg font-semibold transition-colors flex items-center ${
                 viewMode === "map"
                   ? "bg-primary text-white"
                   : "text-gray-600 hover:bg-gray-100"
               }`}
             >
-              <i className="fas fa-map mr-2"></i>
+              <FaMap className="mr-2" />
               Map
             </button>
           </div>
@@ -136,7 +144,7 @@ export default function PropertiesPageClient() {
         {/* Loading State */}
         {loading && (
           <div className="text-center py-16">
-            <i className="fas fa-spinner fa-spin text-4xl text-primary mb-4"></i>
+            <FaSpinner className="animate-spin text-4xl text-primary mb-4 mx-auto" />
             <p className="text-gray-600">Loading properties...</p>
           </div>
         )}
@@ -144,7 +152,7 @@ export default function PropertiesPageClient() {
         {/* Error State */}
         {error && (
           <div className="text-center py-16">
-            <i className="fas fa-exclamation-circle text-4xl text-red-500 mb-4"></i>
+            <FaExclamationCircle className="text-4xl text-red-500 mb-4 mx-auto" />
             <h2 className="text-2xl font-bold text-dark mb-2">Error Loading Properties</h2>
             <p className="text-gray-600">{error}</p>
           </div>
@@ -152,28 +160,30 @@ export default function PropertiesPageClient() {
 
         {/* Results Count */}
         {!loading && !error && properties.length === 0 ? (
-        <div className="text-center py-16">
-          <i className="fas fa-search text-6xl text-gray-300 mb-4"></i>
-          <h2 className="text-2xl font-bold text-dark mb-2">{t.properties.noResults}</h2>
-          <p className="text-gray-600 mb-6">
-            Try adjusting your filters to see more results.
-          </p>
-          <button
-            onClick={() =>
-              setFilters({
-                search: "",
-                propertyType: "",
-                location: "",
-                purpose: "",
-                priceRange: "",
-                sortBy: "newest",
-              })
-            }
-            className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors"
-          >
-            Clear All Filters
-          </button>
-        </div>
+          <div className="text-center py-16">
+            <FaSearch className="text-6xl text-gray-300 mb-4 mx-auto" />
+            <h2 className="text-2xl font-bold text-dark mb-2">
+              {t.properties.noResults}
+            </h2>
+            <p className="text-gray-600 mb-6">
+              Try adjusting your filters to see more results.
+            </p>
+            <button
+              onClick={() =>
+                setFilters({
+                  search: "",
+                  propertyType: "",
+                  location: "",
+                  purpose: "",
+                  priceRange: "",
+                  sortBy: "newest",
+                })
+              }
+              className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors"
+            >
+              Clear All Filters
+            </button>
+          </div>
         ) : !loading && !error ? (
           <>
             {viewMode === "list" ? (

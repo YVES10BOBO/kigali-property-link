@@ -23,10 +23,6 @@ export default function EditPropertyPage() {
     price_type: "rent" as "rent" | "sale",
     property_type: "" as string,
     location: "",
-    address: "",
-    show_address: false,
-    latitude: "",
-    longitude: "",
     bedrooms: "",
     bathrooms: "",
     area: "",
@@ -58,10 +54,6 @@ export default function EditPropertyPage() {
             price_type: data.price_type,
             property_type: data.property_type || "",
             location: data.location || "",
-            address: data.address || "",
-            show_address: data.show_address || false,
-            latitude: data.latitude?.toString() || "",
-            longitude: data.longitude?.toString() || "",
             bedrooms: data.bedrooms.toString(),
             bathrooms: data.bathrooms.toString(),
             area: data.area.toString(),
@@ -142,10 +134,6 @@ export default function EditPropertyPage() {
         price_type: formData.price_type,
         property_type: formData.property_type || null,
         location: formData.location,
-        address: formData.address || null,
-        show_address: formData.show_address || false,
-        latitude: formData.latitude ? parseFloat(formData.latitude) : null,
-        longitude: formData.longitude ? parseFloat(formData.longitude) : null,
         bedrooms: parseInt(formData.bedrooms) || 0,
         bathrooms: parseInt(formData.bathrooms) || 0,
         area: parseFloat(formData.area) || 0,
@@ -320,7 +308,7 @@ export default function EditPropertyPage() {
 
               <div>
                 <label className="block font-semibold mb-2 text-dark">
-                  Location / Area <span className="text-red-500">*</span>
+                  Full Address / Location <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -328,111 +316,14 @@ export default function EditPropertyPage() {
                   value={formData.location}
                   onChange={handleInputChange}
                   required
+                  minLength={10}
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
-                  placeholder="e.g., Kimihurura, Kigali"
+                  placeholder="e.g., KG 123 St, Kimihurura, Kigali, Rwanda"
                 />
                 <p className="mt-1 text-xs text-gray-500">
                   <i className="fas fa-info-circle mr-1"></i>
-                  General area/neighborhood (this will be visible to everyone)
+                  Please provide the complete, real address that can be easily searched on maps (e.g., street name, neighborhood, city, country)
                 </p>
-              </div>
-
-              <div>
-                <label className="block font-semibold mb-2 text-dark">
-                  Specific Address (Optional)
-                </label>
-                <input
-                  type="text"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
-                  placeholder="e.g., KG 123 St, Kimihurura"
-                />
-                <div className="mt-2 flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    name="show_address"
-                    checked={formData.show_address}
-                    onChange={(e) => setFormData({ ...formData, show_address: e.target.checked })}
-                    className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
-                  />
-                  <label className="text-xs text-gray-600">
-                    Show this address to public (if unchecked, only location will be visible)
-                  </label>
-                </div>
-                <p className="mt-1 text-xs text-gray-500">
-                  <i className="fas fa-info-circle mr-1"></i>
-                  Specific street address - optional, can be kept private for security
-                </p>
-              </div>
-
-              {/* Coordinates - Required for Admin */}
-              <div className="md:col-span-2 bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                <div className="flex items-start gap-2 mb-3">
-                  <i className="fas fa-map-marker-alt text-blue-600 mt-1"></i>
-                  <div>
-                    <h3 className="font-semibold text-blue-900 mb-1">Map Coordinates (Required)</h3>
-                    <p className="text-xs text-blue-700">
-                      Admin must verify the exact property location on Google Maps and add coordinates for accurate map display.
-                    </p>
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block font-semibold mb-2 text-dark">
-                      Latitude <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="number"
-                      name="latitude"
-                      value={formData.latitude}
-                      onChange={handleInputChange}
-                      required
-                      step="any"
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
-                      placeholder="e.g., -1.9441"
-                    />
-                    <p className="mt-1 text-xs text-gray-600">
-                      <i className="fas fa-info-circle mr-1"></i>
-                      Get from Google Maps: Right-click property → "What's here?" → Copy coordinates
-                    </p>
-                  </div>
-                  <div>
-                    <label className="block font-semibold mb-2 text-dark">
-                      Longitude <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="number"
-                      name="longitude"
-                      value={formData.longitude}
-                      onChange={handleInputChange}
-                      required
-                      step="any"
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
-                      placeholder="e.g., 30.0619"
-                    />
-                    <p className="mt-1 text-xs text-gray-600">
-                      <i className="fas fa-info-circle mr-1"></i>
-                      Verify coordinates match the actual property location
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-3 p-3 bg-white rounded border border-blue-300">
-                  <p className="text-xs text-gray-700">
-                    <strong>How to get coordinates:</strong>
-                    <br />
-                    1. Open <a href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Google Maps</a>
-                    <br />
-                    2. Search for the property address or location
-                    <br />
-                    3. Right-click on the exact property location
-                    <br />
-                    4. Click "What's here?" or copy coordinates from the popup
-                    <br />
-                    5. Paste latitude and longitude values above
-                  </p>
-                </div>
               </div>
 
               <div>

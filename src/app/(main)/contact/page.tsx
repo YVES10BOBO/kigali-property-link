@@ -7,6 +7,18 @@ import WhatsAppButton from "@/components/shared/WhatsAppButton";
 import Modal from "@/components/ui/Modal";
 import { useRouter } from "next/navigation";
 import { showSuccess, showError } from "@/lib/utils/toast";
+import {
+  FaPaperPlane,
+  FaLocationArrow,
+  FaPhone,
+  FaEnvelope,
+  FaWhatsapp,
+  FaMapMarkerAlt,
+  FaInfoCircle,
+  FaSearch,
+  FaSignInAlt,
+  FaUserPlus,
+} from "react-icons/fa";
 
 // Note: Metadata for client components should be in a separate metadata export
 // For now, we'll handle this in the layout or use a wrapper
@@ -152,7 +164,7 @@ export default function ContactPage() {
                       type="submit"
                       className="w-full md:flex-1 bg-primary text-white py-4 rounded-lg font-semibold text-lg hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"
                     >
-                      <i className="fas fa-paper-plane"></i>
+                      <FaPaperPlane />
                       Send Message
                     </button>
                     <button
@@ -160,7 +172,7 @@ export default function ContactPage() {
                       onClick={() => setShowTrackModal(true)}
                       className="w-full md:w-auto text-primary font-semibold flex items-center justify-center gap-2 underline-offset-4 hover:underline"
                     >
-                      <i className="fas fa-location-arrow" />
+                      <FaLocationArrow />
                       Track my inquiry
                     </button>
                   </div>
@@ -177,19 +189,19 @@ export default function ContactPage() {
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
                   <div className="bg-primary/10 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
-                    <i className="fas fa-phone text-primary text-xl"></i>
+                    <FaPhone className="text-primary text-xl" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-dark mb-1">Phone</h4>
-                    <a href="tel:+250788000000" className="text-gray-600 hover:text-primary transition-colors">
-                      +250 788 000 000
+                    <a href="tel:+250787461999" className="text-gray-600 hover:text-primary transition-colors">
+                      +250 787461999
                     </a>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
                   <div className="bg-primary/10 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
-                    <i className="fas fa-envelope text-primary text-xl"></i>
+                    <FaEnvelope className="text-primary text-xl" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-dark mb-1">Email</h4>
@@ -201,12 +213,12 @@ export default function ContactPage() {
 
                 <div className="flex items-start gap-4">
                   <div className="bg-primary/10 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
-                    <i className="fab fa-whatsapp text-primary text-xl"></i>
+                    <FaWhatsapp className="text-primary text-xl" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-dark mb-1">WhatsApp</h4>
                     <a
-                      href="https://wa.me/250788000000"
+                      href="https://wa.me/250787461999"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-primary transition-colors"
@@ -218,7 +230,7 @@ export default function ContactPage() {
 
                 <div className="flex items-start gap-4">
                   <div className="bg-primary/10 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
-                    <i className="fas fa-map-marker-alt text-primary text-xl"></i>
+                    <FaMapMarkerAlt className="text-primary text-xl" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-dark mb-1">Location</h4>
@@ -248,7 +260,7 @@ export default function ContactPage() {
                 </div>
                 <div className="pt-4 border-t border-white/20 mt-4">
                   <p className="text-sm">
-                    <i className="fas fa-info-circle mr-2"></i>
+                    <FaInfoCircle className="mr-2" />
                     Available 24/7 via WhatsApp
                   </p>
                 </div>
@@ -260,26 +272,26 @@ export default function ContactPage() {
               <h3 className="text-xl font-bold text-dark mb-4">Quick Actions</h3>
               <div className="space-y-3">
                 <a
-                  href="https://wa.me/250788000000?text=Hello! I'm interested in your properties."
+                  href="https://wa.me/250787461999?text=Hello! I'm interested in your properties."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 p-3 bg-[#25d366] text-white rounded-lg hover:bg-[#20ba5a] transition-colors"
                 >
-                  <i className="fab fa-whatsapp text-2xl"></i>
+                  <FaWhatsapp className="text-2xl" />
                   <span className="font-semibold">Chat on WhatsApp</span>
                 </a>
                 <a
-                  href="tel:+250788000000"
+                  href="tel:+250787461999"
                   className="flex items-center gap-3 p-3 bg-secondary text-white rounded-lg hover:bg-secondary-dark transition-colors"
                 >
-                  <i className="fas fa-phone text-xl"></i>
+                  <FaPhone className="text-xl" />
                   <span className="font-semibold">Call Us Now</span>
                 </a>
                 <a
                   href="/properties"
                   className="flex items-center gap-3 p-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
                 >
-                  <i className="fas fa-search text-xl"></i>
+                  <FaSearch className="text-xl" />
                   <span className="font-semibold">Browse Properties</span>
                 </a>
               </div>
@@ -309,7 +321,7 @@ export default function ContactPage() {
             }}
             className="w-full bg-primary text-white py-2.5 rounded-lg font-semibold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"
           >
-            <i className="fas fa-sign-in-alt" />
+            <FaSignInAlt />
             Log in to my account
           </button>
           <button
@@ -320,7 +332,7 @@ export default function ContactPage() {
             }}
             className="w-full border border-primary text-primary py-2.5 rounded-lg font-semibold hover:bg-primary/5 transition-colors flex items-center justify-center gap-2"
           >
-            <i className="fas fa-user-plus" />
+            <FaUserPlus />
             Create a new account
           </button>
         </div>

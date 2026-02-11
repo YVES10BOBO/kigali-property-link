@@ -2,6 +2,15 @@ import type { Metadata } from "next";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/shared/WhatsAppButton";
+import {
+  FaHome,
+  FaEye,
+  FaHandshake,
+  FaDollarSign,
+  FaBuilding,
+  FaHeadset,
+  FaCheck,
+} from "react-icons/fa";
 
 export const metadata: Metadata = {
   title: "Our Services - Kigali Properties Link",
@@ -31,7 +40,7 @@ export default function ServicesPage() {
           {/* Service 1 */}
           <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
             <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-              <i className="fas fa-home text-3xl text-primary"></i>
+              <FaHome className="text-3xl text-primary" />
             </div>
             <h3 className="text-2xl font-bold text-dark mb-4">Property Search</h3>
             <p className="text-gray-600 mb-4">
@@ -39,15 +48,15 @@ export default function ServicesPage() {
             </p>
             <ul className="space-y-2 text-gray-600">
               <li className="flex items-center gap-2">
-                <i className="fas fa-check text-primary"></i>
+                <FaCheck className="text-primary" />
                 <span>Advanced search filters</span>
               </li>
               <li className="flex items-center gap-2">
-                <i className="fas fa-check text-primary"></i>
+                <FaCheck className="text-primary" />
                 <span>Verified listings only</span>
               </li>
               <li className="flex items-center gap-2">
-                <i className="fas fa-check text-primary"></i>
+                <FaCheck className="text-primary" />
                 <span>High-quality photos</span>
               </li>
             </ul>
@@ -56,7 +65,7 @@ export default function ServicesPage() {
           {/* Service 2 */}
           <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
             <div className="bg-secondary/10 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-              <i className="fas fa-eye text-3xl text-secondary"></i>
+              <FaEye className="text-3xl text-secondary" />
             </div>
             <h3 className="text-2xl font-bold text-dark mb-4">Property Viewings</h3>
             <p className="text-gray-600 mb-4">
@@ -64,15 +73,15 @@ export default function ServicesPage() {
             </p>
             <ul className="space-y-2 text-gray-600">
               <li className="flex items-center gap-2">
-                <i className="fas fa-check text-primary"></i>
+                <FaCheck className="text-primary" />
                 <span>Free viewings</span>
               </li>
               <li className="flex items-center gap-2">
-                <i className="fas fa-check text-primary"></i>
+                <FaCheck className="text-primary" />
                 <span>Flexible scheduling</span>
               </li>
               <li className="flex items-center gap-2">
-                <i className="fas fa-check text-primary"></i>
+                <FaCheck className="text-primary" />
                 <span>Expert guidance</span>
               </li>
             </ul>
@@ -81,7 +90,7 @@ export default function ServicesPage() {
           {/* Service 3 */}
           <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
             <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-              <i className="fas fa-handshake text-3xl text-primary"></i>
+              <FaHandshake className="text-3xl text-primary" />
             </div>
             <h3 className="text-2xl font-bold text-dark mb-4">Rental Assistance</h3>
             <p className="text-gray-600 mb-4">
@@ -89,15 +98,15 @@ export default function ServicesPage() {
             </p>
             <ul className="space-y-2 text-gray-600">
               <li className="flex items-center gap-2">
-                <i className="fas fa-check text-primary"></i>
+                <FaCheck className="text-primary" />
                 <span>Lease negotiation</span>
               </li>
               <li className="flex items-center gap-2">
-                <i className="fas fa-check text-primary"></i>
+                <FaCheck className="text-primary" />
                 <span>Documentation help</span>
               </li>
               <li className="flex items-center gap-2">
-                <i className="fas fa-check text-primary"></i>
+                <FaCheck className="text-primary" />
                 <span>Move-in support</span>
               </li>
             </ul>
@@ -106,7 +115,7 @@ export default function ServicesPage() {
           {/* Service 4 */}
           <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
             <div className="bg-secondary/10 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-              <i className="fas fa-dollar-sign text-3xl text-secondary"></i>
+              <FaDollarSign className="text-3xl text-secondary" />
             </div>
             <h3 className="text-2xl font-bold text-dark mb-4">Property Sales</h3>
             <p className="text-gray-600 mb-4">
@@ -114,15 +123,15 @@ export default function ServicesPage() {
             </p>
             <ul className="space-y-2 text-gray-600">
               <li className="flex items-center gap-2">
-                <i className="fas fa-check text-primary"></i>
+                <FaCheck className="text-primary" />
                 <span>Investment advice</span>
               </li>
               <li className="flex items-center gap-2">
-                <i className="fas fa-check text-primary"></i>
+                <FaCheck className="text-primary" />
                 <span>Price negotiation</span>
               </li>
               <li className="flex items-center gap-2">
-                <i className="fas fa-check text-primary"></i>
+                <FaCheck className="text-primary" />
                 <span>Legal support</span>
               </li>
             </ul>
@@ -131,7 +140,7 @@ export default function ServicesPage() {
           {/* Service 5 */}
           <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
             <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-              <i className="fas fa-building text-3xl text-primary"></i>
+              <FaBuilding className="text-3xl text-primary" />
             </div>
             <h3 className="text-2xl font-bold text-dark mb-4">Property Management</h3>
             <p className="text-gray-600 mb-4">
@@ -139,15 +148,15 @@ export default function ServicesPage() {
             </p>
             <ul className="space-y-2 text-gray-600">
               <li className="flex items-center gap-2">
-                <i className="fas fa-check text-primary"></i>
+                <FaCheck className="text-primary" />
                 <span>Tenant screening</span>
               </li>
               <li className="flex items-center gap-2">
-                <i className="fas fa-check text-primary"></i>
+                <FaCheck className="text-primary" />
                 <span>Rent collection</span>
               </li>
               <li className="flex items-center gap-2">
-                <i className="fas fa-check text-primary"></i>
+                <FaCheck className="text-primary" />
                 <span>Maintenance coordination</span>
               </li>
             </ul>
@@ -156,7 +165,7 @@ export default function ServicesPage() {
           {/* Service 6 */}
           <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
             <div className="bg-secondary/10 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-              <i className="fas fa-headset text-3xl text-secondary"></i>
+              <FaHeadset className="text-3xl text-secondary" />
             </div>
             <h3 className="text-2xl font-bold text-dark mb-4">24/7 Support</h3>
             <p className="text-gray-600 mb-4">
@@ -164,15 +173,15 @@ export default function ServicesPage() {
             </p>
             <ul className="space-y-2 text-gray-600">
               <li className="flex items-center gap-2">
-                <i className="fas fa-check text-primary"></i>
+                <FaCheck className="text-primary" />
                 <span>WhatsApp support</span>
               </li>
               <li className="flex items-center gap-2">
-                <i className="fas fa-check text-primary"></i>
+                <FaCheck className="text-primary" />
                 <span>Quick response time</span>
               </li>
               <li className="flex items-center gap-2">
-                <i className="fas fa-check text-primary"></i>
+                <FaCheck className="text-primary" />
                 <span>Multilingual support</span>
               </li>
             </ul>

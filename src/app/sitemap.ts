@@ -1,5 +1,7 @@
 import { MetadataRoute } from 'next';
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@supabase/supabase-js';
+
+export const revalidate = 3600; // Revalidate every hour
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kigalipropertieslink.com';
@@ -8,7 +10,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let properties: Array<{ id: string; updated_at: string }> = [];
   
   try {
-    const supabase = await createClient();
+    // Use direct Supabase client without cookies for static generation
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+    
     const { data } = await supabase
       .from('properties')
       .select('id, updated_at')

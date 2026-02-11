@@ -271,7 +271,7 @@ export default function PropertyDetailClient({ id }: PropertyDetailClientProps) 
               <p className="text-gray-600 mb-3 text-center">Or contact us directly:</p>
               <div className="flex gap-3">
                 <a
-                  href={`https://wa.me/250788000000?text=Hello! I'm interested in ${property.title}`}
+                  href={`https://wa.me/250787461999?text=Hello! I'm interested in ${property.title}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 bg-[#25d366] text-white py-3 rounded-lg font-semibold hover:bg-[#20ba5a] transition-colors flex items-center justify-center gap-2"
@@ -280,7 +280,7 @@ export default function PropertyDetailClient({ id }: PropertyDetailClientProps) 
                   WhatsApp
                 </a>
                 <a
-                  href="tel:+250788000000"
+                  href="tel:+250787461999"
                   className="flex-1 bg-secondary text-white py-3 rounded-lg font-semibold hover:bg-secondary-dark transition-colors flex items-center justify-center gap-2"
                 >
                   <i className="fas fa-phone"></i>

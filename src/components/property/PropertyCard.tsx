@@ -8,6 +8,14 @@ import { createClient } from "@/lib/supabase/client";
 import { Property, formatPropertyForDisplay } from "@/types/property";
 import { useFavorites } from "@/hooks/useFavorites";
 import AutoTranslatedText from "@/components/property/AutoTranslatedText";
+import {
+  FaHeart,
+  FaRegHeart,
+  FaMapMarkerAlt,
+  FaBed,
+  FaBath,
+  FaRulerCombined,
+} from "react-icons/fa";
 
 interface PropertyCardProps {
   id: string;
@@ -94,11 +102,11 @@ export default function PropertyCard({
               className="bg-white w-10 h-10 rounded-full flex items-center justify-center cursor-pointer hover:bg-red-50 transition-colors"
               aria-label={favorited ? "Remove from favorites" : "Add to favorites"}
             >
-              <i
-                className={`${
-                  favorited ? "fas fa-heart text-red-500" : "far fa-heart text-gray-600"
-                } transition-colors`}
-              ></i>
+              {favorited ? (
+                <FaHeart className="text-red-500 text-lg transition-colors" />
+              ) : (
+                <FaRegHeart className="text-gray-600 text-lg transition-colors" />
+              )}
             </button>
           </div>
         </div>
@@ -112,20 +120,20 @@ export default function PropertyCard({
             <AutoTranslatedText text={title} from="en" />
           </h3>
           <p className="text-gray-500 text-sm mb-4 flex items-center">
-            <i className="fas fa-map-marker-alt text-secondary mr-2"></i>
+            <FaMapMarkerAlt className="text-secondary mr-2" />
             <AutoTranslatedText text={location} from="en" />
           </p>
           <div className="flex gap-6 pt-4 border-t border-gray-200">
             <div className="flex items-center gap-2 text-gray-500 text-sm">
-              <i className="fas fa-bed text-primary"></i>
+              <FaBed className="text-primary" />
               {bedrooms} Beds
             </div>
             <div className="flex items-center gap-2 text-gray-500 text-sm">
-              <i className="fas fa-bath text-primary"></i>
+              <FaBath className="text-primary" />
               {bathrooms} Baths
             </div>
             <div className="flex items-center gap-2 text-gray-500 text-sm">
-              <i className="fas fa-ruler-combined text-primary"></i>
+              <FaRulerCombined className="text-primary" />
               {area} m²
             </div>
           </div>

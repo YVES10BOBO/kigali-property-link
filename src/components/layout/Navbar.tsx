@@ -7,6 +7,21 @@ import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
+import {
+  FaUserCircle,
+  FaSignInAlt,
+  FaPlus,
+  FaBars,
+  FaTimes,
+  FaHome,
+  FaBuilding,
+  FaConciergeBell,
+  FaInfoCircle,
+  FaEnvelope,
+  FaGlobe,
+  FaChevronRight,
+  FaCheck,
+} from "react-icons/fa";
 
 export default function Navbar() {
   const [user, setUser] = useState<User | null>(null);
@@ -53,6 +68,19 @@ export default function Navbar() {
     setMobileMenuOpen(false);
   }, [pathname]);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
   const isActive = (path: string) => pathname === path || (path !== "/" && pathname.startsWith(path));
 
   return (
@@ -65,7 +93,7 @@ export default function Navbar() {
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
           <Link href="/" className="text-xl sm:text-2xl font-bold text-primary flex-shrink-0">
-            Kigali<span className="text-secondary">PropertiesLink</span>
+            Rwanda<span className="text-secondary">PropertiesLink</span>
           </Link>
           
           {/* Desktop Navigation */}
@@ -152,7 +180,7 @@ export default function Navbar() {
                     href="/client"
                     className="text-dark font-medium hover:text-primary transition-colors flex items-center gap-2"
                   >
-                    <i className="fas fa-user-circle text-lg"></i>
+                    <FaUserCircle className="text-lg" />
                     <span className="hidden lg:inline">{t.nav.myAccount}</span>
                   </Link>
                 ) : (
@@ -160,7 +188,7 @@ export default function Navbar() {
                     href="/login"
                     className="text-dark font-medium hover:text-primary transition-colors flex items-center gap-2"
                   >
-                    <i className="fas fa-sign-in-alt text-lg"></i>
+                    <FaSignInAlt className="text-lg" />
                     <span className="hidden lg:inline">{t.nav.login}</span>
                   </Link>
                 )}
@@ -172,26 +200,36 @@ export default function Navbar() {
               href="/owner/dashboard"
               className="bg-gradient-to-r from-secondary to-secondary-dark text-white px-3 sm:px-5 lg:px-6 py-2 sm:py-2.5 rounded-full font-semibold hover:from-secondary-dark hover:to-secondary transition-all transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 whitespace-nowrap"
             >
-              <i className="fas fa-plus text-xs sm:text-sm"></i>
+              <FaPlus className="text-xs sm:text-sm" />
               <span className="hidden sm:inline">List Your Property</span>
               <span className="sm:hidden">List</span>
             </Link>
             
             {/* Mobile Menu Button */}
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              onClick={() => {
+                const next = !mobileMenuOpen;
+                setMobileMenuOpen(next);
+                if (next) {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+              }}
               className="lg:hidden p-2.5 text-dark hover:text-primary hover:bg-gray-100 rounded-lg transition-all active:scale-95"
               aria-label="Toggle menu"
               aria-expanded={mobileMenuOpen}
             >
-              <i className={`fas ${mobileMenuOpen ? "fa-times" : "fa-bars"} text-xl`}></i>
+              {mobileMenuOpen ? (
+                <FaTimes className="text-xl transition-transform duration-300 rotate-180" />
+              ) : (
+                <FaBars className="text-xl transition-transform duration-300" />
+              )}
             </button>
           </div>
         </div>
         
         {/* Mobile Menu - Full Screen Overlay Style */}
         <div 
-          className={`lg:hidden fixed inset-0 top-[73px] bg-white z-40 transform transition-transform duration-300 ease-in-out ${
+          className={`lg:hidden fixed inset-0 top-[73px] z-40 transform transition-transform duration-300 ease-out ${
             mobileMenuOpen ? "translate-x-0" : "translate-x-full"
           }`}
           onClick={() => setMobileMenuOpen(false)}
@@ -213,9 +251,9 @@ export default function Navbar() {
                         : "text-dark hover:bg-gray-100 hover:text-primary"
                     }`}
                   >
-                    <i className="fas fa-home text-lg w-6 text-center"></i>
+                    <FaHome className="text-lg w-6 text-center" />
                     <span>{t.nav.home}</span>
-                    {isActive("/") && <i className="fas fa-check ml-auto"></i>}
+                    {isActive("/") && <FaCheck className="ml-auto" />}
                   </Link>
                 </li>
                 <li>
@@ -228,7 +266,7 @@ export default function Navbar() {
                         : "text-dark hover:bg-gray-100 hover:text-primary"
                     }`}
                   >
-                    <i className="fas fa-building text-lg w-6 text-center"></i>
+                    <FaBuilding className="text-lg w-6 text-center" />
                     <span>{t.nav.properties}</span>
                     {isActive("/properties") && <i className="fas fa-check ml-auto"></i>}
                   </Link>
@@ -243,7 +281,7 @@ export default function Navbar() {
                         : "text-dark hover:bg-gray-100 hover:text-primary"
                     }`}
                   >
-                    <i className="fas fa-concierge-bell text-lg w-6 text-center"></i>
+                    <FaConciergeBell className="text-lg w-6 text-center" />
                     <span>{t.nav.services}</span>
                     {isActive("/services") && <i className="fas fa-check ml-auto"></i>}
                   </Link>
@@ -258,7 +296,7 @@ export default function Navbar() {
                         : "text-dark hover:bg-gray-100 hover:text-primary"
                     }`}
                   >
-                    <i className="fas fa-info-circle text-lg w-6 text-center"></i>
+                    <FaInfoCircle className="text-lg w-6 text-center" />
                     <span>{t.nav.about}</span>
                     {isActive("/about") && <i className="fas fa-check ml-auto"></i>}
                   </Link>
@@ -273,7 +311,7 @@ export default function Navbar() {
                         : "text-dark hover:bg-gray-100 hover:text-primary"
                     }`}
                   >
-                    <i className="fas fa-envelope text-lg w-6 text-center"></i>
+                    <FaEnvelope className="text-lg w-6 text-center" />
                     <span>{t.nav.contact}</span>
                     {isActive("/contact") && <i className="fas fa-check ml-auto"></i>}
                   </Link>
@@ -293,9 +331,9 @@ export default function Navbar() {
                         onClick={() => setMobileMenuOpen(false)}
                         className="flex items-center gap-3 px-4 py-3.5 rounded-lg font-semibold text-dark hover:bg-gray-100 hover:text-primary transition-all"
                       >
-                        <i className="fas fa-user-circle text-lg w-6 text-center"></i>
+                        <FaUserCircle className="text-lg w-6 text-center" />
                         <span>{t.nav.myAccount}</span>
-                        <i className="fas fa-chevron-right ml-auto text-gray-400"></i>
+                        <FaChevronRight className="ml-auto text-gray-400" />
                       </Link>
                     ) : (
                       <Link
@@ -303,9 +341,9 @@ export default function Navbar() {
                         onClick={() => setMobileMenuOpen(false)}
                         className="flex items-center gap-3 px-4 py-3.5 rounded-lg font-semibold text-dark hover:bg-gray-100 hover:text-primary transition-all"
                       >
-                        <i className="fas fa-sign-in-alt text-lg w-6 text-center"></i>
+                        <FaSignInAlt className="text-lg w-6 text-center" />
                         <span>{t.nav.login}</span>
-                        <i className="fas fa-chevron-right ml-auto text-gray-400"></i>
+                        <FaChevronRight className="ml-auto text-gray-400" />
                       </Link>
                     )}
                   </>
@@ -314,7 +352,7 @@ export default function Navbar() {
                 {/* Language Switcher in Mobile Menu */}
                 <div className="px-4 py-3.5">
                   <div className="flex items-center gap-3">
-                    <i className="fas fa-globe text-lg w-6 text-center text-gray-600"></i>
+                    <FaGlobe className="text-lg w-6 text-center text-gray-600" />
                     <LanguageSwitcher />
                   </div>
                 </div>
@@ -327,7 +365,7 @@ export default function Navbar() {
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-secondary to-secondary-dark text-white px-4 py-3.5 rounded-lg font-semibold hover:from-secondary-dark hover:to-secondary transition-all transform hover:scale-105 active:scale-95 shadow-lg"
                 >
-                  <i className="fas fa-plus"></i>
+                  <FaPlus />
                   <span>List Your Property</span>
                 </Link>
               </div>
