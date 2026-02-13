@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
@@ -87,8 +88,15 @@ export default function Navbar() {
       <div className="container-custom">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
-          <Link href="/" className="text-xl sm:text-2xl font-bold text-primary flex-shrink-0">
-            Bridge<span className="text-secondary">Properties</span>
+          <Link href="/" className="flex items-center flex-shrink-0">
+            <Image
+              src="/logo/bridgepropertieslogo_official.png"
+              alt="BridgeProperties"
+              width={220}
+              height={60}
+              priority
+              className="h-10 sm:h-12 w-auto"
+            />
           </Link>
           
           {/* Desktop Navigation */}
