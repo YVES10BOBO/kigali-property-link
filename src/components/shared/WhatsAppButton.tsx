@@ -11,8 +11,8 @@ interface WhatsAppButtonProps {
 
 export default function WhatsAppButton({ 
   phoneNumber = "250787461999",
-  companyName = "KIGALI PROPERTIES LINK REAL ESTATE",
-  welcomeMessage = "Hello! 👋 This is Kigali Properties Link - Best Real Estate Agency in Rwanda! 🏠✨\n\n🌟 Find Your Dream Home\n💰 Sell or Rent Your Property Fast\n📍 Prime Locations in Kigali\n✅ Verified Properties Only\n\nWe're here 24/7 to help you! Can we assist you today?"
+  companyName = "BridgeProperties Real Estate",
+  welcomeMessage = "Hello! 👋 This is BridgeProperties – your trusted real estate platform in Rwanda! 🏠✨\n\n🌟 Find Your Dream Home or Investment\n💰 Sell or Rent Your Property Fast\n📍 Prime Locations in Kigali and across Rwanda\n✅ Verified Properties Only\n\nWe're here to help you anytime. How can we assist you today?"
 }: WhatsAppButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
 

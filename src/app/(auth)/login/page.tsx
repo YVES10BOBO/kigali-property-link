@@ -100,7 +100,7 @@ function LoginForm() {
                 {/* Content */}
                 <div className="relative z-10 h-full flex flex-col justify-center p-12 text-white">
                   <Link href="/" className="text-3xl font-bold mb-8 animate-fade-in">
-                    Kigali<span className="text-secondary">PropertiesLink</span>
+                    Bridge<span className="text-secondary">Properties</span>
                   </Link>
                   
                   <div className="space-y-6 animate-fade-in-delay">
@@ -144,7 +144,7 @@ function LoginForm() {
                 {/* Mobile Logo */}
                 <div className="text-center mb-8 lg:hidden">
                   <Link href="/" className="text-3xl font-bold text-primary inline-block">
-                    Kigali<span className="text-secondary">PropertiesLink</span>
+                    Bridge<span className="text-secondary">Properties</span>
                   </Link>
                 </div>
 

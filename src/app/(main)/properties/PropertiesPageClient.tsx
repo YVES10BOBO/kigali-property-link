@@ -32,7 +32,30 @@ export default function PropertiesPageClient() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
+  const [status, setStatus] = useState<string>(searchParams.get("status") || "all");
   const router = useRouter();
+
+  const statusOptions = [
+    { value: "all", label: "All Properties" },
+    { value: "available", label: "Available" },
+    { value: "off_plan", label: "Projects" },
+  ];
+
+  const handleStatusChange = (value: string) => {
+    setStatus(value);
+
+    const params = new URLSearchParams(searchParams.toString());
+    if (value === "all") {
+      params.delete("status");
+    } else {
+      params.set("status", value);
+    }
+
+    const queryString = params.toString();
+    router.push(queryString ? `/properties?${queryString}` : "/properties", {
+      scroll: false,
+    });
+  };
 
   // Fetch properties from API
   useEffect(() => {
@@ -47,6 +70,7 @@ export default function PropertiesPageClient() {
         if (filters.priceRange) params.set("priceRange", filters.priceRange);
         if (filters.search) params.set("search", filters.search);
         if (filters.propertyType) params.set("property_type", filters.propertyType);
+        if (status && status !== "all") params.set("status", status);
         
         const response = await fetch(`/api/properties?${params.toString()}`);
         if (!response.ok) throw new Error("Failed to fetch properties");
@@ -81,10 +105,11 @@ export default function PropertiesPageClient() {
     };
 
     fetchProperties();
-  }, [filters]);
+  }, [filters, status]);
 
   // Update filters when URL params change
   useEffect(() => {
+    setStatus(searchParams.get("status") || "all");
     setFilters({
       search: "",
       propertyType: searchParams.get("propertyType") || "",
@@ -103,6 +128,23 @@ export default function PropertiesPageClient() {
           <p className="text-gray-600">
             {loading ? "Loading..." : `Discover ${properties.length} ${properties.length === 1 ? "property" : "properties"} in Kigali`}
           </p>
+      </div>
+
+      {/* Status Filters */}
+      <div className="flex flex-wrap gap-2 mb-6">
+        {statusOptions.map((option) => (
+          <button
+            key={option.value}
+            onClick={() => handleStatusChange(option.value)}
+            className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${
+              status === option.value
+                ? "bg-primary text-white border-primary shadow-sm"
+                : "bg-white text-gray-700 border-gray-200 hover:border-primary/60 hover:text-primary"
+            }`}
+          >
+            {option.label}
+          </button>
+        ))}
       </div>
 
       {/* Filters */}

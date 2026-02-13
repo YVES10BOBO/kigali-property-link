@@ -13,10 +13,10 @@ import {
 } from "react-icons/fa";
 
 export const metadata: Metadata = {
-  title: "Our Services - Kigali Properties Link",
+  title: "Our Services - BridgeProperties",
   description: "Comprehensive real estate services in Kigali, Rwanda. Property sales, rentals, property management, and expert consultation services.",
   openGraph: {
-    title: "Our Services - Kigali Properties Link",
+    title: "Our Services - BridgeProperties",
     description: "Comprehensive real estate services in Kigali, Rwanda.",
   },
 };

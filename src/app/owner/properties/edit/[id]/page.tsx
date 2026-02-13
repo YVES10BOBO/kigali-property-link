@@ -211,6 +211,7 @@ export default function EditPropertyPage() {
 
       if (response.ok) {
         setFormData((prev) => ({ ...prev, status: newStatus }));
+        setProperty((prev) => (prev ? { ...prev, status: newStatus as any } : prev));
         alert("Status updated successfully!");
       } else {
         alert("Failed to update status");
@@ -272,35 +273,46 @@ export default function EditPropertyPage() {
         {/* Status Update Section */}
         {property && (
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Property Status</h2>
-            <div className="flex items-center gap-4">
-              <span className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm font-medium">
-                Current: {property.status.replace("_", " ").toUpperCase()}
+            <h2 className="text-xl font-semibold text-gray-900 mb-3">Property Status</h2>
+            <p className="text-sm text-gray-600 mb-3">
+              Current status:{" "}
+              <span className="font-semibold">
+                {property.status.replace("_", " ").toUpperCase()}
               </span>
-              {property.status === "available" && (
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleStatusUpdate("sold")}
-                    className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm"
-                  >
-                    Mark as Sold
-                  </button>
-                  <button
-                    onClick={() => handleStatusUpdate("rented")}
-                    className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm"
-                  >
-                    Mark as Rented
-                  </button>
-                </div>
-              )}
-              {(property.status === "sold" || property.status === "rented") && (
-                <button
-                  onClick={() => handleStatusUpdate("available")}
-                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
+            </p>
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Change status
+                </label>
+                <select
+                  value={formData.status}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, status: e.target.value }))
+                  }
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
                 >
-                  Mark as Available Again
-                </button>
-              )}
+                  {/* Admin-controlled statuses (read-only when currently in one of them) */}
+                  {["pending_approval", "needs_revision", "rejected", "unverified"].includes(
+                    formData.status
+                  ) && (
+                    <option value={formData.status}>
+                      {formData.status.replace("_", " ")} (admin only)
+                    </option>
+                  )}
+                  <option value="available">Available</option>
+                  <option value="off_plan">Off-plan Project</option>
+                  <option value="sold">Sold</option>
+                  <option value="rented">Rented</option>
+                </select>
+              </div>
+              <button
+                type="button"
+                onClick={() => handleStatusUpdate(formData.status)}
+                className="px-5 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary-dark transition-colors text-sm shadow-sm"
+              >
+                Update Status
+              </button>
             </div>
           </div>
         )}

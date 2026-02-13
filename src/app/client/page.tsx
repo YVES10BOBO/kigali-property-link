@@ -146,7 +146,7 @@ export default function ClientDashboardPage() {
           <div>
             <h2 className="text-xl font-bold text-dark mb-2">My Inquiries</h2>
             <p className="text-gray-600 text-sm">
-              Track all the inquiries and booking requests you have sent through Kigali PropertiesLink.
+              Track all the inquiries and booking requests you have sent through BridgeProperties.
             </p>
           </div>
 

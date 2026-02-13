@@ -63,11 +63,6 @@ export default function Navbar() {
     };
   }, []);
 
-  // Close mobile menu when clicking outside or on route change
-  useEffect(() => {
-    setMobileMenuOpen(false);
-  }, [pathname]);
-
   // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -93,7 +88,7 @@ export default function Navbar() {
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
           <Link href="/" className="text-xl sm:text-2xl font-bold text-primary flex-shrink-0">
-            Rwanda<span className="text-secondary">PropertiesLink</span>
+            Bridge<span className="text-secondary">Properties</span>
           </Link>
           
           {/* Desktop Navigation */}
@@ -122,6 +117,14 @@ export default function Navbar() {
                 }`}
               >
                 {t.nav.properties}
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/properties?status=off_plan"
+                className="font-medium transition-colors relative text-dark hover:text-primary"
+              >
+                Projects
               </Link>
             </li>
             <li>
@@ -268,7 +271,18 @@ export default function Navbar() {
                   >
                     <FaBuilding className="text-lg w-6 text-center" />
                     <span>{t.nav.properties}</span>
-                    {isActive("/properties") && <i className="fas fa-check ml-auto"></i>}
+                    {isActive("/properties") && <FaCheck className="ml-auto" />}
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/properties?status=off_plan" 
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3.5 rounded-lg font-semibold text-white bg-gradient-to-r from-primary to-emerald-500 shadow-md hover:from-primary/90 hover:to-emerald-500/90 transition-all"
+                  >
+                    <FaBuilding className="text-lg w-6 text-center" />
+                    <span>Projects</span>
+                    <FaChevronRight className="ml-auto text-white/80" />
                   </Link>
                 </li>
                 <li>
@@ -283,7 +297,7 @@ export default function Navbar() {
                   >
                     <FaConciergeBell className="text-lg w-6 text-center" />
                     <span>{t.nav.services}</span>
-                    {isActive("/services") && <i className="fas fa-check ml-auto"></i>}
+                    {isActive("/services") && <FaCheck className="ml-auto" />}
                   </Link>
                 </li>
                 <li>
@@ -298,7 +312,7 @@ export default function Navbar() {
                   >
                     <FaInfoCircle className="text-lg w-6 text-center" />
                     <span>{t.nav.about}</span>
-                    {isActive("/about") && <i className="fas fa-check ml-auto"></i>}
+                    {isActive("/about") && <FaCheck className="ml-auto" />}
                   </Link>
                 </li>
                 <li>
@@ -313,7 +327,7 @@ export default function Navbar() {
                   >
                     <FaEnvelope className="text-lg w-6 text-center" />
                     <span>{t.nav.contact}</span>
-                    {isActive("/contact") && <i className="fas fa-check ml-auto"></i>}
+                    {isActive("/contact") && <FaCheck className="ml-auto" />}
                   </Link>
                 </li>
               </ul>

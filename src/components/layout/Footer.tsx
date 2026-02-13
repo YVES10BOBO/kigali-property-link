@@ -54,7 +54,7 @@ export default function Footer() {
         </div>
         
         <p className="text-gray-500">
-          © 2025 Kigali Properties Link. All rights reserved.
+          © 2025 BridgeProperties. All rights reserved.
         </p>
       </div>
     </footer>

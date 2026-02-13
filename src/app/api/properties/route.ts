@@ -25,16 +25,25 @@ export async function GET(request: Request) {
     // Build query
     let query = supabase.from('properties').select('*');
     
-    // For public pages, only show available properties
-    // For admin dashboard, show all properties
+    // For public pages, restrict to customer-facing statuses
+    // For admin dashboard, show all properties with full status filtering
     if (!isAdmin) {
-      // Only show 'available' status to public
-      // Hide: pending_approval, sold, rented, unverified, rejected, needs_revision
-      query = query.eq('status', 'available');
-    }
-    
-    // Apply admin filters
-    if (isAdmin) {
+      // Public site behaviour:
+      // - "All" (or no status param): show available + off_plan
+      // - status=off_plan: only off-plan projects
+      // - status=available: only available properties
+      if (!status || status === 'all') {
+        query = query.in('status', ['available', 'off_plan']);
+      } else if (status === 'off_plan') {
+        query = query.eq('status', 'off_plan');
+      } else if (status === 'available') {
+        query = query.eq('status', 'available');
+      } else {
+        // Fallback: still hide internal statuses from public
+        query = query.in('status', ['available', 'off_plan']);
+      }
+    } else {
+      // Apply admin filters
       if (status && status !== 'all') {
         query = query.eq('status', status);
       }

@@ -136,7 +136,7 @@ export const translations: Record<Language, Translations> = {
       properties: 'Properties',
       services: 'Services',
       blog: 'Blog',
-      about: 'About us',
+      about: 'About',
       contact: 'Contact',
       login: 'Login',
       myAccount: 'My Account',

@@ -1,7 +1,8 @@
-// Database property type (from Supabase)
+// Database property status (from Supabase)
 export type PropertyStatus = 
   | "pending_approval"
   | "available"
+  | "off_plan"
   | "reserved"
   | "sold"
   | "rented"
@@ -87,6 +88,7 @@ export function formatPropertyForDisplay(property: Property) {
     image: getPropertyImage(property),
     images: property.images || [getPropertyImage(property)],
     badge: property.price_type,
+    status: property.status,
     description: property.description,
     amenities: property.amenities || [],
     furnished: property.furnished,

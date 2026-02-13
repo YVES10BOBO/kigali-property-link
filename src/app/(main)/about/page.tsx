@@ -19,11 +19,13 @@ import {
 } from "react-icons/fa";
 
 export const metadata: Metadata = {
-  title: "About Us - Kigali Properties Link",
-  description: "Learn about Kigali Properties Link, your trusted real estate partner in Kigali, Rwanda. We help you find your dream home with professional service and expert guidance.",
+  title: "About Us - BridgeProperties",
+  description:
+    "Learn about BridgeProperties, your trusted real estate partner in Rwanda. We help you find your dream home or investment with professional service and expert guidance.",
   openGraph: {
-    title: "About Us - Kigali Properties Link",
-    description: "Learn about Kigali Properties Link, your trusted real estate partner in Kigali, Rwanda.",
+    title: "About Us - BridgeProperties",
+    description:
+      "Learn about BridgeProperties, your trusted real estate partner in Rwanda.",
   },
 };
 
@@ -47,7 +49,7 @@ export default function AboutPage() {
             <div>
               <h2 className="text-4xl font-bold text-dark mb-6">Our Mission</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
-                At Kigali Properties Link, we are dedicated to connecting people with their dream homes and investment opportunities in Kigali. We specialize in showcasing premium properties from trusted developers like Homart Properties, including the prestigious Greenland Plaza.
+                At BridgeProperties, we are dedicated to connecting people with their dream homes and investment opportunities in Rwanda. We specialize in showcasing premium, verified properties from trusted developers and owners, including flagship projects like Greenland Plaza.
               </p>
               <p className="text-gray-700 leading-relaxed">
                 Our mission is to make property finding easy, transparent, and stress-free. We act as your trusted agent, helping you discover the perfect apartment, villa, or commercial space that meets your needs and budget.

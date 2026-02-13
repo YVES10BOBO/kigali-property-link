@@ -29,7 +29,7 @@ export default function AddPropertyPage() {
     security: false,
     generator: false,
     amenities: [] as string[],
-    status: "available" as "available" | "reserved" | "sold" | "rented",
+    status: "available" as "available" | "off_plan" | "reserved" | "sold" | "rented",
     images: [] as string[],
   });
 
@@ -379,6 +379,7 @@ export default function AddPropertyPage() {
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
                 >
                   <option value="available">Available</option>
+                  <option value="off_plan">Off-plan Project</option>
                   <option value="reserved">Reserved</option>
                   <option value="sold">Sold</option>
                   <option value="rented">Rented</option>

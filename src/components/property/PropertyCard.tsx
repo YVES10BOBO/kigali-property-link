@@ -28,12 +28,13 @@ interface PropertyCardProps {
   area: number;
   image: string;
   badge: "rent" | "sale";
+   status?: string;
 }
 
 // Support both old format and new Property type
 export function PropertyCardFromDB({ property }: { property: Property }) {
   const formatted = formatPropertyForDisplay(property);
-  return <PropertyCard {...formatted} />;
+  return <PropertyCard {...formatted} status={property.status} />;
 }
 
 export default function PropertyCard({
@@ -47,6 +48,7 @@ export default function PropertyCard({
   area,
   image,
   badge,
+  status,
 }: PropertyCardProps) {
   const router = useRouter();
   const { isFavorited, toggleFavorite, isAuthenticated } = useFavorites();
@@ -96,7 +98,13 @@ export default function PropertyCard({
           >
             {badge === "rent" ? "For Rent" : "For Sale"}
           </span>
-          <div className="absolute top-4 right-4 flex gap-2 z-10">
+          <div className="absolute top-4 right-4 flex flex-col items-end gap-2 z-10">
+            {status === "off_plan" && (
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-semibold shadow-md">
+                <span className="h-2 w-2 rounded-full bg-white/80" />
+                Off‑plan Project
+              </span>
+            )}
             <button
               onClick={handleHeartClick}
               className="bg-white w-10 h-10 rounded-full flex items-center justify-center cursor-pointer hover:bg-red-50 transition-colors"

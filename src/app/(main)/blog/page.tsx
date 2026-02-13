@@ -5,10 +5,10 @@ import WhatsAppButton from "@/components/shared/WhatsAppButton";
 import BlogPageClient from "./BlogPageClient";
 
 export const metadata: Metadata = {
-  title: "Real Estate Blog - Kigali Properties Link",
+  title: "Real Estate Blog - BridgeProperties",
   description: "Stay updated with the latest real estate news, property tips, and market insights in Kigali, Rwanda.",
   openGraph: {
-    title: "Real Estate Blog - Kigali Properties Link",
+    title: "Real Estate Blog - BridgeProperties",
     description: "Stay updated with the latest real estate news and property tips in Kigali.",
   },
 };

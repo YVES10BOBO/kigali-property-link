@@ -6,16 +6,24 @@ import ToastProvider from "@/components/providers/ToastProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://kigalipropertieslink.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://bridgeproperties.rw"),
   title: {
-    default: "Kigali Properties Link | Find Your Dream Home in Kigali",
-    template: "%s | Kigali Properties Link"
+    default: "BridgeProperties | Smart Real Estate in Rwanda",
+    template: "%s | BridgeProperties"
   },
-  description: "Discover premium apartments, houses, and properties for rent and sale in Kigali, Rwanda. Browse exclusive listings at Greenland Plaza and other prime locations.",
-  keywords: ["Kigali properties", "real estate Rwanda", "apartments for rent Kigali", "houses for sale Kigali", "property rental Kigali", "Greenland Plaza"],
-  authors: [{ name: "Kigali Properties Link" }],
-  creator: "Kigali Properties Link",
-  publisher: "Kigali Properties Link",
+  description:
+    "Discover verified apartments, houses, land, and commercial properties for rent and sale in Rwanda with BridgeProperties.",
+  keywords: [
+    "BridgeProperties",
+    "Rwanda properties",
+    "real estate Rwanda",
+    "apartments for rent Kigali",
+    "houses for sale Kigali",
+    "property rental Kigali",
+  ],
+  authors: [{ name: "BridgeProperties" }],
+  creator: "BridgeProperties",
+  publisher: "BridgeProperties",
   formatDetection: {
     email: false,
     address: false,
@@ -24,23 +32,25 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://kigalipropertieslink.com',
-    siteName: "Kigali Properties Link",
-    title: "Kigali Properties Link | Find Your Dream Home in Kigali",
-    description: "Discover premium apartments, houses, and properties for rent and sale in Kigali, Rwanda.",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "https://bridgeproperties.rw",
+    siteName: "BridgeProperties",
+    title: "BridgeProperties | Smart Real Estate in Rwanda",
+    description:
+      "Discover verified apartments, houses, land, and commercial properties for rent and sale in Rwanda.",
     images: [
       {
         url: "/images/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Kigali Properties Link",
+        alt: "BridgeProperties",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Kigali Properties Link | Find Your Dream Home in Kigali",
-    description: "Discover premium apartments, houses, and properties for rent and sale in Kigali, Rwanda.",
+    title: "BridgeProperties | Smart Real Estate in Rwanda",
+    description:
+      "Discover verified apartments, houses, land, and commercial properties for rent and sale in Rwanda.",
     images: ["/images/og-image.jpg"],
   },
   robots: {
