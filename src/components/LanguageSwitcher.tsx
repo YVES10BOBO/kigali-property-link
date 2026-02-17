@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
 import type { Language } from "@/lib/i18n/translations";
 
@@ -44,9 +45,19 @@ export default function LanguageSwitcher() {
         aria-haspopup="listbox"
         aria-expanded={open}
         onClick={() => setOpen((s) => !s)}
-        className={`flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium transition-all ring-0 hover:shadow-md ${open ? 'bg-primary text-white shadow-lg' : 'bg-white dark:bg-gray-800 text-gray-700 border border-gray-200'}`}
+        className={`flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium transition-all ring-0 hover:shadow-md ${
+          open
+            ? "bg-primary text-white shadow-lg"
+            : "bg-white dark:bg-gray-800 text-gray-700 border border-gray-200"
+        }`}
       >
-        <img src={current.icon} alt={current.label} className={`w-5 h-5 object-cover rounded-sm ${open ? 'ring-1 ring-white' : ''}`} />
+        <Image
+          src={current.icon}
+          alt={current.label}
+          width={20}
+          height={20}
+          className={`w-5 h-5 object-cover rounded-sm ${open ? "ring-1 ring-white" : ""}`}
+        />
         <span className="hidden sm:inline">{current.label}</span>
         <svg className={`w-4 h-4 ml-1 transition-transform ${open ? 'rotate-180 text-white' : 'text-gray-600'}`} viewBox="0 0 20 20" fill="currentColor" aria-hidden>
           <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clipRule="evenodd" />
@@ -66,10 +77,18 @@ export default function LanguageSwitcher() {
                 <button
                   onClick={() => handleSelect(l.code)}
                   className={`w-full text-left flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
-                    language === l.code ? 'bg-primary/10 text-primary font-semibold' : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200'
+                    language === l.code
+                      ? "bg-primary/10 text-primary font-semibold"
+                      : "hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
                   }`}
                 >
-                  <img src={l.icon} alt={l.label} className="w-6 h-4 object-cover rounded-sm flex-shrink-0" />
+                  <Image
+                    src={l.icon}
+                    alt={l.label}
+                    width={24}
+                    height={16}
+                    className="w-6 h-4 object-cover rounded-sm flex-shrink-0"
+                  />
                   <span className="flex-1">{l.label}</span>
                 </button>
               </li>
