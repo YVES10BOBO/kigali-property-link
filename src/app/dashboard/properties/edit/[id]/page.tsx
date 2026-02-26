@@ -31,7 +31,7 @@ export default function EditPropertyPage() {
     security: false,
     generator: false,
     amenities: [] as string[],
-    status: "available" as "available" | "off_plan" | "reserved" | "sold" | "rented",
+    status: "available" as "available" | "reserved" | "sold" | "rented",
     images: [] as string[],
   });
 
@@ -62,11 +62,9 @@ export default function EditPropertyPage() {
             security: data.security,
             generator: data.generator,
             amenities: data.amenities || [],
-            status: (["available", "off_plan", "reserved", "sold", "rented"] as const).includes(
-              data.status as any
-            )
-              ? (data.status as "available" | "off_plan" | "reserved" | "sold" | "rented")
-              : "available",
+            status: (['available','reserved','sold','rented'] as const).includes(data.status as any)
+              ? (data.status as 'available' | 'reserved' | 'sold' | 'rented')
+              : 'available',
             images: data.images || [],
           });
         } else {
@@ -337,7 +335,6 @@ export default function EditPropertyPage() {
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
                 >
                   <option value="available">Available</option>
-                  <option value="off_plan">Off-plan Project</option>
                   <option value="reserved">Reserved</option>
                   <option value="sold">Sold</option>
                   <option value="rented">Rented</option>

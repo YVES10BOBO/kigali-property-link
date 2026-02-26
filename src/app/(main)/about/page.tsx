@@ -21,7 +21,7 @@ import {
 export const metadata: Metadata = {
   title: "About Us - BridgeProperties",
   description:
-    "Learn about BridgeProperties, your trusted real estate partner in Rwanda. We help you find your dream home or investment with professional service and expert guidance.",
+    "Learn hange repository name about BridgeProperties, your trusted real estate partner in Rwanda. We help you find your dream home or investment with professional service and expert guidance.",
   openGraph: {
     title: "About Us - BridgeProperties",
     description:
