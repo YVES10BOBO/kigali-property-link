@@ -205,8 +205,8 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-dark mb-1">Email</h4>
-                    <a href="mailto:info@kigalipropertieslink.com" className="text-gray-600 hover:text-primary transition-colors">
-                      info@kigalipropertieslink.com
+                    <a href="mailto:info@bridgeproperties.rw" className="text-gray-600 hover:text-primary transition-colors">
+                      info@bridgeproperties.rw
                     </a>
                   </div>
                 </div>

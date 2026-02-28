@@ -13,9 +13,9 @@ Your website uses **Resend** (a modern email service) instead of traditional SMT
 You need **ONE professional email address** for receiving notifications:
 
 **Recommended Email:**
-- `info@kigalipropertieslink.com` (or your domain)
-- `admin@kigalipropertieslink.com`
-- `notifications@kigalipropertieslink.com`
+- `info@bridgeproperties.rw` (or your domain)
+- `admin@bridgeproperties.rw`
+- `notifications@bridgeproperties.rw`
 
 **Why Professional?**
 - ✅ More trustworthy to clients
@@ -96,7 +96,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 **Example:**
 ```env
 RESEND_API_KEY=re_abc123xyz789
-ADMIN_EMAIL=info@kigalipropertieslink.com
+ADMIN_EMAIL=info@bridgeproperties.rw
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
@@ -149,7 +149,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 
 ### **Recommended Setup:**
 - **1 admin email** (for receiving notifications)
-- **1 support email** (for client inquiries: `info@kigalipropertieslink.com`)
+- **1 support email** (for client inquiries: `info@bridgeproperties.rw`)
 - **1 notifications email** (for automated emails: `notifications@kigalipropertieslink.com`)
 
 **But you can start with just ONE!**

@@ -240,7 +240,7 @@ export async function sendStatusUpdateNotification(data: StatusUpdateEmailData) 
               </div>
               
               <div style="margin-top: 20px; padding: 15px; background: #fff3cd; border-radius: 5px; border-left: 4px solid #ffc107;">
-                <p style="margin: 0; color: #856404;"><strong>Need help?</strong> Contact us at <a href="mailto:info@kigalipropertieslink.com" style="color: #856404;">info@kigalipropertieslink.com</a> or reply to this email.</p>
+                <p style="margin: 0; color: #856404;"><strong>Need help?</strong> Contact us at <a href="mailto:info@bridgeproperties.rw" style="color: #856404;">info@bridgeproperties.rw</a> or reply to this email.</p>
               </div>
             </div>
             <div class="footer">
@@ -269,7 +269,7 @@ ${data.message ? `- Your Message: ${data.message}` : ''}
 
 View your inquiries: ${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/client
 
-Need help? Contact us at info@kigalipropertieslink.com
+Need help? Contact us at info@bridgeproperties.rw
 
 ---
 This is an automated notification from Kigali Property Link

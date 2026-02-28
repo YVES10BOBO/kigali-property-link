@@ -172,7 +172,7 @@ export default function AboutPage() {
                   <a href="tel:+250788123456" className="text-primary hover:text-primary-dark transition-colors" title="Call">
                     <FaPhone className="text-xl" />
                   </a>
-                  <a href="mailto:info@kigalipropertieslink.com" className="text-primary hover:text-primary-dark transition-colors" title="Email">
+                  <a href="mailto:info@bridgeproperties.rw" className="text-primary hover:text-primary-dark transition-colors" title="Email">
                     <FaEnvelope className="text-xl" />
                   </a>
                   <a href="https://wa.me/250788123456" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-dark transition-colors" title="WhatsApp">
@@ -289,7 +289,7 @@ export default function AboutPage() {
                   <a href="tel:+250788123456" className="text-primary hover:text-primary-dark transition-colors" title="Call">
                     <FaPhone className="text-xl" />
                   </a>
-                  <a href="mailto:info@kigalipropertieslink.com" className="text-primary hover:text-primary-dark transition-colors" title="Email">
+                  <a href="mailto:info@bridgeproperties.rw" className="text-primary hover:text-primary-dark transition-colors" title="Email">
                     <FaEnvelope className="text-xl" />
                   </a>
                   <a href="https://wa.me/250788123456" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-dark transition-colors" title="WhatsApp">
