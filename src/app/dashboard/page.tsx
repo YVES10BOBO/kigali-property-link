@@ -191,7 +191,7 @@ export default function DashboardPage() {
                   </p>
                 </div>
                 <div className="bg-primary/10 p-4 rounded-lg">
-                  <i className="fas fa-dollar-sign text-2xl text-primary"></i>
+                  <span className="text-2xl text-primary font-semibold">RWF</span>
                 </div>
               </div>
               <Link

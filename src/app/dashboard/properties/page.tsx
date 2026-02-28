@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Property } from "@/types/property";
+import { formatPrice } from "@/lib/currency";
 
 export default function ManagePropertiesPage() {
   const [properties, setProperties] = useState<Property[]>([]);
@@ -221,13 +222,7 @@ export default function ManagePropertiesPage() {
   
   const hasActiveFilters = filters.search || filters.status !== 'all' || filters.priceType !== 'all' || filters.priceMin || filters.priceMax || filters.dateFrom || filters.dateTo || filters.propertyType;
 
-  const formatPrice = (price?: number | null, priceType?: string) => {
-    if (price === undefined || price === null) return "N/A";
-    if (priceType === "rent") {
-      return `$${price.toLocaleString()}/month`;
-    }
-    return `$${price.toLocaleString()}`;
-  };
+  // previous helper removed; using shared formatter below
 
   return (
     <div>

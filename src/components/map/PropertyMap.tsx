@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Property } from "@/types/property";
+import { formatPrice } from "@/lib/currency";
 
 interface PropertyMapProps {
   properties: Property[];
@@ -115,7 +116,7 @@ export default function PropertyMap({
             <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: bold;">${property.title}</h3>
             <p style="margin: 0 0 4px 0; color: #666; font-size: 14px;">${property.location}</p>
             <p style="margin: 0 0 8px 0; font-size: 18px; font-weight: bold; color: #0d9488;">
-              $${(property.price ?? 0).toLocaleString()}${property.price_type === "rent" ? "/month" : ""}
+              ${formatPrice(property.price, property.price_type)}
             </p>
             <div style="display: flex; gap: 12px; font-size: 12px; color: #666;">
               <span>${property.bedrooms} bed</span>

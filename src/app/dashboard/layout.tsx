@@ -83,7 +83,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     { href: "/dashboard/properties", label: t.dashboard.properties, icon: "fas fa-home" },
     { href: "/dashboard/properties/approvals", label: "Property Approvals", icon: "fas fa-check-circle", badge: true },
     // { href: "/dashboard/properties/import", label: "Bulk Import", icon: "fas fa-upload" }, // Disabled for MVP
-    { href: "/dashboard/commissions", label: t.dashboard.commissions, icon: "fas fa-dollar-sign" },
+    { href: "/dashboard/commissions", label: t.dashboard.commissions, icon: "fas fa-money-bill-wave" },
     { href: "/dashboard/analytics", label: t.dashboard.analytics, icon: "fas fa-chart-bar" },
     { href: "/dashboard/testimonials", label: t.dashboard.testimonials, icon: "fas fa-comments" },
     // { href: "/dashboard/blog", label: t.dashboard.blog, icon: "fas fa-blog" }, // Disabled for MVP

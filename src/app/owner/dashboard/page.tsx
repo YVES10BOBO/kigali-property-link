@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Property } from "@/types/property";
+import { formatPrice } from "@/lib/currency";
 
 export default function OwnerDashboard() {
   const router = useRouter();
@@ -195,7 +196,7 @@ export default function OwnerDashboard() {
                         {getStatusBadge(property.status)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        ${(property.price ?? 0).toLocaleString()} / {property.price_type ?? "N/A"}
+                        {formatPrice(property.price, property.price_type)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {property.location}

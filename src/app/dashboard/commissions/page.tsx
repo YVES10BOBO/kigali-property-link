@@ -218,7 +218,7 @@ export default function CommissionsPage() {
               <p className="text-3xl font-bold text-dark">{formatCurrency(totalCommissions)}</p>
             </div>
             <div className="bg-primary/10 p-4 rounded-lg">
-              <i className="fas fa-dollar-sign text-2xl text-primary"></i>
+              <span className="text-2xl text-primary font-semibold">RWF</span>
             </div>
           </div>
           <p className="text-gray-500 text-sm mt-4">{commissions.length} total</p>
@@ -281,7 +281,7 @@ export default function CommissionsPage() {
           </div>
         ) : commissions.length === 0 ? (
           <div className="text-center py-12">
-            <i className="fas fa-dollar-sign text-4xl text-gray-300 mb-4"></i>
+            <span className="text-4xl text-gray-300 mb-4 font-semibold">RWF</span>
             <p className="text-gray-600 mb-4">No commissions yet</p>
             <button
               onClick={() => setShowAddModal(true)}

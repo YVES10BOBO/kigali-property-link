@@ -96,14 +96,19 @@ export async function GET(request: Request) {
       query = query.limit(parseInt(limit));
     }
     
-    // Price range filter (public)
+    // Price range filter (public). priceRange values come from client and may include a "+"
     if (priceRange) {
-      if (priceRange === '1200+') {
-        query = query.gte('price', 1200);
+      if (priceRange.endsWith('+')) {
+        const min = parseInt(priceRange.slice(0, -1));
+        if (!isNaN(min)) {
+          query = query.gte('price', min);
+        }
       } else {
-        const [min, max] = priceRange.split('-');
-        if (min && max) {
-          query = query.gte('price', parseInt(min)).lte('price', parseInt(max));
+        const [minStr, maxStr] = priceRange.split('-');
+        const min = parseInt(minStr);
+        const max = parseInt(maxStr);
+        if (!isNaN(min) && !isNaN(max)) {
+          query = query.gte('price', min).lte('price', max);
         }
       }
     }

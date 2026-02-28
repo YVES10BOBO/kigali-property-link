@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Property, formatPropertyForDisplay } from "@/types/property";
+import { formatPrice } from "@/lib/currency";
 import { useFavorites } from "@/hooks/useFavorites";
 import AutoTranslatedText from "@/components/property/AutoTranslatedText";
 import {
@@ -121,8 +122,7 @@ export default function PropertyCard({
         
         <div className="p-6">
           <div className="text-2xl font-bold text-primary mb-2">
-            ${price.toLocaleString()}
-            {priceType === "rent" && <span className="text-base font-normal text-gray-500">/month</span>}
+            {formatPrice(price, priceType)}
           </div>
           <h3 className="text-xl font-semibold text-dark mb-2">
             <AutoTranslatedText text={title} from="en" />

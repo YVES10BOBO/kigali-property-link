@@ -802,7 +802,7 @@ export default function InquiriesPage() {
                         onClick={() => handleCreateCommission(inquiry)}
                         className="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors text-center"
                       >
-                        <i className="fas fa-dollar-sign mr-1"></i>
+                        <span className="mr-1 font-semibold">RWF</span>
                         Create Commission
                       </button>
                     )}

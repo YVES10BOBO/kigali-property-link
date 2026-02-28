@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Property } from "@/types/property";
+import { formatPrice } from "@/lib/currency";
 
 export default function PropertyApprovalsPage() {
   const router = useRouter();
@@ -157,7 +158,7 @@ export default function PropertyApprovalsPage() {
                       <div>
                         <span className="text-sm text-gray-500">Price</span>
                         <p className="font-semibold">
-                          ${(property.price ?? 0).toLocaleString()} / {property.price_type ?? "N/A"}
+                          {formatPrice(property.price, property.price_type)}
                         </p>
                       </div>
                       <div>

@@ -4,6 +4,7 @@ import { Property } from "@/types/property";
 import ImageGallery from "@/components/shared/ImageGallery";
 import AutoTranslatedText from "@/components/property/AutoTranslatedText";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
+import { formatPrice } from "@/lib/currency";
 
 interface PropertyDetailProps {
   property: Property;
@@ -43,10 +44,7 @@ export default function PropertyDetail({ property }: PropertyDetailProps) {
 
         {/* Price */}
         <div className="text-5xl font-bold text-primary mb-6">
-          ${(property.price ?? 0).toLocaleString()}
-          {(property.price_type ?? "") === "rent" && (
-            <span className="text-2xl font-normal text-gray-500">/month</span>
-          )}
+          {formatPrice(property.price, property.price_type)}
         </div>
 
         {/* Key Features */}

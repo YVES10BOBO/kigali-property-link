@@ -1,3 +1,5 @@
+import { formatPrice } from "@/lib/currency";
+
 // Database property status (from Supabase)
 export type PropertyStatus = 
   | "pending_approval"
@@ -135,12 +137,11 @@ export function getPropertyPriceDisplay(property: Property): { price: number; ty
   
   // Single property (no units) - use existing price/price_type
   if (property.price && property.price_type) {
+    const formatted = formatPrice(property.price, property.price_type);
     return {
       price: property.price,
       type: property.price_type,
-      label: property.price_type === "rent" 
-        ? `$${property.price.toLocaleString()}/month`
-        : `$${property.price.toLocaleString()}`
+      label: formatted,
     };
   }
   

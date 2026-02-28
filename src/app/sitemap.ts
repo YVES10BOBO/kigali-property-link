@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 export const revalidate = 3600; // Revalidate every hour
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kigalipropertieslink.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://bridgeproperties.rw/';
   
   // Get all properties for dynamic routes
   let properties: Array<{ id: string; updated_at: string }> = [];

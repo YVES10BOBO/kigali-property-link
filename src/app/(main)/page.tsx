@@ -12,6 +12,7 @@ import StatsDisplay from "@/components/stats/StatsDisplay";
 import { Property } from "@/types/property";
 import Link from "next/link";
 import { useLanguage } from "@/lib/i18n/LanguageProvider";
+import { priceRanges } from "@/lib/constants/price-ranges";
 
 export default function HomePage() {
   const router = useRouter();
@@ -168,7 +169,7 @@ export default function HomePage() {
               </div>
               <div>
                 <label className="font-semibold mb-2 text-sm text-dark flex items-center gap-2">
-                  <i className="fas fa-dollar-sign text-primary"></i>
+                  <span className="text-primary font-semibold">RWF</span>
                   Price Range
                 </label>
                 <select
@@ -177,10 +178,11 @@ export default function HomePage() {
                   className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none transition-colors hover:border-primary/50"
                 >
                   <option value="">Any Price</option>
-                  <option value="300-500">$300 - $500</option>
-                  <option value="500-800">$500 - $800</option>
-                  <option value="800-1200">$800 - $1,200</option>
-                  <option value="1200+">$1,200+</option>
+                  {priceRanges.map((r) => (
+                    <option key={r.value} value={r.value}>
+                      {r.label}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
