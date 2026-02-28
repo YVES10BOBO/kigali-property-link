@@ -9,6 +9,8 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
+import { absoluteUrl } from "@/lib/metadata";
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
   const supabase = await createClient();
@@ -27,15 +29,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       };
     }
 
-    const imageUrl = property.images && property.images.length > 0 
-      ? property.images[0] 
-      : '/images/default-property.jpg';
+    const imageUrl = absoluteUrl(
+      property.images && property.images.length > 0
+        ? property.images[0]
+        : '/images/default-property.jpg'
+    );
+
+    const title = `${property.title} - ${property.price_type === 'rent' ? 'For Rent' : 'For Sale'}`;
+    const description =
+      property.description ||
+      `${property.title} located in ${property.location}. ${
+        property.price_type === 'rent' ? 'Available for rent' : 'Available for sale'
+      } at $${property.price.toLocaleString()}.`;
 
     return {
-      title: `${property.title} - ${property.price_type === 'rent' ? 'For Rent' : 'For Sale'}`,
-      description: property.description || `${property.title} located in ${property.location}. ${property.price_type === 'rent' ? 'Available for rent' : 'Available for sale'} at $${property.price.toLocaleString()}.`,
+      title,
+      description,
       openGraph: {
-        title: `${property.title} - ${property.price_type === 'rent' ? 'For Rent' : 'For Sale'}`,
+        title,
         description: property.description || `${property.title} in ${property.location}`,
         images: [imageUrl],
       },

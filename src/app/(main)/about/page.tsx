@@ -21,7 +21,7 @@ import {
 export const metadata: Metadata = {
   title: "About Us - BridgeProperties",
   description:
-    "Learn hange repository name about BridgeProperties, your trusted real estate partner in Rwanda. We help you find your dream home or investment with professional service and expert guidance.",
+    "Learn about BridgeProperties, your trusted real estate partner in Rwanda. We help you find your dream home or investment with professional service and expert guidance.",
   openGraph: {
     title: "About Us - BridgeProperties",
     description:
@@ -120,7 +120,7 @@ export default function AboutPage() {
               <FaCalendarCheck className="text-4xl text-primary mb-4" />
               <h3 className="text-2xl font-bold text-dark mb-3">Property Viewings</h3>
               <p className="text-gray-700">
-                Schedule free property viewings at your convenience. We'll arrange everything and accompany you to the property.
+                Schedule free property viewings at your convenience. We&apos;ll arrange everything and accompany you to the property.
               </p>
             </div>
             <div>
@@ -166,7 +166,7 @@ export default function AboutPage() {
               {/* Description Below Image */}
               <div className="p-6 text-center">
                 <p className="text-gray-600 mb-4 leading-relaxed">
-                  With over 15 years of experience in real estate, I'm passionate about helping clients find their dream homes in Kigali.
+                  With over 15 years of experience in real estate, I&apos;m passionate about helping clients find their dream homes in Kigali.
                 </p>
                 <div className="flex justify-center gap-4 pt-4 border-t border-gray-200">
                   <a href="tel:+250788123456" className="text-primary hover:text-primary-dark transition-colors" title="Call">
@@ -477,7 +477,7 @@ export default function AboutPage() {
           <div className="bg-white p-8 rounded-2xl shadow-lg text-center">
             <h3 className="text-2xl font-bold text-dark mb-4">Homart Properties</h3>
             <p className="text-gray-700 max-w-2xl mx-auto">
-              We proudly represent Homart Properties, one of Kigali's leading real estate developers. 
+              We proudly represent Homart Properties, one of Kigali&apos;s leading real estate developers. 
               Our partnership includes exclusive access to Greenland Plaza and other premium developments 
               across the city, ensuring you have access to the finest properties available.
             </p>

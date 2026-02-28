@@ -20,7 +20,8 @@ function LoginForm() {
     // Get redirect URL from query parameters
     const redirect = searchParams.get("redirect");
     if (redirect) {
-      setRedirectUrl(redirect);
+      // avoid synchronous setState in effect
+      setTimeout(() => setRedirectUrl(redirect), 0);
     }
   }, [searchParams]);
 

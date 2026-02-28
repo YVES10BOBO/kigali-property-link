@@ -221,7 +221,8 @@ export default function ManagePropertiesPage() {
   
   const hasActiveFilters = filters.search || filters.status !== 'all' || filters.priceType !== 'all' || filters.priceMin || filters.priceMax || filters.dateFrom || filters.dateTo || filters.propertyType;
 
-  const formatPrice = (price: number, priceType: string) => {
+  const formatPrice = (price?: number | null, priceType?: string) => {
+    if (price === undefined || price === null) return "N/A";
     if (priceType === "rent") {
       return `$${price.toLocaleString()}/month`;
     }

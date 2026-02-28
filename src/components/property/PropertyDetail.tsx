@@ -43,8 +43,8 @@ export default function PropertyDetail({ property }: PropertyDetailProps) {
 
         {/* Price */}
         <div className="text-5xl font-bold text-primary mb-6">
-          ${property.price.toLocaleString()}
-          {property.price_type === "rent" && (
+          ${(property.price ?? 0).toLocaleString()}
+          {(property.price_type ?? "") === "rent" && (
             <span className="text-2xl font-normal text-gray-500">/month</span>
           )}
         </div>

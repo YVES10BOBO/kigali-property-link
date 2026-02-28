@@ -50,8 +50,8 @@ export default function EditPropertyPage() {
           setFormData({
             title: data.title || "",
             description: data.description || "",
-            price: data.price.toString(),
-            price_type: data.price_type,
+            price: (data.price ?? 0).toString(),
+            price_type: data.price_type ?? "rent",
             property_type: data.property_type || "",
             location: data.location || "",
             bedrooms: data.bedrooms.toString(),
@@ -62,16 +62,22 @@ export default function EditPropertyPage() {
             security: data.security,
             generator: data.generator,
             amenities: data.amenities || [],
-            status: (['available','reserved','sold','rented'] as const).includes(data.status as any)
-              ? (data.status as 'available' | 'reserved' | 'sold' | 'rented')
+            status: (
+              data.status === 'available' ||
+              data.status === 'reserved' ||
+              data.status === 'sold' ||
+              data.status === 'rented'
+            )
+              ? data.status
               : 'available',
             images: data.images || [],
           });
         } else {
           setError("Property not found");
         }
-      } catch (err: any) {
-        setError(err.message || "Failed to load property");
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        setError(message || "Failed to load property");
       } finally {
         setLoading(false);
       }
@@ -160,8 +166,9 @@ export default function EditPropertyPage() {
         const errorData = await response.json();
         setError(errorData.error || "Failed to update property");
       }
-    } catch (err: any) {
-      setError(err.message || "An error occurred");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      setError(message || "An error occurred");
     } finally {
       setSaving(false);
     }

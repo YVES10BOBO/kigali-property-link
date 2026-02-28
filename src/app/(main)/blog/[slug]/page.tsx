@@ -10,6 +10,8 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+import { absoluteUrl, defaultOgImage } from "@/lib/metadata";
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const supabase = await createClient();
@@ -40,13 +42,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       };
     }
 
+    const imageUrl = post.featured_image
+      ? absoluteUrl(post.featured_image)
+      : defaultOgImage();
+
     return {
       title: `${post.title} - BridgeProperties Blog`,
       description: post.excerpt || post.title,
       openGraph: {
         title: post.title,
         description: post.excerpt || post.title,
-        images: post.featured_image ? [post.featured_image] : [],
+        images: [imageUrl],
       },
     };
   } catch (error) {

@@ -157,7 +157,7 @@ export default function PropertyApprovalsPage() {
                       <div>
                         <span className="text-sm text-gray-500">Price</span>
                         <p className="font-semibold">
-                          ${property.price.toLocaleString()} / {property.price_type}
+                          ${(property.price ?? 0).toLocaleString()} / {property.price_type ?? "N/A"}
                         </p>
                       </div>
                       <div>

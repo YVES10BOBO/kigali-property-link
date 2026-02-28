@@ -81,13 +81,13 @@ export default function PropertiesPageClient() {
         const sorted = [...data];
         switch (filters.sortBy) {
           case "price-low":
-            sorted.sort((a, b) => a.price - b.price);
+            sorted.sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
             break;
           case "price-high":
-            sorted.sort((a, b) => b.price - a.price);
+            sorted.sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
             break;
           case "area-large":
-            sorted.sort((a, b) => b.area - a.area);
+            sorted.sort((a, b) => (b.area ?? 0) - (a.area ?? 0));
             break;
           default:
             // Keep server order (newest first)

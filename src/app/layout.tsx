@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { LanguageProvider } from "@/lib/i18n/LanguageProvider";
+import { defaultOgImage } from "@/lib/metadata";
 import ToastProvider from "@/components/providers/ToastProvider";
 import "./globals.css";
 
@@ -39,7 +40,7 @@ export const metadata: Metadata = {
       "Discover verified apartments, houses, land, and commercial properties for rent and sale in Rwanda.",
     images: [
       {
-        url: "/images/og-image.jpg",
+        url: defaultOgImage(),
         width: 1200,
         height: 630,
         alt: "BridgeProperties",
@@ -51,7 +52,7 @@ export const metadata: Metadata = {
     title: "BridgeProperties | Smart Real Estate in Rwanda",
     description:
       "Discover verified apartments, houses, land, and commercial properties for rent and sale in Rwanda.",
-    images: ["/images/og-image.jpg"],
+    images: [defaultOgImage()],
   },
   robots: {
     index: true,

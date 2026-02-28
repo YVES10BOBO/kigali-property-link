@@ -195,7 +195,7 @@ export default function OwnerDashboard() {
                         {getStatusBadge(property.status)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        ${property.price.toLocaleString()} / {property.price_type}
+                        ${(property.price ?? 0).toLocaleString()} / {property.price_type ?? "N/A"}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {property.location}
