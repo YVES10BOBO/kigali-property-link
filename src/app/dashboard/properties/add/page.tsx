@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ImageUpload from "@/components/forms/ImageUpload";
+import UnitsManager, { Unit } from "@/components/forms/UnitsManager";
 
 export default function AddPropertyPage() {
   const router = useRouter();
@@ -14,7 +15,8 @@ export default function AddPropertyPage() {
     title: "",
     description: "",
     price: "",
-    price_type: "rent" as "rent" | "sale",
+    price_type: "rent" as "rent" | "sale" | "rent_and_sale",
+    currency: "RWF" as "RWF" | "USD",
     property_type: "" as string,
     location: "",
     address: "",
@@ -24,16 +26,16 @@ export default function AddPropertyPage() {
     bedrooms: "",
     bathrooms: "",
     area: "",
-    furnished: false,
-    parking: false,
-    security: false,
-    generator: false,
+    features: [] as string[], // Dynamic features (replaces fixed checkboxes)
     amenities: [] as string[],
     status: "available" as "available" | "off_plan" | "reserved" | "sold" | "rented",
     images: [] as string[],
   });
 
   const [currentAmenity, setCurrentAmenity] = useState("");
+  const [currentFeature, setCurrentFeature] = useState("");
+  const [hasMultipleUnits, setHasMultipleUnits] = useState(false);
+  const [units, setUnits] = useState<Unit[]>([]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -65,26 +67,93 @@ export default function AddPropertyPage() {
     }));
   };
 
+  const addFeature = () => {
+    if (currentFeature.trim()) {
+      setFormData((prev) => ({
+        ...prev,
+        features: [...prev.features, currentFeature.trim()],
+      }));
+      setCurrentFeature("");
+    }
+  };
+
+  const removeFeature = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      features: prev.features.filter((_, i) => i !== index),
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
 
     // Validate required fields
-    if (!formData.title || !formData.price || !formData.location) {
-      setError("Please fill in all required fields (Title, Price, Location)");
+    if (!formData.title || !formData.location) {
+      setError("Please fill in all required fields (Title, Location)");
       setLoading(false);
       return;
     }
 
+    // Validate based on property type
+    if (hasMultipleUnits) {
+      if (units.length === 0) {
+        setError("Please add at least one unit for this building");
+        setLoading(false);
+        return;
+      }
+      // Units are optional - no validation needed
+      // All unit fields (unit_number, bedrooms, bathrooms, area, prices) are optional
+    } else {
+      if (!formData.price) {
+        setError("Please provide a price for this property");
+        setLoading(false);
+        return;
+      }
+    }
+
     try {
       // Prepare data for API
-      const propertyData = {
+      const propertyData: {
+        title: string;
+        description: string;
+        price?: number | null;
+        price_type?: string | null;
+        currency?: string;
+        property_type: string;
+        location: string;
+        address?: string | null;
+        show_address: boolean;
+        latitude?: number | null;
+        longitude?: number | null;
+        bedrooms?: number | null;
+        bathrooms?: number | null;
+        area?: number | null;
+        furnished: boolean;
+        parking: boolean;
+        security: boolean;
+        generator: boolean;
+        amenities: string[];
+        images: string[];
+        status: string;
+        units?: Array<{
+          unit_number: string;
+          bedrooms: number;
+          bathrooms: number;
+          area: number;
+          rent_price?: number | null;
+          sale_price?: number | null;
+          currency?: string;
+          status: string;
+          furnished: boolean;
+          description?: string;
+          images?: string[];
+        }>;
+      } = {
         title: formData.title,
-        description: formData.description || null,
-        price: parseFloat(formData.price),
-        price_type: formData.price_type,
-        property_type: formData.property_type || null,
+        description: formData.description || "",
+        property_type: formData.property_type || "",
         location: formData.location,
         address: formData.address || null,
         show_address: formData.show_address || false,
@@ -93,14 +162,29 @@ export default function AddPropertyPage() {
         bedrooms: parseInt(formData.bedrooms) || 0,
         bathrooms: parseInt(formData.bathrooms) || 0,
         area: parseFloat(formData.area) || 0,
-        furnished: formData.furnished,
-        parking: formData.parking,
-        security: formData.security,
-        generator: formData.generator,
-        amenities: formData.amenities,
+        // Convert features array to boolean fields for backward compatibility
+        furnished: formData.features.some(f => f.toLowerCase().includes('furnished')),
+        parking: formData.features.some(f => f.toLowerCase().includes('parking')),
+        security: formData.features.some(f => f.toLowerCase().includes('security')),
+        generator: formData.features.some(f => f.toLowerCase().includes('generator')),
+        // Store both features and amenities
+        amenities: [...formData.amenities, ...formData.features],
         status: formData.status,
         images: formData.images,
       };
+
+      // Add price/price_type/currency only if NOT a building with units
+      if (!hasMultipleUnits) {
+        propertyData.price = parseFloat(formData.price);
+        propertyData.price_type = formData.price_type;
+        propertyData.currency = formData.currency;
+      } else {
+        // For buildings with units, price is null but price_type is still needed for badge
+        propertyData.price = null;
+        propertyData.price_type = formData.price_type; // Keep price_type for badge display
+        propertyData.currency = formData.currency; // Currency applies to the building and its units
+        propertyData.units = units;
+      }
 
       const response = await fetch("/api/properties", {
         method: "POST",
@@ -183,38 +267,78 @@ export default function AddPropertyPage() {
                 />
               </div>
 
-              <div>
-                <label className="block font-semibold mb-2 text-dark">
-                  Price <span className="text-red-500">*</span>
+              {/* Building Type Toggle */}
+              <div className="md:col-span-2">
+                <label className="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
+                  <input
+                    type="checkbox"
+                    checked={hasMultipleUnits}
+                    onChange={(e) => setHasMultipleUnits(e.target.checked)}
+                    className="w-5 h-5 text-primary"
+                  />
+                  <div>
+                    <span className="font-semibold text-dark">Building with Multiple Units</span>
+                    <p className="text-xs text-gray-600 mt-1">
+                      Check this if this property has multiple units (e.g., apartment building with Studio, 1BR, 2BR, 3BR units)
+                    </p>
+                  </div>
                 </label>
-                <input
-                  type="number"
-                  name="price"
-                  value={formData.price}
-                  onChange={handleInputChange}
-                  required
-                  min="0"
-                  step="0.01"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
-                  placeholder="800"
-                />
               </div>
 
-              <div>
-                <label className="block font-semibold mb-2 text-dark">
-                  Price Type <span className="text-red-500">*</span>
-                </label>
-                <select
-                  name="price_type"
-                  value={formData.price_type}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
-                >
-                  <option value="rent">For Rent</option>
-                  <option value="sale">For Sale</option>
-                </select>
-              </div>
+              {/* Price fields - only show if NOT a building with units */}
+              {!hasMultipleUnits && (
+                <>
+                  <div>
+                    <label className="block font-semibold mb-2 text-dark">
+                      Currency <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      name="currency"
+                      value={formData.currency}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                    >
+                      <option value="RWF">RWF (Rwandan Franc)</option>
+                      <option value="USD">USD (US Dollar)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block font-semibold mb-2 text-dark">
+                      Price <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      name="price"
+                      value={formData.price}
+                      onChange={handleInputChange}
+                      required
+                      min="0"
+                      step="0.01"
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                      placeholder={formData.currency === "USD" ? "800.00" : "800000"}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-semibold mb-2 text-dark">
+                      Price Type <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      name="price_type"
+                      value={formData.price_type}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                    >
+                      <option value="rent">For Rent</option>
+                      <option value="sale">For Sale</option>
+                      <option value="rent_and_sale">For Rent & Sale</option>
+                    </select>
+                  </div>
+                </>
+              )}
 
               <div>
                 <label className="block font-semibold mb-2 text-dark">
@@ -302,47 +426,45 @@ export default function AddPropertyPage() {
                 </p>
               </div>
 
-              {/* Coordinates - Required for Admin */}
+              {/* Coordinates - Optional */}
               <div className="md:col-span-2 bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
                 <div className="flex items-start gap-2 mb-3">
                   <i className="fas fa-map-marker-alt text-blue-600 mt-1"></i>
                   <div>
-                    <h3 className="font-semibold text-blue-900 mb-1">Map Coordinates (Required)</h3>
+                    <h3 className="font-semibold text-blue-900 mb-1">Map Coordinates (Optional)</h3>
                     <p className="text-xs text-blue-700">
-                      Admin must verify the exact property location on Google Maps and add coordinates for accurate map display.
+                      Add coordinates for accurate map display. Get from Google Maps: Right-click property → &quot;What&apos;s here?&quot; → Copy coordinates
                     </p>
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block font-semibold mb-2 text-dark">
-                      Latitude <span className="text-red-500">*</span>
+                      Latitude (Optional)
                     </label>
                     <input
                       type="number"
                       name="latitude"
                       value={formData.latitude}
                       onChange={handleInputChange}
-                      required
                       step="any"
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
                       placeholder="e.g., -1.9441"
                     />
                     <p className="mt-1 text-xs text-gray-600">
                       <i className="fas fa-info-circle mr-1"></i>
-                      Get from Google Maps: Right-click property → "What's here?" → Copy coordinates
+                      Get from Google Maps: Right-click property → &quot;What&apos;s here?&quot; → Copy coordinates
                     </p>
                   </div>
                   <div>
                     <label className="block font-semibold mb-2 text-dark">
-                      Longitude <span className="text-red-500">*</span>
+                      Longitude (Optional)
                     </label>
                     <input
                       type="number"
                       name="longitude"
                       value={formData.longitude}
                       onChange={handleInputChange}
-                      required
                       step="any"
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
                       placeholder="e.g., 30.0619"
@@ -363,7 +485,7 @@ export default function AddPropertyPage() {
                     <br />
                     3. Right-click on the exact property location
                     <br />
-                    4. Click "What's here?" or copy coordinates from the popup
+                    4. Click &quot;What&apos;s here?&quot; or copy coordinates from the popup
                     <br />
                     5. Paste latitude and longitude values above
                   </p>
@@ -388,100 +510,151 @@ export default function AddPropertyPage() {
             </div>
           </div>
 
-          {/* Property Details */}
-          <div>
-            <h2 className="text-xl font-bold text-dark mb-4">Property Details</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div>
-                <label className="block font-semibold mb-2 text-dark">Bedrooms</label>
-                <input
-                  type="number"
-                  name="bedrooms"
-                  value={formData.bedrooms}
-                  onChange={handleInputChange}
-                  min="0"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
-                  placeholder="2"
-                />
+          {/* Units Management - only show if building with multiple units */}
+          {hasMultipleUnits && (
+            <div>
+              <h2 className="text-xl font-bold text-dark mb-4">Building Units</h2>
+              <p className="text-gray-600 mb-4 text-sm">
+                Add all available units in this building. Each unit can have different sizes, prices, and availability.
+              </p>
+              
+              {/* Currency and Price Type for Building with Units */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <div>
+                  <label className="block font-semibold mb-2 text-dark">
+                    Currency <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    name="currency"
+                    value={formData.currency}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                  >
+                    <option value="RWF">RWF (Rwandan Franc)</option>
+                    <option value="USD">USD (US Dollar)</option>
+                  </select>
+                  <p className="text-xs text-gray-600 mt-1">Default currency for all units</p>
+                </div>
+                
+                <div>
+                  <label className="block font-semibold mb-2 text-dark">
+                    Price Type <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    name="price_type"
+                    value={formData.price_type}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                  >
+                    <option value="rent">For Rent</option>
+                    <option value="sale">For Sale</option>
+                    <option value="rent_and_sale">For Rent & Sale</option>
+                  </select>
+                  <p className="text-xs text-gray-600 mt-1">This determines the badge shown on property cards</p>
+                </div>
               </div>
+              
+              <UnitsManager units={units} onChange={setUnits} defaultCurrency={formData.currency} />
+            </div>
+          )}
 
-              <div>
-                <label className="block font-semibold mb-2 text-dark">Bathrooms</label>
-                <input
-                  type="number"
-                  name="bathrooms"
-                  value={formData.bathrooms}
-                  onChange={handleInputChange}
-                  min="0"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
-                  placeholder="2"
-                />
-              </div>
+          {/* Property Details - only show if NOT a building with units */}
+          {!hasMultipleUnits && (
+            <div>
+              <h2 className="text-xl font-bold text-dark mb-4">Property Details</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <label className="block font-semibold mb-2 text-dark">Bedrooms</label>
+                  <input
+                    type="number"
+                    name="bedrooms"
+                    value={formData.bedrooms}
+                    onChange={handleInputChange}
+                    min="0"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                    placeholder="2"
+                  />
+                </div>
 
-              <div>
-                <label className="block font-semibold mb-2 text-dark">Area (m²)</label>
-                <input
-                  type="number"
-                  name="area"
-                  value={formData.area}
-                  onChange={handleInputChange}
-                  min="0"
-                  step="0.01"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
-                  placeholder="120"
-                />
+                <div>
+                  <label className="block font-semibold mb-2 text-dark">Bathrooms</label>
+                  <input
+                    type="number"
+                    name="bathrooms"
+                    value={formData.bathrooms}
+                    onChange={handleInputChange}
+                    min="0"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                    placeholder="2"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-semibold mb-2 text-dark">Area (m²)</label>
+                  <input
+                    type="number"
+                    name="area"
+                    value={formData.area}
+                    onChange={handleInputChange}
+                    min="0"
+                    step="1"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                    placeholder="120"
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
-          {/* Features */}
+          {/* Features - Dynamic like Amenities */}
           <div>
             <h2 className="text-xl font-bold text-dark mb-4">Features</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <label className="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
-                <input
-                  type="checkbox"
-                  name="furnished"
-                  checked={formData.furnished}
-                  onChange={handleInputChange}
-                  className="w-5 h-5 text-primary"
-                />
-                <span className="font-medium">Furnished</span>
-              </label>
-
-              <label className="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
-                <input
-                  type="checkbox"
-                  name="parking"
-                  checked={formData.parking}
-                  onChange={handleInputChange}
-                  className="w-5 h-5 text-primary"
-                />
-                <span className="font-medium">Parking</span>
-              </label>
-
-              <label className="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
-                <input
-                  type="checkbox"
-                  name="security"
-                  checked={formData.security}
-                  onChange={handleInputChange}
-                  className="w-5 h-5 text-primary"
-                />
-                <span className="font-medium">Security</span>
-              </label>
-
-              <label className="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
-                <input
-                  type="checkbox"
-                  name="generator"
-                  checked={formData.generator}
-                  onChange={handleInputChange}
-                  className="w-5 h-5 text-primary"
-                />
-                <span className="font-medium">Generator</span>
-              </label>
+            <p className="text-gray-600 mb-4 text-sm">Add features like Furnished, Parking, Security, Generator, etc. (Optional)</p>
+            
+            <div className="flex gap-2 mb-4">
+              <input
+                type="text"
+                value={currentFeature}
+                onChange={(e) => setCurrentFeature(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    addFeature();
+                  }
+                }}
+                className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary outline-none"
+                placeholder="Add feature (e.g., Furnished, Parking, Security, Generator)"
+              />
+              <button
+                type="button"
+                onClick={addFeature}
+                className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors"
+              >
+                <i className="fas fa-plus"></i> Add
+              </button>
             </div>
+
+            {formData.features.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {formData.features.map((feature, index) => (
+                  <span
+                    key={index}
+                    className="bg-primary/10 text-primary px-4 py-2 rounded-full flex items-center gap-2"
+                  >
+                    {feature}
+                    <button
+                      type="button"
+                      onClick={() => removeFeature(index)}
+                      className="text-primary hover:text-primary-dark"
+                    >
+                      <i className="fas fa-times"></i>
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Amenities */}

@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Property } from "@/types/property";
 import { formatPrice } from "@/lib/currency";
+import { getPropertyPriceDisplay } from "@/types/property";
+import type { Currency } from "@/lib/currency";
 
 export default function ManagePropertiesPage() {
   const [properties, setProperties] = useState<Property[]>([]);
@@ -38,7 +40,7 @@ export default function ManagePropertiesPage() {
         // Clear message after 5 seconds
         setTimeout(() => setSuccessMessage(null), 5000);
       }
-    } catch (e) {
+    } catch {
       // ignore in non-browser environments
     }
   }, []);
@@ -70,8 +72,8 @@ export default function ManagePropertiesPage() {
         setProperties(data);
         setAllProperties(data); // Store all for counts
       }
-    } catch (error) {
-      console.error("Failed to fetch properties:", error);
+    } catch (_error) {
+      console.error("Failed to fetch properties:", _error);
     } finally {
       setLoading(false);
     }
@@ -95,8 +97,8 @@ export default function ManagePropertiesPage() {
       } else {
         alert("Failed to delete property");
       }
-    } catch (error) {
-      console.error("Failed to delete property:", error);
+    } catch (_error) {
+      console.error("Failed to delete property:", _error);
       alert("Failed to delete property");
     }
   };
@@ -143,7 +145,7 @@ export default function ManagePropertiesPage() {
       setBulkStatus("");
       fetchProperties();
       setTimeout(() => setSuccessMessage(null), 5000);
-    } catch (error) {
+    } catch {
       alert("Failed to update properties. Please try again.");
     }
   };
@@ -165,7 +167,7 @@ export default function ManagePropertiesPage() {
       setSelectedProperties(new Set());
       fetchProperties();
       setTimeout(() => setSuccessMessage(null), 5000);
-    } catch (error) {
+    } catch {
       alert("Failed to delete properties. Please try again.");
     }
   };
@@ -201,7 +203,7 @@ export default function ManagePropertiesPage() {
       
       setSuccessMessage('Properties exported successfully!');
       setTimeout(() => setSuccessMessage(null), 5000);
-    } catch (error) {
+    } catch {
       alert('Failed to export properties. Please try again.');
     }
   };
@@ -586,6 +588,18 @@ export default function ManagePropertiesPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
             {filteredProperties.map((property) => (
+              (() => {
+                const hasUnits = !!(property.units && property.units.length > 0);
+                const availableUnits = hasUnits ? property.units!.filter((u) => u.status === "available") : [];
+                const firstUnit = availableUnits.length > 0 ? availableUnits[0] : (hasUnits ? property.units![0] : null);
+                const displayBedrooms = firstUnit?.bedrooms ?? property.bedrooms;
+                const displayBathrooms = firstUnit?.bathrooms ?? property.bathrooms;
+                const displayArea = firstUnit?.area ?? property.area;
+                const currency = (firstUnit?.currency || property.currency || "RWF") as Currency;
+                const priceDisplay = getPropertyPriceDisplay(property);
+                const badge = (property.price_type || priceDisplay?.type || "rent") as "rent" | "sale" | "rent_and_sale";
+
+                return (
               <div
                 key={property.id}
                 className={`bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow relative ${
@@ -611,12 +625,14 @@ export default function ManagePropertiesPage() {
                 <div className="absolute top-4 left-4">
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      property.price_type === "rent"
+                      badge === "rent"
                         ? "bg-primary text-white"
-                        : "bg-secondary text-white"
+                        : badge === "sale"
+                        ? "bg-secondary text-white"
+                        : "bg-gradient-to-r from-primary to-secondary text-white"
                     }`}
                   >
-                    {property.price_type === "rent" ? "For Rent" : "For Sale"}
+                    {badge === "rent" ? "For Rent" : badge === "sale" ? "For Sale" : "For Rent & Sale"}
                   </span>
                 </div>
                 <div className="absolute top-4 right-4">
@@ -644,21 +660,27 @@ export default function ManagePropertiesPage() {
 
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-2xl font-bold text-primary">
-                    {formatPrice(property.price, property.price_type)}
+                    {priceDisplay?.label || (property.price ? formatPrice(property.price, property.price_type, currency) : "—")}
                   </span>
                   <div className="flex gap-4 text-sm text-gray-600">
-                    <span className="flex items-center gap-1">
-                      <i className="fas fa-bed"></i>
-                      {property.bedrooms}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <i className="fas fa-bath"></i>
-                      {property.bathrooms}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <i className="fas fa-ruler-combined"></i>
-                      {property.area}m²
-                    </span>
+                    {displayBedrooms > 0 && (
+                      <span className="flex items-center gap-1">
+                        <i className="fas fa-bed"></i>
+                        {displayBedrooms}
+                      </span>
+                    )}
+                    {displayBathrooms > 0 && (
+                      <span className="flex items-center gap-1">
+                        <i className="fas fa-bath"></i>
+                        {displayBathrooms}
+                      </span>
+                    )}
+                    {displayArea > 0 && (
+                      <span className="flex items-center gap-1">
+                        <i className="fas fa-ruler-combined"></i>
+                        {displayArea}m²
+                      </span>
+                    )}
                   </div>
                 </div>
 
@@ -688,6 +710,8 @@ export default function ManagePropertiesPage() {
                   </div>
                 </div>
               </div>
+                );
+              })()
             ))}
           </div>
         </div>

@@ -20,7 +20,7 @@ export default function EditPropertyPage() {
     title: "",
     description: "",
     price: "",
-    price_type: "rent" as "rent" | "sale",
+    price_type: "rent" as "rent" | "sale" | "rent_and_sale",
     property_type: "" as string,
     location: "",
     address: "",
@@ -482,6 +482,7 @@ export default function EditPropertyPage() {
                 >
                   <option value="rent">For Rent</option>
                   <option value="sale">For Sale</option>
+                  <option value="rent_and_sale">For Rent & Sale</option>
                 </select>
               </div>
 
@@ -567,7 +568,7 @@ export default function EditPropertyPage() {
                   value={formData.area}
                   onChange={handleInputChange}
                   min="0"
-                  step="0.01"
+                  step="1"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
               </div>
