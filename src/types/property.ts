@@ -44,7 +44,6 @@ export interface PropertyUnit {
   area: number;
   rent_price?: number | null; // Monthly rent (null if not for rent)
   sale_price?: number | null; // Sale price (null if not for sale)
-  currency?: "RWF" | "USD"; // Currency for this unit (defaults to property currency)
   status: "available" | "reserved" | "sold" | "rented";
   images?: string[]; // Unit-specific images (optional)
   description?: string; // Unit-specific description (optional)
@@ -58,8 +57,7 @@ export interface Property {
   title: string;
   description?: string;
   price?: number; // Optional - not needed if property has units
-  price_type?: "rent" | "sale" | "rent_and_sale"; // Optional - not needed if property has units
-  currency?: "RWF" | "USD"; // Currency for this property (defaults to RWF)
+  price_type?: "rent" | "sale"; // Optional - not needed if property has units
   property_type?: PropertyType | null;
   location: string; // Public area (e.g., "Kimihurura, Kigali") - always visible
   address?: string | null; // Specific street address (e.g., "KG 123 St") - optional, can be hidden
@@ -99,60 +97,50 @@ export function getPropertyImage(property: Property): string {
 }
 
 // Helper to get price display for property (handles units)
-export function getPropertyPriceDisplay(property: Property): { price: number; type: "rent" | "sale" | "rent_and_sale"; label: string } | null {
-  // If property has units, show FIRST unit's price on card
+export function getPropertyPriceDisplay(property: Property): { price: number; type: "rent" | "sale"; label: string } | null {
+  // If property has units, show price range from units
   if (property.units && property.units.length > 0) {
     const availableUnits = property.units.filter(u => u.status === 'available');
     if (availableUnits.length === 0) return null;
     
-    // Get FIRST available unit (the first one added/selected)
-    const firstUnit = availableUnits[0];
-    const unitCurrency = firstUnit.currency || property.currency || "RWF";
-    const currencySymbol = unitCurrency === "USD" ? "$" : "RWF";
-    
-    // Show first unit's price - prioritize rent if both exist
-    if (firstUnit.rent_price) {
-      return {
-        price: firstUnit.rent_price,
-        type: "rent",
-        label: `${currencySymbol} ${firstUnit.rent_price.toLocaleString()}/month`
-      };
-    } else if (firstUnit.sale_price) {
-      return {
-        price: firstUnit.sale_price,
-        type: "sale",
-        label: `${currencySymbol} ${firstUnit.sale_price.toLocaleString()}`
-      };
-    }
-    
-    // If first unit has no price, check other units for price range
     const rentPrices = availableUnits.map(u => u.rent_price).filter((p): p is number => p !== null && p !== undefined);
     const salePrices = availableUnits.map(u => u.sale_price).filter((p): p is number => p !== null && p !== undefined);
     
-    if (rentPrices.length > 0) {
+    if (rentPrices.length > 0 && salePrices.length > 0) {
       const minRent = Math.min(...rentPrices);
+      const maxRent = Math.max(...rentPrices);
+      const minSale = Math.min(...salePrices);
+      const maxSale = Math.max(...salePrices);
       return {
         price: minRent,
         type: "rent",
-        label: `${currencySymbol} ${minRent.toLocaleString()}/month`
+        label: `$${minRent.toLocaleString()}-${maxRent.toLocaleString()}/month • $${minSale.toLocaleString()}-${maxSale.toLocaleString()}`
+      };
+    } else if (rentPrices.length > 0) {
+      const minRent = Math.min(...rentPrices);
+      const maxRent = Math.max(...rentPrices);
+      return {
+        price: minRent,
+        type: "rent",
+        label: rentPrices.length === 1 ? `$${minRent.toLocaleString()}/month` : `$${minRent.toLocaleString()}-${maxRent.toLocaleString()}/month`
       };
     } else if (salePrices.length > 0) {
       const minSale = Math.min(...salePrices);
+      const maxSale = Math.max(...salePrices);
       return {
         price: minSale,
         type: "sale",
-        label: `${currencySymbol} ${minSale.toLocaleString()}`
+        label: salePrices.length === 1 ? `$${minSale.toLocaleString()}` : `$${minSale.toLocaleString()}-${maxSale.toLocaleString()}`
       };
     }
   }
   
   // Single property (no units) - use existing price/price_type
   if (property.price && property.price_type) {
-    const currency = property.currency || "RWF";
-    const formatted = formatPrice(property.price, property.price_type, currency);
+    const formatted = formatPrice(property.price, property.price_type);
     return {
       price: property.price,
-      type: property.price_type as "rent" | "sale" | "rent_and_sale",
+      type: property.price_type,
       label: formatted,
     };
   }
@@ -164,22 +152,12 @@ export function getPropertyPriceDisplay(property: Property): { price: number; ty
 export function formatPropertyForDisplay(property: Property) {
   const priceDisplay = getPropertyPriceDisplay(property);
   
-  // Get currency from units if property has units, otherwise from property
-  let displayCurrency = property.currency || "RWF";
-  if (property.units && property.units.length > 0) {
-    const availableUnits = property.units.filter(u => u.status === 'available');
-    if (availableUnits.length > 0) {
-      displayCurrency = availableUnits[0]?.currency || property.currency || "RWF";
-    }
-  }
-  
   return {
     id: property.id,
     title: property.title,
-    price: priceDisplay?.price ?? property.price ?? null, // Use null instead of 0
+    price: priceDisplay?.price || property.price || 0,
     priceType: priceDisplay?.type || property.price_type || "rent",
     priceLabel: priceDisplay?.label || "",
-    currency: displayCurrency, // Add currency to the return object
     location: property.location,
     bedrooms: property.bedrooms,
     bathrooms: property.bathrooms,

@@ -1,15 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
 
-function mapUnits(row: any) {
-  if (!row) return row;
-  const { property_units, ...rest } = row;
-  return {
-    ...rest,
-    units: property_units || [],
-  };
-}
-
 export async function GET(request: Request) {
   try {
     const supabase = await createClient();
@@ -31,8 +22,8 @@ export async function GET(request: Request) {
     const dateTo = searchParams.get('date_to');
     const propertyType = searchParams.get('property_type');
     
-    // Build query - include units if they exist
-    let query = supabase.from('properties').select('*, property_units(*)');
+    // Build query
+    let query = supabase.from('properties').select('*');
     
     // For public pages, restrict to customer-facing statuses
     // For admin dashboard, show all properties with full status filtering
@@ -131,7 +122,7 @@ export async function GET(request: Request) {
       );
     }
     
-    return NextResponse.json((data || []).map(mapUnits));
+    return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : 'An error occurred' },
@@ -145,18 +136,15 @@ export async function POST(request: Request) {
     const supabase = await createClient();
     const body = await request.json();
     
-    // Extract units if provided
-    const { units, ...propertyData } = body;
-    
     // Ensure status is set (default to pending_approval for new properties)
-    const propertyToInsert = {
-      ...propertyData,
-      status: propertyData.status || 'pending_approval',
+    const propertyData = {
+      ...body,
+      status: body.status || 'pending_approval',
     };
     
     const { data, error } = await supabase
       .from('properties')
-      .insert([propertyToInsert])
+      .insert([propertyData])
       .select()
       .single();
     
@@ -166,32 +154,6 @@ export async function POST(request: Request) {
         { status: 500 }
       );
     }
-    
-    // Insert units if provided
-    if (units && Array.isArray(units) && units.length > 0) {
-      const unitsToInsert = units.map((unit: any) => ({
-        ...unit,
-        property_id: data.id,
-        // Inherit currency from property if not specified in unit
-        currency: unit.currency || propertyData.currency || 'RWF',
-      }));
-      
-      const { error: unitsError } = await supabase
-        .from('property_units')
-        .insert(unitsToInsert);
-      
-      if (unitsError) {
-        console.error('Error inserting units:', unitsError);
-        // Don't fail the request, but log the error
-      }
-    }
-    
-    // Fetch property with units
-    const { data: propertyWithUnits } = await supabase
-      .from('properties')
-      .select('*, property_units(*)')
-      .eq('id', data.id)
-      .single();
     
     // Send email notification to admin about new property pending approval
     if (data.status === 'pending_approval' && data.owner_id) {
@@ -217,7 +179,7 @@ export async function POST(request: Request) {
       }
     }
     
-    return NextResponse.json(mapUnits(propertyWithUnits || data), { status: 201 });
+    return NextResponse.json(data, { status: 201 });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : 'An error occurred' },
