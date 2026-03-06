@@ -18,7 +18,7 @@ export default function BlogPage() {
     <div className="min-h-screen">
       <Navbar />
       
-      <main className="container-custom py-24">
+      <main className="container-custom pt-28 pb-24">
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold text-dark mb-4">Our Blog</h1>

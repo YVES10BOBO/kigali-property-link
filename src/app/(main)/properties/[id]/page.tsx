@@ -65,7 +65,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <main className="container-custom py-8 md:py-12">
+      <main className="container-custom pt-28 pb-12">
         <PropertyDetailClient id={id} />
       </main>
       <Footer />

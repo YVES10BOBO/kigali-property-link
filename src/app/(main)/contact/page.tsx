@@ -72,7 +72,7 @@ export default function ContactPage() {
     <div className="min-h-screen">
       <Navbar />
 
-      <main className="container-custom py-12 md:py-16">
+      <main className="container-custom pt-28 pb-16">
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-5xl md:text-6xl font-bold text-dark mb-4">Contact Us</h1>

@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Property } from "@/types/property";
+import { getPropertyPriceDisplay } from "@/types/property";
+import type { Currency } from "@/lib/currency";
 import { formatPrice } from "@/lib/currency";
 
 export default function PropertyApprovalsPage() {
@@ -155,24 +157,40 @@ export default function PropertyApprovalsPage() {
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                      <div>
-                        <span className="text-sm text-gray-500">Price</span>
-                        <p className="font-semibold">
-                          {formatPrice(property.price, property.price_type)}
-                        </p>
-                      </div>
-                      <div>
-                        <span className="text-sm text-gray-500">Bedrooms</span>
-                        <p className="font-semibold">{property.bedrooms}</p>
-                      </div>
-                      <div>
-                        <span className="text-sm text-gray-500">Bathrooms</span>
-                        <p className="font-semibold">{property.bathrooms}</p>
-                      </div>
-                      <div>
-                        <span className="text-sm text-gray-500">Area</span>
-                        <p className="font-semibold">{property.area} sq ft</p>
-                      </div>
+                      {(() => {
+                        const hasUnits = !!(property.units && property.units.length > 0);
+                        const availableUnits = hasUnits ? property.units!.filter((u) => u.status === "available") : [];
+                        const firstUnit =
+                          availableUnits.length > 0 ? availableUnits[0] : (hasUnits ? property.units![0] : null);
+                        const currency = (firstUnit?.currency || property.currency || "RWF") as Currency;
+                        const priceDisplay = getPropertyPriceDisplay(property);
+                        const displayBedrooms = firstUnit?.bedrooms ?? property.bedrooms;
+                        const displayBathrooms = firstUnit?.bathrooms ?? property.bathrooms;
+                        const displayArea = firstUnit?.area ?? property.area;
+
+                        return (
+                      <>
+                        <div>
+                          <span className="text-sm text-gray-500">Price</span>
+                          <p className="font-semibold">
+                            {priceDisplay?.label || (property.price ? formatPrice(property.price, property.price_type, currency) : "—")}
+                          </p>
+                        </div>
+                        <div>
+                          <span className="text-sm text-gray-500">Bedrooms</span>
+                          <p className="font-semibold">{displayBedrooms || 0}</p>
+                        </div>
+                        <div>
+                          <span className="text-sm text-gray-500">Bathrooms</span>
+                          <p className="font-semibold">{displayBathrooms || 0}</p>
+                        </div>
+                        <div>
+                          <span className="text-sm text-gray-500">Area</span>
+                          <p className="font-semibold">{displayArea || 0} m²</p>
+                        </div>
+                      </>
+                        );
+                      })()}
                     </div>
 
                     {property.description && (
