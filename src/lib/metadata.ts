@@ -1,6 +1,6 @@
 // helper functions for building metadata with absolute URLs
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://bridgeproperties.rw";
 
 /**
  * Ensure the given path becomes an absolute URL using the configured site URL.
@@ -13,7 +13,9 @@ export function absoluteUrl(path: string): string {
   }
   // ensure leading slash
   const p = path.startsWith("/") ? path : "/" + path;
-  return SITE_URL + p;
+  // Ensure SITE_URL doesn't have trailing slash when combining
+  const baseUrl = SITE_URL.endsWith("/") ? SITE_URL.slice(0, -1) : SITE_URL;
+  return baseUrl + p;
 }
 
 /**
@@ -21,6 +23,7 @@ export function absoluteUrl(path: string): string {
  * environment variable isn't provided.
  */
 export function defaultOgImage(): string {
-  const img = process.env.NEXT_PUBLIC_OG_IMAGE || "/images/bridge-og.png";
+  // Default to Greenland Plaza image if not set
+  const img = process.env.NEXT_PUBLIC_OG_IMAGE || "/images/Greenland_property_images/greenlandplaza.jpg";
   return absoluteUrl(img);
 }

@@ -7,7 +7,7 @@ import ToastProvider from "@/components/providers/ToastProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://bridgeproperties.rw/"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://bridgeproperties.rw"),
   title: {
     default: "BridgeProperties | Smart Real Estate in Rwanda",
     template: "%s | BridgeProperties"
