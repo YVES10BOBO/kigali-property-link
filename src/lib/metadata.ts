@@ -24,6 +24,6 @@ export function absoluteUrl(path: string): string {
  */
 export function defaultOgImage(): string {
   // Default to Greenland Plaza image if not set
-  const img = process.env.NEXT_PUBLIC_OG_IMAGE || "/images/Greenland_property_images/greenlandplaza.jpg";
+  const img = process.env.NEXT_PUBLIC_OG_IMAGE || "/images/default_image.jpg";
   return absoluteUrl(img);
 }

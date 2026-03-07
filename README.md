@@ -14,6 +14,7 @@ A professional real estate platform built with Next.js, Supabase, and Tailwind C
 - [Hidden Features](#hidden-features)
 - [Deployment](#deployment)
 - [Troubleshooting](#troubleshooting)
+- [Full Documentation](#full-documentation)
 
 ---
 
@@ -468,6 +469,18 @@ npm run build
 - Clear browser cookies
 - Verify Supabase Auth is enabled
 - Check user role in database
+
+---
+
+## 📚 Full Documentation
+
+For more detailed guides and historical notes, see the `docs/` folder:
+
+- **Setup & installation**: `docs/setup.md`
+- **Feature overview** (multi-currency, units, dashboards, etc.): `docs/features.md`
+- **SEO & social sharing** (Open Graph, Twitter cards, sitemap): `docs/seo-social.md`
+- **Troubleshooting** (extended): `docs/troubleshooting.md`
+- **Older design notes & guides**: `docs/archive/`
 
 ---
 
