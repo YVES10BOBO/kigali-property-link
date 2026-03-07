@@ -21,6 +21,7 @@ export const metadata: Metadata = {
     "apartments for rent Kigali",
     "houses for sale Kigali",
     "property rental Kigali",
+    "land for sale Kigali",
   ],
   authors: [{ name: "BridgeProperties" }],
   creator: "BridgeProperties",
